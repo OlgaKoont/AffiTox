@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Defaults for ToxAffinity article analysis pipeline.
+# Defaults for AffiTox article analysis pipeline.
 # Override any variable before calling run_article_analysis.sh, e.g.:
 #   TARGETS="1g5m 3eyg" METHODS="gnina qvina" bash run_article_analysis.sh
 

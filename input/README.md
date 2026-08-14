@@ -1,6 +1,6 @@
-# ToxDock-Bench Input Data
+# AffiTox Input Data
 
-This directory contains the source input assets for the ToxDock-Bench benchmark pipeline.  
+This directory contains the source input assets for the AffiTox benchmark pipeline.  
 It is intended for users who want to run preparation and docking stages from raw structures and curated ligand tables.  
 In this repository, the canonical input contract is: protein structures in `input/proteins`, per-target ligand/activity tables in `input/ligands_nodubl`, and upstream raw BindingDB dumps in `input/bindingdb`.  
 The active benchmark panel used downstream is the curated 16-target set from `config/project.env.sh` (`TARGETS`).  
@@ -81,10 +81,8 @@ Interpretation scope:
 
 | Zenodo link | What it contains | Notes |
 |---|---|---|
-| `https://zenodo.org/records/<INPUT_ARCHIVE_RECORD_ID>` | raw upstream snapshots such as BindingDB exports and large source dumps | use for provenance/regeneration, not routine pipeline runs |
-| `https://zenodo.org/records/<CURATION_RECORD_ID>` | curated ligand/source snapshots used to produce `ligands_nodubl` | cite when reusing curation assets |
-
-Replace placeholder record IDs with your published Zenodo links.
+| [10.5281/zenodo.20825057](https://doi.org/10.5281/zenodo.20825057) | BindingDB snapshot + part of raw docking | prereserved draft DOI |
+| [docs/DATA_DICTIONARY.md](../docs/DATA_DICTIONARY.md) | curated `ligands_nodubl` schema | use this for column definitions |
 
 ## Citation, License, Contribution
 

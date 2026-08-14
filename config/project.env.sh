@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ToxAffinity / ToxDock-Bench — canonical path contract (JCIM reproducibility).
+# AffiTox — canonical path contract (JCIM reproducibility).
 # Source from any pipeline script:
 #   source "$(dirname "${BASH_SOURCE[0]}")/project.env.sh"
 

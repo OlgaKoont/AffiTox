@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Full SI reproducibility run for ToxAffinity analysis pipeline.
+# Full SI reproducibility run for AffiTox analysis pipeline.
 #
 # Computes all tables + figures with canonical 10k bootstrap / 10k permutation
 # resampling for correlation uncertainty (correlations_with_ci_perm.csv).
@@ -35,7 +35,7 @@ export RUN_FIGURES=1
 
 {
   echo "================================================================"
-  echo "ToxAffinity SI full run"
+  echo "AffiTox SI full run"
   echo "  started : $(date -Iseconds)"
   echo "  root    : ${ANALYSIS_ROOT}"
   echo "  merged  : ${MERGED_DATA_DIR}"

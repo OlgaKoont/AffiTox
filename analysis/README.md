@@ -1,6 +1,6 @@
-# ToxAffinity Analysis
+# AffiTox Analysis
 
-This directory contains the full post-docking analysis layer for ToxDock-Bench: manuscript-grade tables and figures for a 16-target toxicity panel across 5 methods.  
+This directory contains the post-docking analysis layer for AffiTox: manuscript-grade tables and figures for a 16-target toxicity panel across 5 methods.  
 It is designed for users who already have merged per-target prediction tables and PoseBusters outputs and need reproducible, publication-ready scoring/ranking/screening/pose-quality analysis.  
 What is analyzed here: (i) affinity agreement and rank preservation (Pearson/Spearman/Kendall), (ii) early recognition metrics for actives/inactives (EF/nEF, ROC-AUC, BEDROC), (iii) pose plausibility profiles, and (iv) cross-method inferential statistics with uncertainty and multiplicity correction (bootstrap/permutation, Wilcoxon, BH/Holm).  
 Methodological anchors and model context: [Boltz-2](https://doi.org/10.1101/2025.06.14.659707), [PoseBusters](https://doi.org/10.1038/s41586-024-07487-1), [Early-recognition metrics (EF/BEDROC)](https://doi.org/10.1021/ci600426e), [ROC analysis](https://doi.org/10.1016/j.patrec.2005.10.010), [BH-FDR](https://doi.org/10.1111/j.2517-6161.1995.tb02031.x), [Holm correction](https://www.jstor.org/stable/4615733).
@@ -113,10 +113,8 @@ bash pipeline/postprocess/package_zenodo.sh   # creates toxdock-analysis-artifac
 
 | Zenodo link | What it contains | Notes |
 |---|---|---|
-| `https://zenodo.org/records/<ANALYSIS_TABLES_RECORD_ID>` | `analysis/tables/` CSV artifacts (correlations, enrichment, inferential, PoseBusters summaries) | recommended for lightweight reproducibility packs |
-| `https://zenodo.org/records/<ANALYSIS_FIGURES_RECORD_ID>` | `analysis/figures/` PNG/SVG manuscript assets | useful for SI/manuscript snapshot distribution |
-
-Replace placeholder record IDs with your published Zenodo links.
+| [10.5281/zenodo.20825057](https://doi.org/10.5281/zenodo.20825057) (part 1/6, includes BindingDB snapshot) | raw inputs + selected `results/` | draft/prereserved; publish before citing as a stable record |
+| [AffiTox Zenodo community](https://zenodo.org/communities/affitox/) | parts 2–6 docking zips | DOIs `10.5281/zenodo.20825059` … `20825067` |
 
 ## Citation, License, Contribution
 
@@ -246,6 +244,10 @@ If you use this analysis pipeline, cite:
 }
 ```
 
+
+### License
+
+MIT (`LICENSE`). Third-party data and method weights: `NOTICE`.
 
 ### Contribution
 

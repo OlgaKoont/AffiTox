@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ToxAffinity article analysis — main entry point.
+# AffiTox article analysis — main entry point.
 #
 # Usage:
 #   bash run_article_analysis.sh

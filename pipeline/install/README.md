@@ -39,8 +39,8 @@ Key parameters and effects:
 Examples:
 
 ```bash
-# Install into explicit conda env python
-PYTHON=/mnt/tank/scratch/okonovalova/miniconda3/envs/docking/bin/python \
+# Install into the Python that is already on PATH (conda/venv)
+PYTHON="$(command -v python)" \
 bash pipeline/install/setup_environment.sh
 ```
 

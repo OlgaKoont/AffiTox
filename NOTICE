@@ -1,0 +1,27 @@
+AffiTox
+=======
+
+This repository is licensed under the MIT License (see LICENSE).
+Third-party data, model weights, and docking binaries are **not** covered by
+that license. Redistribute them only under their original terms.
+
+Datasets
+--------
+- BindingDB: experimentally determined protein–ligand affinities.
+  Liu et al., Nucleic Acids Research (2007). https://www.bindingdb.org/
+- ChEMBL identifiers appear in curated `input/ligands_nodubl/` filenames.
+  https://www.ebi.ac.uk/chembl/
+- RCSB PDB structures in `input/proteins/`. https://www.rcsb.org/
+
+Evaluated methods (install separately; see docs/INSTALL.md)
+----------------------------------------------------------
+- QVina2 (qvina02)
+- GNINA 1.3
+- DynamicBind
+- Boltz-2
+- PLAPT / WELP-PLAPT
+- PoseBusters (pose validity; PLAPT is excluded because it does not generate poses)
+
+Python import paths `docking_benchmark2` and the environment variable
+`TOXAFFINITY_ROOT` are historical identifiers. The public benchmark name is
+AffiTox.

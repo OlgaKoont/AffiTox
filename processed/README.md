@@ -1,4 +1,4 @@
-# ToxDock-Bench Prepared Assets (`processed/`)
+# AffiTox Prepared Assets (`processed/`)
 
 This directory stores deterministic intermediate artifacts produced by the `prepare` stage and consumed by docking methods.  
 It is intended for users who already have raw inputs in `input/` and need method-ready protein, ligand, and box files.  

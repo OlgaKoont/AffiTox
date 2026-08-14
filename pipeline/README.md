@@ -1,4 +1,4 @@
-# ToxDock-Bench Pipeline
+# AffiTox Pipeline
 
 This directory contains executable stage wrappers for reproducible end-to-end benchmark runs.  
 It is intended for users who need a stable operational entrypoint from environment setup to manuscript-grade analysis artifacts.  
@@ -81,7 +81,7 @@ Cite method-specific papers for methods you run and statistics you report (see `
 
 ### License
 
-Use repository license plus third-party tool/data licenses.
+Follow the MIT license in `LICENSE` and third-party terms in `NOTICE`.
 
 ### Contribution
 

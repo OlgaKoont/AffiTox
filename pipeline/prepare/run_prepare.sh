@@ -7,7 +7,7 @@ source "${SCRIPT_DIR}/../../config/project.env.sh"
 cd "${TOXAFFINITY_ROOT}"
 export PYTHONPATH="${TOXAFFINITY_ROOT}/src:${PYTHONPATH:-}"
 
-echo "=== ToxAffinity: preparation ==="
+echo "=== AffiTox: preparation ==="
 "${PYTHON}" -m docking_benchmark2.cli.run_benchmark \
   --config "${TOXDOCK_CONFIG}" \
   --methods-config "${METHODS_CONFIG}" \

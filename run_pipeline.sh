@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ToxAffinity end-to-end driver (no dependency on docking-benchmark-2/).
+# AffiTox end-to-end driver (no dependency on docking-benchmark-2/).
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${ROOT}/config/project.env.sh"

@@ -1,0 +1,61 @@
+cff-version: 1.2.0
+title: "AffiTox: a toxicity-oriented docking and binding-affinity benchmark"
+message: If you use this software or benchmark, please cite the manuscript below.
+type: software
+authors:
+  - family-names: Konovalova
+    given-names: Olga A.
+  - family-names: Orlova
+    given-names: Anastasia
+  - family-names: Telepov
+    given-names: Alexander
+  - family-names: Khrabrov
+    given-names: Kuzma
+  - family-names: Karpushkina
+    given-names: Irina
+  - family-names: Shestun
+    given-names: Pavel
+  - family-names: Kadurin
+    given-names: Artur
+  - family-names: Vinogradov
+    given-names: Vladimir
+  - family-names: Tsypin
+    given-names: Artem
+  - family-names: Dmitrenko
+    given-names: Andrei
+repository-code: "https://github.com/OlgaKoont/docking-benchmark"
+url: "https://zenodo.org/communities/affitox/"
+license: MIT
+version: "1.0.0"
+keywords:
+  - molecular docking
+  - binding affinity
+  - toxicity
+  - benchmark
+  - BindingDB
+preferred-citation:
+  type: article
+  title: "Limited and Target-Dependent Transferability of Docking Methods to Toxicity-Linked Targets"
+  authors:
+    - family-names: Konovalova
+      given-names: Olga A.
+    - family-names: Orlova
+      given-names: Anastasia
+    - family-names: Telepov
+      given-names: Alexander
+    - family-names: Khrabrov
+      given-names: Kuzma
+    - family-names: Karpushkina
+      given-names: Irina
+    - family-names: Shestun
+      given-names: Pavel
+    - family-names: Kadurin
+      given-names: Artur
+    - family-names: Vinogradov
+      given-names: Vladimir
+    - family-names: Tsypin
+      given-names: Artem
+    - family-names: Dmitrenko
+      given-names: Andrei
+  journal: "Journal of Chemical Information and Modeling"
+  notes: "Manuscript in review. Update this CITATION.cff with the DOI when available."
