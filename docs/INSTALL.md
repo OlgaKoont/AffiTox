@@ -14,7 +14,7 @@ The environment variable `TOXAFFINITY_ROOT` is the AffiTox repository root (hist
 ## 1. Analysis-only (recommended first)
 
 ```bash
-git clone https://github.com/OlgaKoont/docking-benchmark.git AffiTox
+git clone https://github.com/OlgaKoont/AffiTox.git
 cd AffiTox
 conda env create -f environment.yml   # env name: docking
 conda activate docking

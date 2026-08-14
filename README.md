@@ -2,7 +2,7 @@
 
 AffiTox is a toxicity-oriented docking and binding-affinity benchmark: **16 BindingDB targets**, experimental \(K_i\), and **five** methods (QVina2, GNINA 1.3, DynamicBind, Boltz-2, PLAPT).
 
-The GitHub repository is still named `OlgaKoont/docking-benchmark`. The public scientific name is **AffiTox** (manuscript `\textsc{AffiTox}`). Historical identifiers kept for compatibility: Python package `docking_benchmark2`, env `TOXAFFINITY_ROOT`, CLI `toxdock-pipeline`.
+Code: [github.com/OlgaKoont/AffiTox](https://github.com/OlgaKoont/AffiTox). Historical identifiers kept so existing scripts still run: Python package `docking_benchmark2`, env `TOXAFFINITY_ROOT`, CLI `toxdock-pipeline` (alias `affitox-pipeline`).
 
 ## Paper
 
@@ -36,7 +36,7 @@ Activity: \(K_i\) nM → \(\mathrm{p}K_i=9-\log_{10}(K_i)\). Screening: active \
 Linux x86_64. Requires Python 3.10+ and the deposited tables.
 
 ```bash
-git clone https://github.com/OlgaKoont/docking-benchmark.git AffiTox
+git clone https://github.com/OlgaKoont/AffiTox.git
 cd AffiTox
 python3 -m pip install -e ".[analysis]"
 export TOXAFFINITY_ROOT="$(pwd)"
@@ -105,6 +105,6 @@ MW ≤ 500 Da; Ki-only nM records; no cognate RMSD (PoseBusters instead); PLAPT 
 
 ## Licence and citation
 
-MIT (`LICENSE`) for this repository’s code. Datasets and method weights: `NOTICE`. Cite `CITATION.cff`.
+This repository’s source code is released under the [MIT License](LICENSE). BindingDB/ChEMBL/PDB records and third-party method weights are **not** covered by MIT; see [NOTICE](NOTICE).
 
-Issues: https://github.com/OlgaKoont/docking-benchmark/issues
+Please cite the AffiTox manuscript (JCIM, in review) using [CITATION.cff](CITATION.cff). Bug reports and questions: [github.com/OlgaKoont/AffiTox/issues](https://github.com/OlgaKoont/AffiTox/issues).

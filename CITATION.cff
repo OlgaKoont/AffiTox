@@ -23,7 +23,7 @@ authors:
     given-names: Artem
   - family-names: Dmitrenko
     given-names: Andrei
-repository-code: "https://github.com/OlgaKoont/docking-benchmark"
+repository-code: "https://github.com/OlgaKoont/AffiTox"
 url: "https://zenodo.org/communities/affitox/"
 license: MIT
 version: "1.0.0"
