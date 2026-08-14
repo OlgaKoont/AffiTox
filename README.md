@@ -99,10 +99,6 @@ AffiTox/
 - Analysis: CPU; 10k bootstrap/permutation is the expensive step.
 - Docking: QVina2/GNINA CPU; Boltz-2, DynamicBind, PLAPT typically GPU; tens of GB for `results/`.
 
-## Limitations
-
-MW ≤ 500 Da; Ki-only nM records; no cognate RMSD (PoseBusters instead); PLAPT is not docking; complete-case \(N\) differs by method.
-
 ## Licence and citation
 
 This repository’s source code is released under the [MIT License](LICENSE). BindingDB/ChEMBL/PDB records and third-party method weights are **not** covered by MIT; see [NOTICE](NOTICE).
