@@ -80,7 +80,7 @@ AffiTox/
 │   └── analysis/           metrics and plots
 ├── pipeline/               install / prepare / dock / postprocess
 ├── analysis/tables|figures manuscript bundle
-├── docs/                   INSTALL, METHODS, DATA_DICTIONARY, FIGURES
+├── docs/                   INSTALL, METHODS, SOFTWARE_REGISTRY, Zenodo manifest
 ├── tests/                  scientific invariant tests
 └── run_pipeline.sh
 ```
@@ -91,13 +91,17 @@ AffiTox/
 |----------|------|
 | `input/ligands_nodubl/` | curated Ki panel |
 | `analysis/tables/` | merged scores + statistics |
-| [Zenodo AffiTox community](https://zenodo.org/communities/affitox/) | raw docking parts 1–6 (prereserved DOIs `10.5281/zenodo.20825057` … `20825067`) |
+| [Zenodo AffiTox community](https://zenodo.org/communities/affitox/) | raw docking parts 1–6 (open DOIs `10.5281/zenodo.20825057` … `20825067`) |
 
 ## Requirements
 
 - OS: Linux x86_64 (HPC). Windows unsupported.
 - Analysis: CPU; 10k bootstrap/permutation is the expensive step.
 - Docking: QVina2/GNINA CPU; Boltz-2, DynamicBind, PLAPT typically GPU; tens of GB for `results/`.
+
+## Limitations
+
+MW ≤ 500 Da; Ki-only nM records; primary docking power uses PoseBusters (cognate RMSD reported as a 14-ligand classical anchor in SI §13); PLAPT is not docking; complete-case \(N\) differs by method.
 
 ## Licence and citation
 

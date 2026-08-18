@@ -13,6 +13,10 @@ Datasets
   https://www.ebi.ac.uk/chembl/
 - RCSB PDB structures in `input/proteins/`. https://www.rcsb.org/
 
+The CC BY 4.0 license (Zenodo data records) applies to the original AffiTox
+curation, organization, and derived results. Redistributed third-party source
+records remain subject to their original terms and licenses.
+
 Evaluated methods (install separately; see docs/INSTALL.md)
 ----------------------------------------------------------
 - QVina2 (qvina02)

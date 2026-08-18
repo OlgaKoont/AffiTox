@@ -141,10 +141,11 @@ def plot_heatmap_with_summary_row(
     fmt: str,
     path_base: Path,
     figsize_scale: tuple[float, float] = (0.55, 0.35),
+    summary_label: str | None = None,
 ) -> None:
-    """Heatmap: one summary row (All targets) + gap + per-target rows."""
+    """Heatmap: one summary row + gap + per-target rows."""
     summary_df = summary_row.to_frame().T
-    summary_df.index = [ALL_TARGETS_LABEL]
+    summary_df.index = [summary_label or ALL_TARGETS_LABEL]
     n_cols = len(body.columns)
     n_body = len(body)
 
@@ -215,34 +216,71 @@ def plot_heatmap_with_summary_col(
     fmt: str,
     path_base: Path,
     figsize_scale: tuple[float, float] = (0.45, 0.22),
+    figsize: tuple[float, float] | None = None,
+    summary_panel_ratio: float = 1.35,
+    label_panel_ratio: float = 2.2,
+    label_summary_wspace: float = 0.02,
+    cbar_width_ratio: float = 0.045,
+    summary_body_gap_scale: float = 1.0,
+    summary_body_wspace: float | None = None,
+    equal_summary_width: bool = False,
     body_annot: bool = False,
     body_fmt: str | None = None,
     y_label: str = "Check",
+    y_tick_rotation: int = 0,
+    center: float | None = None,
+    summary_label: str | None = None,
 ) -> None:
-    """Heatmap: one summary column (All targets) + gap + per-target columns."""
+    """Heatmap: one summary column + gap + per-target columns."""
     summary_df = summary_col.to_frame()
-    summary_df.columns = [ALL_TARGETS_LABEL]
+    summary_df.columns = [summary_label or ALL_TARGETS_LABEL]
     n_rows = len(body.index)
     n_cols = len(body.columns)
 
-    fig_w = max(8.0, figsize_scale[0] * (1 + n_cols) + 1.2)
-    fig_h = max(6.0, figsize_scale[1] * n_rows)
+    if figsize is not None:
+        fig_w, fig_h = figsize
+    else:
+        fig_w = max(8.0, figsize_scale[0] * (1 + n_cols) + 1.2)
+        fig_h = max(6.0, figsize_scale[1] * n_rows)
     fig = plt.figure(figsize=(fig_w, fig_h))
-    gs = GridSpec(
-        1, 2,
-        figure=fig,
-        width_ratios=[1.35, max(n_cols, 1)],
-        wspace=GAP_RATIO,
-    )
-    gs_inner = gs[1].subgridspec(1, 2, width_ratios=[1.0, 0.045], wspace=0.05)
-    ax_left = fig.add_subplot(gs[0, 0])
-    ax_mid = fig.add_subplot(gs_inner[0, 0])
-    cbar_ax = fig.add_subplot(gs_inner[0, 1])
+
+    if equal_summary_width:
+        # [method labels | 1-col summary | gap | n-col body | colorbar]
+        gap_wspace = 0.23 if summary_body_wspace is None else summary_body_wspace
+        gs = GridSpec(
+            1, 2,
+            figure=fig,
+            width_ratios=[label_panel_ratio + 1.0, n_cols + 0.045],
+            wspace=gap_wspace,
+        )
+        gs_left = gs[0].subgridspec(
+            1, 2, width_ratios=[label_panel_ratio, 1.0], wspace=label_summary_wspace
+        )
+        gs_right = gs[1].subgridspec(
+            1, 2, width_ratios=[n_cols, cbar_width_ratio], wspace=0.05
+        )
+        ax_left = fig.add_subplot(gs_left[0, 1])
+        ax_label = fig.add_subplot(gs_left[0, 0])
+        ax_mid = fig.add_subplot(gs_right[0, 0])
+        cbar_ax = fig.add_subplot(gs_right[0, 1])
+    else:
+        gs = GridSpec(
+            1, 2,
+            figure=fig,
+            width_ratios=[summary_panel_ratio, max(n_cols, 1)],
+            wspace=GAP_RATIO if summary_body_wspace is None else summary_body_wspace,
+        )
+        gs_inner = gs[1].subgridspec(1, 2, width_ratios=[1.0, 0.045], wspace=0.05)
+        ax_label = None
+        ax_left = fig.add_subplot(gs[0, 0])
+        ax_mid = fig.add_subplot(gs_inner[0, 0])
+        cbar_ax = fig.add_subplot(gs_inner[0, 1])
 
     heatmap_kw = dict(
         cmap=cmap,
         vmin=vmin,
         vmax=vmax,
+        center=center,
         linewidths=0.3,
         linecolor="white",
         cbar_ax=cbar_ax,
@@ -256,6 +294,7 @@ def plot_heatmap_with_summary_col(
         annot=_format_annot(summary_df, fmt) if fmt else None,
         fmt="" if fmt else "",
         cbar=False,
+        yticklabels=(ax_label is None),
         **heatmap_kw,
     )
     sns.heatmap(
@@ -263,19 +302,105 @@ def plot_heatmap_with_summary_col(
         ax=ax_mid,
         annot=_format_annot(body, body_fmt or fmt) if body_annot and (body_fmt or fmt) else False,
         fmt="" if body_annot else "",
+        yticklabels=False,
         **heatmap_kw,
     )
 
-    ax_left.set_ylabel(y_label)
-    ax_left.set_xlabel("")
-    ax_left.tick_params(axis="y", labelleft=True, pad=2)
-    for tick in ax_left.get_yticklabels():
-        tick.set_fontsize(8)
+    if ax_label is not None:
+        tick_pos = np.arange(len(body.index)) + 0.5
+        ax_label.set_ylim(len(body.index), 0)
+        ax_label.set_yticks(tick_pos)
+        ax_label.set_yticklabels(list(body.index))
+        ax_label.yaxis.tick_right()
+        ax_label.tick_params(
+            axis="y",
+            rotation=y_tick_rotation,
+            labelsize=9,
+            pad=2,
+            length=0,
+            labelleft=False,
+            labelright=True,
+            right=True,
+            left=False,
+        )
+        plt.setp(
+            ax_label.get_yticklabels(),
+            ha="right" if y_tick_rotation == 0 else "center",
+            rotation=y_tick_rotation,
+            visible=True,
+        )
+        ax_label.set_xticks([])
+        ax_label.set_xlabel("")
+        for spine in ax_label.spines.values():
+            spine.set_visible(False)
+        ax_label.set_ylabel(y_label, rotation=90, labelpad=28)
+        ax_left.set_yticklabels([])
+        ax_left.tick_params(axis="y", left=False, labelleft=False)
+    else:
+        ax_left.set_ylabel(y_label, rotation=90, labelpad=28)
+        ax_left.set_xlabel("")
+        ax_left.tick_params(axis="y", rotation=y_tick_rotation, labelsize=9, pad=4)
+        plt.setp(
+            ax_left.get_yticklabels(),
+            ha="right" if y_tick_rotation == 0 else "center",
+            rotation=y_tick_rotation,
+        )
+
     ax_mid.set_ylabel("")
     ax_mid.set_xlabel("Target")
     ax_mid.tick_params(axis="x", rotation=0)
-    # Keep check labels only on the left summary panel.
+    plt.setp(ax_mid.get_xticklabels(), ha="center")
     ax_mid.tick_params(axis="y", left=False, labelleft=False)
+
+    if equal_summary_width and ax_label is not None:
+        fig.canvas.draw()
+        renderer = fig.canvas.get_renderer()
+        sum_pos = ax_left.get_position()
+        body_pos = ax_mid.get_position()
+        cb_pos = cbar_ax.get_position()
+        gap = body_pos.x0 - sum_pos.x1
+        if gap > 0 and summary_body_gap_scale != 1.0:
+            shift = gap * (1.0 - summary_body_gap_scale)
+            ax_left.set_position(
+                [sum_pos.x0 + shift, sum_pos.y0, sum_pos.width, sum_pos.height]
+            )
+            sum_pos = ax_left.get_position()
+            body_pos = ax_mid.get_position()
+            cb_pos = cbar_ax.get_position()
+        label_bboxes = [
+            t.get_window_extent(renderer).transformed(fig.transFigure.inverted())
+            for t in ax_label.get_yticklabels()
+        ]
+        max_label_w = max((bb.width for bb in label_bboxes), default=0.08)
+        label_pad = 0.008
+        lab_pos = ax_label.get_position()
+        ax_label.set_position(
+            [
+                sum_pos.x0 - label_pad - max_label_w,
+                lab_pos.y0,
+                max_label_w,
+                lab_pos.height,
+            ]
+        )
+        fig.canvas.draw()
+        renderer = fig.canvas.get_renderer()
+        sum_pos = ax_left.get_position()
+        body_pos = ax_mid.get_position()
+        cb_pos = cbar_ax.get_position()
+        col_w = body_pos.width / max(n_cols, 1)
+        if ax_mid.texts:
+            text_bbox = ax_mid.texts[0].get_window_extent(renderer).transformed(
+                fig.transFigure.inverted()
+            )
+            val_len = max(len(ax_mid.texts[0].get_text().strip("*")), 1)
+            two_digit_w = 2.0 * text_bbox.width / val_len
+        else:
+            two_digit_w = col_w * 0.45
+        two_digit_w = max(two_digit_w, col_w * 0.35)
+        cbar_ax.set_position(
+            [cb_pos.x1 - two_digit_w, cb_pos.y0, two_digit_w, cb_pos.height]
+        )
+
     fig.suptitle(title, y=1.02, fontsize=11)
     save_figure(fig, path_base)
 
@@ -410,6 +535,7 @@ def plot_combined_heatmaps_with_summary_row(
     y_label: str = "Target",
     col_width: float = 0.85,
     row_height: float = 0.36,
+    summary_label: str | None = None,
 ) -> None:
     """Side-by-side heatmaps sharing one colorbar and one bottom x-axis label."""
     if not panels:
@@ -418,6 +544,7 @@ def plot_combined_heatmaps_with_summary_row(
     n_panels = len(panels)
     n_cols = len(panels[0][2].columns)
     n_body = len(panels[0][2].index)
+    row_label = summary_label or ALL_TARGETS_LABEL
 
     panel_w = max(3.8, col_width * n_cols + 0.6)
     fig_w = panel_w * n_panels + 1.1
@@ -452,7 +579,7 @@ def plot_combined_heatmaps_with_summary_row(
 
     for idx, (title, summary_row, body) in enumerate(panels):
         summary_df = summary_row.to_frame().T
-        summary_df.index = [ALL_TARGETS_LABEL]
+        summary_df.index = [row_label]
 
         ax_top = fig.add_subplot(gs[0, idx])
         ax_bot = fig.add_subplot(gs[1, idx], sharex=ax_top)

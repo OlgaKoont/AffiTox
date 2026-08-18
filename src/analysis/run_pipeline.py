@@ -15,13 +15,27 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 from analysis.config import build_parser, config_from_args
 from analysis.correlations import add_bootstrap_permutation, run_correlations
 from analysis.enrichment import run_enrichment
-from analysis.inferential import run_pairwise_method_tests, run_per_target_pairwise_tests
+from analysis.property_baselines import run_property_baselines
+from analysis.pki_range_audit import run_pki_range_audit
+from analysis.inferential import (
+    run_friedman_tests,
+    run_pairwise_method_tests,
+    run_per_target_pairwise_tests,
+    run_posebusters_pairwise_tests,
+)
 from analysis.posebusters import run_posebusters
 from analysis.constants import METHOD_LABELS, PRIMARY_METRICS
 from analysis.plots.correlations import plot_correlation_heatmaps
 from analysis.plots.scatter import plot_all_scatters
 from analysis.plots.enrichment import plot_nef_violins
-from analysis.plots.posebusters import plot_posebusters_per_check, plot_posebusters_summary
+from analysis.plots.posebusters import (
+    plot_posebusters_at_least_all_tests_combined,
+    plot_posebusters_at_least_all_tests_combined_var2,
+    plot_posebusters_combined,
+    plot_posebusters_pass_count_curves,
+    plot_posebusters_per_check,
+    plot_posebusters_summary,
+)
 from analysis.plots.inferential import (
     plot_inferential_heatmaps,
     plot_per_target_inferential_heatmaps,
@@ -54,6 +68,16 @@ def main() -> None:
         corr = run_correlations(cfg)
         corr = add_bootstrap_permutation(cfg, corr)
         print(f"      -> {cfg.tables_dir / 'correlations' / 'summary_all_proteins.csv'}")
+        baselines = run_property_baselines(cfg)
+        print(
+            f"      -> {cfg.tables_dir / 'correlations' / 'property_null_baselines.csv'}"
+            f" ({len(baselines)} rows)"
+        )
+        range_audit = run_pki_range_audit(cfg, corr)
+        print(
+            f"      -> {cfg.tables_dir / 'correlations' / 'pki_range_by_target.csv'}"
+            f" ({len(range_audit)} targets)"
+        )
 
     if cfg.run_enrichment:
         print("[2/5] Enrichment (EF1/5/10, nEF active + inactive)")
@@ -88,6 +112,19 @@ def main() -> None:
         out_pt = cfg.tables_dir / "inferential" / "per_target_pairwise_tests.csv"
         per_target_tests.to_csv(out_pt, index=False)
         print(f"      -> {out_pt}")
+        omnibus = run_friedman_tests(corr, ef, cfg.methods, PRIMARY_METRICS)
+        out_omni = cfg.tables_dir / "inferential" / "friedman_omnibus_tests.csv"
+        omnibus.to_csv(out_omni, index=False)
+        print(f"      -> {out_omni}")
+        if pb_summary is None:
+            ps = cfg.tables_dir / "posebusters" / "pass_rates_by_target_method.csv"
+            if ps.exists():
+                pb_summary = pd.read_csv(ps)
+        if pb_summary is not None and not pb_summary.empty:
+            pb_tests = run_posebusters_pairwise_tests(pb_summary)
+            out_pb = cfg.tables_dir / "inferential" / "posebusters_pairwise_tests.csv"
+            pb_tests.to_csv(out_pb, index=False)
+            print(f"      -> {out_pb}")
 
     if cfg.run_figures:
         print("[5/5] Figures (PNG + SVG, dpi={})".format(cfg.figure_dpi))
@@ -122,7 +159,11 @@ def main() -> None:
             plot_nef_violins(ef, cfg)
         if pb_summary is not None and pb_checks is not None:
             plot_posebusters_summary(pb_summary, cfg)
+            plot_posebusters_combined(pb_summary, pb_checks, cfg)
             plot_posebusters_per_check(pb_checks, cfg)
+            plot_posebusters_pass_count_curves(cfg)
+            plot_posebusters_at_least_all_tests_combined(pb_summary, pb_checks, cfg)
+            plot_posebusters_at_least_all_tests_combined_var2(pb_summary, pb_checks, cfg)
         if tests is not None:
             plot_inferential_heatmaps(tests, cfg)
         if per_target_tests is not None:

@@ -54,7 +54,10 @@ PYTHONPATH=src pytest tests -q
 
 ## 2. Method-specific docking software
 
-Install each tool into its own conda env or prefix, then point `config/methods_config.yaml` (or environment variables) at **your** paths. The committed YAML may contain cluster-local paths; override them.
+Install each tool into its own conda env or prefix, then point `config/methods_config.yaml`
+or environment variables (`PLAPT_PATH`, `DYNAMICBIND_PATH`, `GNINA_BIN`, `BOLTZ_ROOT`) at
+**your** paths. Cluster-local examples live in `config/methods_config.hpc.example.yaml`.
+Exact third-party pins: [docs/SOFTWARE_REGISTRY.md](SOFTWARE_REGISTRY.md).
 
 ### QVina2 (classical)
 
@@ -95,8 +98,7 @@ Install each tool into its own conda env or prefix, then point `config/methods_c
 ### PoseBusters
 
 - CLI must be on `PATH` for `pipeline/postprocess/run_posebusters.sh`
-- Version used in the manuscript: 0.3.x (20 boolean checks)
-- Not pinned in `environment.yml` — install from the upstream PoseBusters project and record the version in your run log
+- Deposited CSVs use the 20-check PoseBusters **dock** schema (≥ 0.3). The exact `bust --version` is not stored in those CSVs; see [SOFTWARE_REGISTRY.md](SOFTWARE_REGISTRY.md).
 
 ## 3. Full pipeline
 
@@ -116,7 +118,7 @@ Mini smoke dataset (16 targets × 2 ligands): `example/README.md`.
 
 ## 4. Data archives
 
-Raw docking outputs exceed Git. Draft Zenodo depositions (prereserved DOIs; publish before treating as stable records):
+Raw docking outputs exceed Git. The six Zenodo records below are **published and open** (not drafts):
 
 | Part | DOI | Contents |
 |------|-----|----------|
@@ -128,5 +130,7 @@ Raw docking outputs exceed Git. Draft Zenodo depositions (prereserved DOIs; publ
 | 6/6 | [10.5281/zenodo.20825067](https://doi.org/10.5281/zenodo.20825067) | 3eyg |
 
 Community: [zenodo.org/communities/affitox](https://zenodo.org/communities/affitox/).
+File-level MD5 checksums: [docs/zenodo/affitox_data_manifest.tsv](zenodo/affitox_data_manifest.tsv).
+Release procedure: [docs/ZENODO_RELEASE.md](ZENODO_RELEASE.md). Data availability wording: [docs/DATA_AVAILABILITY.md](DATA_AVAILABILITY.md).
 
 Analysis tables and figures are intended to ship with GitHub (`analysis/tables/`, `analysis/figures/`).

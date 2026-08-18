@@ -34,6 +34,7 @@ setup(
             "seaborn>=0.11.0",
             "scipy>=1.7.0",
             "pytest>=7.0",
+            "rdkit>=2022.3.0",
         ],
         "rdkit": [],
     },

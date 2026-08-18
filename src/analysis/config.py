@@ -41,7 +41,7 @@ class AnalysisConfig:
     color_mid: str
     color_high: str
     method_colors: dict[str, str] = field(default_factory=dict)
-    figure_dpi: int = 500
+    figure_dpi: int = 700
     font_family: str = "DejaVu Sans"
     n_bootstrap: int = 10_000
     n_permutation: int = 10_000
@@ -100,7 +100,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--color-mid", default=os.environ.get("COLOR_MID", "#DEDAD7"))
     p.add_argument("--color-high", default=os.environ.get("COLOR_HIGH", "#E5885F"))
     p.add_argument("--method-colors", default=os.environ.get("METHOD_COLORS", ""))
-    p.add_argument("--figure-dpi", type=int, default=int(os.environ.get("FIGURE_DPI", "500")))
+    p.add_argument("--figure-dpi", type=int, default=int(os.environ.get("FIGURE_DPI", "700")))
     p.add_argument("--font-family", default=os.environ.get("FONT_FAMILY", "DejaVu Sans"))
     p.add_argument("--n-bootstrap", type=int, default=int(os.environ.get("N_BOOTSTRAP", "10000")))
     p.add_argument("--n-permutation", type=int, default=int(os.environ.get("N_PERMUTATION", "10000")))

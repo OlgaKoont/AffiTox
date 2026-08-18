@@ -374,7 +374,14 @@ def dock_dynamicbind(
         interaction_config: Optional interaction config for protein-ligand pairs.
         ligand_dir: Directory with ligand CSV files (required for DynamicBind).
     """
-    dynamicbind_path = Path(config.get('dynamicbind_path', '/mnt/tank/scratch/okonovalova/DynamicBind'))
+    dynamicbind_raw = os.environ.get('DYNAMICBIND_PATH') or config.get('dynamicbind_path') or ''
+    if not str(dynamicbind_raw).strip():
+        raise RuntimeError(
+            "DynamicBind path is not set. Export DYNAMICBIND_PATH or set "
+            "dynamicbind.dynamicbind_path in config/methods_config.yaml "
+            "(see config/methods_config.hpc.example.yaml)."
+        )
+    dynamicbind_path = Path(dynamicbind_raw)
     device = config.get('device', 0)
     samples_per_complex = config.get('samples_per_complex', 10)
     savings_per_complex = config.get('savings_per_complex', 1)
@@ -383,8 +390,12 @@ def dock_dynamicbind(
     use_relax = config.get('use_relax', True)
     protein_dynamic = config.get('protein_dynamic', True)
     random_seed = config.get('random_seed', 42)
-    python_env = config.get('python_env', None)  # Path to dynamicbind python
-    relax_python_env = config.get('relax_python_env', None)  # Path to relax python
+    python_env = os.environ.get('DYNAMICBIND_PYTHON') or config.get('python_env') or None
+    relax_python_env = os.environ.get('RELAX_PYTHON') or config.get('relax_python_env') or None
+    if python_env is not None and not str(python_env).strip():
+        python_env = None
+    if relax_python_env is not None and not str(relax_python_env).strip():
+        relax_python_env = None
     
     if not dynamicbind_path.exists():
         raise RuntimeError(f"DynamicBind path does not exist: {dynamicbind_path}")
@@ -421,12 +432,16 @@ def dock_dynamicbind(
     
     # Determine Python executables
     # conda_base: root of miniconda3 (when CONDA_PREFIX is e.g. .../envs/dynamicbind, go up two levels)
-    _conda_prefix = Path(os.environ.get("CONDA_PREFIX", ""))
-    _default_base = Path("/mnt/tank/scratch/okonovalova/miniconda3")
-    if _conda_prefix.exists() and "envs" in str(_conda_prefix):
+    _conda_prefix = Path(os.environ.get("CONDA_PREFIX", "") or "")
+    _conda_base_env = Path(os.environ.get("CONDA_BASE", "") or "")
+    if _conda_prefix.exists() and "envs" in _conda_prefix.parts:
         conda_base = _conda_prefix.parent.parent  # .../miniconda3/envs/xyz -> miniconda3
+    elif _conda_base_env.exists():
+        conda_base = _conda_base_env
+    elif _conda_prefix.exists():
+        conda_base = _conda_prefix
     else:
-        conda_base = _conda_prefix if _conda_prefix.exists() else _default_base
+        conda_base = Path()
     if python_env is None:
         dynamicbind_python = conda_base / "envs" / "dynamicbind" / "bin" / "python"
         if dynamicbind_python.exists():

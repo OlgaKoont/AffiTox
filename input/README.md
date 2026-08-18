@@ -81,7 +81,7 @@ Interpretation scope:
 
 | Zenodo link | What it contains | Notes |
 |---|---|---|
-| [10.5281/zenodo.20825057](https://doi.org/10.5281/zenodo.20825057) | BindingDB snapshot + part of raw docking | prereserved draft DOI |
+| [10.5281/zenodo.20825057](https://doi.org/10.5281/zenodo.20825057) | BindingDB snapshot + part of raw docking | published / open |
 | [docs/DATA_DICTIONARY.md](../docs/DATA_DICTIONARY.md) | curated `ligands_nodubl` schema | use this for column definitions |
 
 ## Citation, License, Contribution

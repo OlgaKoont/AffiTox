@@ -1,6 +1,10 @@
-# Portable AffiTox method settings for public checkouts.
-# Point repo/tool paths at your install via environment variables, or copy
-# config/methods_config.hpc.example.yaml and export METHODS_CONFIG to that file.
+# Cluster-local AffiTox method paths (authors' HPC).
+# Do not use this file as the public default. Copy it, edit paths, then:
+#   export METHODS_CONFIG=/path/to/this/file
+#
+# Public checkout uses config/methods_config.yaml (placeholders + environment variables).
+
+# Methods configuration for docking benchmark 2.0
 
 gnina:
   binary: "gnina"
@@ -25,16 +29,14 @@ qvina:
   conda_env: "docking"  # Optional: conda environment name
 
 plapt:
-  # Override with PLAPT_PATH or set an absolute checkout of WELP-PLAPT.
-  plapt_path: ""
+  plapt_path: "/mnt/tank/scratch/okonovalova/WELP-PLAPT"
   device: "cuda"  # "cuda" or "cpu"
   batch_size: 16
   docking_timeout: 300  # 5 minutes default
   conda_env: "plapt"  # Optional: conda environment name
 
 dynamicbind:
-  # Override with DYNAMICBIND_PATH and optionally DYNAMICBIND_PYTHON / RELAX_PYTHON.
-  dynamicbind_path: ""
+  dynamicbind_path: "/mnt/tank/scratch/okonovalova/DynamicBind"
   device: 0
   samples_per_complex: 10
   savings_per_complex: 10
@@ -43,19 +45,17 @@ dynamicbind:
   use_relax: false
   protein_dynamic: false
   random_seed: 42
-  python_env: ""
-  relax_python_env: ""
+  python_env: "/mnt/tank/scratch/okonovalova/miniconda3/envs/dynamicbind/bin/python"
+  relax_python_env: "/mnt/tank/scratch/okonovalova/miniconda3/envs/relax/bin/python"
   conda_env: "dynamicbind"
 
 interformer:
-  # Optional / unpublished on the AffiTox 16-target panel. Override with
-  # INTERFORMER_REPO and INTERFORMER_*_CHECKPOINT if you run this adapter.
-  repo_path: ""
+  repo_path: "/mnt/tank/scratch/okonovalova/Interformer_bench"
   conda_env: "interformer"
   gpus: 1
   omp_threads: 8
   pocket_radius: 10.0
-  energy_checkpoint: ""
-  affinity_checkpoint: ""
+  energy_checkpoint: "/mnt/tank/scratch/okonovalova/Interformer_bench/checkpoints/v0.2_energy_model"
+  affinity_checkpoint: "/mnt/tank/scratch/okonovalova/Interformer_bench/checkpoints/v0.2_affinity_model/model*"
   affinity_batch_size: 20
   num_output_poses: 20

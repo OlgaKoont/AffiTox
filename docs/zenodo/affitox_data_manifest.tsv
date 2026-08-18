@@ -1,0 +1,18 @@
+part	zenodo_record	doi	record_title	filename	size_bytes	md5
+1/6	20825057	10.5281/zenodo.20825057	AffiTox: raw input and docking results (part 1/6)	results_7awe.zip	1015905722	58857cecea994df2afb75a1e8f00e565
+1/6	20825057	10.5281/zenodo.20825057	AffiTox: raw input and docking results (part 1/6)	toxdock-input-raw.zip	649528061	a1ab55268eef57fff0c2e8fc3e337ad0
+1/6	20825057	10.5281/zenodo.20825057	AffiTox: raw input and docking results (part 1/6)	results_3mjg.zip	1220808901	e698b6639822995ec4b9a8a0afc4c69e
+1/6	20825057	10.5281/zenodo.20825057	AffiTox: raw input and docking results (part 1/6)	results_1g5m.zip	3026505633	071f11a728d6e6edacbc2ebf0a0ccffd
+1/6	20825057	10.5281/zenodo.20825057	AffiTox: raw input and docking results (part 1/6)	results_4f65.zip	2135377479	d1a139e8e0efac4307aa389128b2e15f
+1/6	20825057	10.5281/zenodo.20825057	AffiTox: raw input and docking results (part 1/6)	results_4tz4.zip	4261941851	d6cc6516b1d5839b65b1cc539c5760a4
+1/6	20825057	10.5281/zenodo.20825057	AffiTox: raw input and docking results (part 1/6)	results_4zau.zip	3769474066	5c74c1dff01cc5efb4545a542d298b1b
+1/6	20825057	10.5281/zenodo.20825057	AffiTox: raw input and docking results (part 1/6)	results_2z5x.zip	6913703609	4e27010b2b4e6cbd46e237ac24ccedbd
+2/6	20825059	10.5281/zenodo.20825059	AffiTox: raw docking results (part 2/6)	results_6jok.zip	9372692470	42920b84846081fe59cffbac21713469
+2/6	20825059	10.5281/zenodo.20825059	AffiTox: raw docking results (part 2/6)	results_3lxk.zip	11840291876	ccff492f2c01c06e267d867822495839
+2/6	20825059	10.5281/zenodo.20825059	AffiTox: raw docking results (part 2/6)	results_5jkv.zip	14480130052	fe34da99eb57e6bcfedfd5c92854db06
+3/6	20825061	10.5281/zenodo.20825061	AffiTox: raw docking results (part 3/6)	results_4ase.zip	15071957933	f8dadd550316afde00accbf64d1774a6
+3/6	20825061	10.5281/zenodo.20825061	AffiTox: raw docking results (part 3/6)	results_6gqj.zip	19666237411	31f3b735c59341df7aa2eed6bc02cb44
+4/6	20825063	10.5281/zenodo.20825063	AffiTox: raw docking results (part 4/6)	results_7kk3.zip	20582102627	634ac3025e982f1d7325ee8bee9dd109
+4/6	20825063	10.5281/zenodo.20825063	AffiTox: raw docking results (part 4/6)	results_5mo4.zip	20431915912	35798fed6a66de432ff78202a522423f
+5/6	20825065	10.5281/zenodo.20825065	AffiTox: raw docking results (part 5/6, 3jy9)	results_3jy9.zip	31832453148	89922c04f614b76b40dbb06a9fca124a
+6/6	20825067	10.5281/zenodo.20825067	AffiTox: raw docking results (part 6/6, 3eyg)	results_3eyg.zip	35702801740	a6f5e06daa3387a35328ac36e30e30e0

@@ -162,7 +162,13 @@ def dock_plapt(
         interaction_config: Optional interaction config for protein-ligand pairs.
         ligand_dir: Directory with ligand CSV files (required for PLAPT).
     """
-    plapt_path = Path(config.get('plapt_path', '/mnt/tank/scratch/okonovalova/WELP-PLAPT'))
+    plapt_raw = os.environ.get('PLAPT_PATH') or config.get('plapt_path') or ''
+    if not str(plapt_raw).strip():
+        raise RuntimeError(
+            "PLAPT path is not set. Export PLAPT_PATH or set plapt.plapt_path in "
+            "config/methods_config.yaml (see config/methods_config.hpc.example.yaml)."
+        )
+    plapt_path = Path(plapt_raw)
     device = config.get('device', 'cuda')
     batch_size = config.get('batch_size', 16)
     affinity_batch_size = config.get('affinity_batch_size', 128)

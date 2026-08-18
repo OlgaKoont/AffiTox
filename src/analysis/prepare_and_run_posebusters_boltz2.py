@@ -30,10 +30,7 @@ from typing import Dict, List, Optional, Tuple
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 DEFAULT_BOLTZ_RESULTS_DIR = Path(os.environ.get("BOLTZ_RESULTS_DIR", ""))
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "analysis" / "tables" / "posebuster"
-DEFAULT_POSEBUSTERS_CONFIG = (
-    "/mnt/tank/scratch/okonovalova/miniconda3/envs/posebuster/lib/python3.10/"
-    "site-packages/posebusters/config/dock_fast.yml"
-)
+DEFAULT_POSEBUSTERS_CONFIG = os.environ.get("POSEBUSTERS_CONFIG", "")
 
 
 def _short_chain_name(idx: int) -> str:
@@ -180,13 +177,13 @@ def main() -> None:
     parser.add_argument(
         "--obabel-bin",
         type=str,
-        default="/mnt/tank/scratch/okonovalova/miniconda3/envs/docking/bin/obabel",
+        default=os.environ.get("OBABEL_BIN", "obabel"),
         help="Path/name of Open Babel executable.",
     )
     parser.add_argument(
         "--bust-bin",
         type=str,
-        default="/mnt/tank/scratch/okonovalova/miniconda3/envs/posebuster/bin/bust",
+        default=os.environ.get("BUST_BIN", "bust"),
         help="Path/name of PoseBusters executable.",
     )
     parser.add_argument(

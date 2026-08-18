@@ -20,9 +20,14 @@ if [[ ! -d "${POSEBUSTERS_BOLTZ2_DIR}" && -d "${ANALYSIS_ROOT}/tables/posebuster
 fi
 
 # --- analysis-specific overrides ---
-# project.env.sh sets PYTHON=python3; analysis always needs the docking env unless overridden at submit time.
-if [[ -z "${PYTHON:-}" || "${PYTHON}" == "python3" ]]; then
-  PYTHON="/mnt/tank/scratch/okonovalova/miniconda3/envs/docking/bin/python"
+# Honor PYTHON if the user already set it (including python3). Otherwise use python3 on PATH.
+if [[ -z "${PYTHON:-}" ]]; then
+  PYTHON="$(command -v python3 || true)"
+fi
+if [[ -z "${PYTHON}" ]]; then
+  echo "ERROR: PYTHON is unset and python3 was not found on PATH." >&2
+  echo "Install the analysis environment and export PYTHON to that interpreter." >&2
+  return 1 2>/dev/null || exit 1
 fi
 export PYTHON
 

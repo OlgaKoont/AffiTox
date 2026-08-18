@@ -23,6 +23,24 @@ PRIMARY_METRICS: dict[str, str] = {
 # Methods excluded from PoseBusters (no 3D poses)
 POSEBUSTERS_EXCLUDE: set[str] = {"plapt"}
 
+# PoseBusters / scatter line colors: Pearson-r anchors on correlation heatmap scale.
+METHOD_COLOR_CORRELATION_ANCHORS: dict[str, float] = {
+    "boltz2": 1.0,
+    "dynamicbind": 0.5,
+    "gnina": -0.35,
+    "qvina": -1.0,
+    "plapt": 0.0,
+}
+
+# Fallback hex (r = 1, 0.5, -0.35, -1, 0); overridden dynamically in method_color().
+DEFAULT_METHOD_COLORS: dict[str, str] = {
+    "boltz2": "#E5885F",
+    "dynamicbind": "#FDBBAA",
+    "gnina": "#AFC6F2",
+    "qvina": "#6584E1",
+    "plapt": "#DEDAD7",
+}
+
 # PoseBusters CSV method keys (may differ from internal id)
 POSEBUSTERS_METHOD_KEYS: dict[str, str] = {
     "boltz2": "boltz2",

@@ -53,6 +53,7 @@ Interpretation scope:
 - Use correlation outputs for continuous affinity fidelity.
 - Use nEF outputs for early retrieval/deprioritization scenarios.
 - Use PoseBusters to assess geometric/chemical plausibility of predicted poses.
+- Cognate co-crystal RMSD (QVina2/GNINA) is an optional CASF-style geometric anchor (`src/analysis/cognate_rmsd_redocking.py`); it does not replace PoseBusters for the BindingDB panel.
 - Do not use a single metric as a stand-alone quality verdict.
 
 ## Reproducibility
@@ -71,6 +72,7 @@ Interpretation scope:
   - scoring/ranking correlations + CI/permutation;
   - screening EF/nEF summaries;
   - PoseBusters pass-rate summaries and per-check heatmaps;
+  - cognate RMSD redocking tables (`cognate_rmsd_*.csv`);
   - cross-target and per-target pairwise inferential tests.
 - Planned / evolving:
   - additional endpoint families can be added in `src/analysis/inferential.py`;
@@ -113,8 +115,8 @@ bash pipeline/postprocess/package_zenodo.sh   # creates toxdock-analysis-artifac
 
 | Zenodo link | What it contains | Notes |
 |---|---|---|
-| [10.5281/zenodo.20825057](https://doi.org/10.5281/zenodo.20825057) (part 1/6, includes BindingDB snapshot) | raw inputs + selected `results/` | draft/prereserved; publish before citing as a stable record |
-| [AffiTox Zenodo community](https://zenodo.org/communities/affitox/) | parts 2–6 docking zips | DOIs `10.5281/zenodo.20825059` … `20825067` |
+| [10.5281/zenodo.20825057](https://doi.org/10.5281/zenodo.20825057) (part 1/6, includes BindingDB snapshot) | raw inputs + selected `results/` | published / open |
+| [AffiTox Zenodo community](https://zenodo.org/communities/affitox/) | parts 2–6 docking zips | open DOIs `10.5281/zenodo.20825059` … `20825067` |
 
 ## Citation, License, Contribution
 

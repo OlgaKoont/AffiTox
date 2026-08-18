@@ -14,11 +14,13 @@ Python package import remains `docking_benchmark2` (historical). Display name is
 
 Sign flips are **fixed per metric**, not chosen per target (`SIGN_FLIP_METRICS` in `src/analysis/constants.py`). Screening uses `detect_score_direction` in `src/analysis/enrichment.py` (inactive set reverses ranking).
 
+Third-party software pins and remaining gaps: [docs/SOFTWARE_REGISTRY.md](SOFTWARE_REGISTRY.md).
+
 ## Confirmatory vs exploratory
 
 Confirmatory (manuscript): target-wise Pearson \(r\) and active \(\mathrm{nEF}_{10}\), paired Wilcoxon across 16 targets, Holm within each family.
 
-Exploratory: Spearman, Kendall, inactive \(\mathrm{nEF}_{10,\mathrm{low}}\), PoseBusters profiles, RMSE/MAE.
+Exploratory: Spearman, Kendall, inactive \(\mathrm{nEF}_{10,\mathrm{low}}\), PoseBusters profiles, cognate RMSD redocking anchor (QVina2/GNINA), RMSE/MAE.
 
 ## nEF
 
@@ -35,6 +37,13 @@ with \(T=\lceil f N\rceil\). If \(A\ge T\), nEF is precision at fraction \(f\); 
 2. At least \(N\) checks: cumulative `% ligands` with `passed >= N`.
 3. Mean per-check compliance: average fraction of checks passed (`mean_frac_pass`). **Not** “valid pose rate”.
 4. Per-check pass rates: one heatmap row per check.
+
+## Cognate RMSD redocking anchor
+
+CASF-style geometry check on drug-like co-crystal ligands only (`src/analysis/cognate_rmsd_redocking.py`):
+- Tables: `analysis/tables/cognate_rmsd_redocking.csv`, `cognate_rmsd_summary.csv`
+- Primary AffiTox docking power remains PoseBusters on the BindingDB panel
+- DynamicBind / Boltz-2 cognate redock deferred; PLAPT has no poses
 
 ## RMSE/MAE
 
