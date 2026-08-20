@@ -6,7 +6,8 @@ Code: [github.com/OlgaKoont/AffiTox](https://github.com/OlgaKoont/AffiTox). Hist
 
 ## Paper
 
-Konovalova et al., *Limited and Target-Dependent Transferability of Docking Methods to Toxicity-Linked Targets*, Journal of Chemical Information and Modeling (in review). See `CITATION.cff`.
+Target-Resolved Multi-Axis Benchmarking of Docking and Affinity Methods on Safety-Relevant Proteins
+Olga A. Konovalova, Anastasia Orlova, Alexander Telepov, Kuzma Khrabrov, Irina Karpushkina, Pavel Shestun, Artur Kadurin, Vladimir Vinogradov, Artem Tsypin, and Andrei Dmitrenko, Journal of Chemical Information and Modeling (in review). See `CITATION.cff`.
 
 ## What this repository can reproduce
 
