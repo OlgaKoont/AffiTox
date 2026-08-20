@@ -2,8 +2,6 @@
 
 AffiTox is a toxicity-oriented docking and binding-affinity benchmark: **16 BindingDB targets**, experimental \(K_i\), and **five** methods (QVina2, GNINA 1.3, DynamicBind, Boltz-2, PLAPT).
 
-Code: [github.com/OlgaKoont/AffiTox](https://github.com/OlgaKoont/AffiTox). Historical identifiers kept so existing scripts still run: Python package `docking_benchmark2`, env `TOXAFFINITY_ROOT`, CLI `toxdock-pipeline` (alias `affitox-pipeline`).
-
 ## Paper
 
 Target-Resolved Multi-Axis Benchmarking of Docking and Affinity Methods on Safety-Relevant Proteins
