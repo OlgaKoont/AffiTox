@@ -1,26 +1,37 @@
 # AffiTox methods and metrics
 
-Python package import remains `docking_benchmark2` (historical). Display name is AffiTox.
+Python package import remains `docking_benchmark2`. Display name is AffiTox.
 
-## Methods (not equivalent docking engines)
+## Four axes (keep separate)
 
-| Method | Class | Primary column (`src/analysis/constants.py`) | Score direction for correlation | PoseBusters |
-|--------|-------|-----------------------------------------------|---------------------------------|-------------|
-| QVina2 | classical docking | `qvina_affinity_bestpose` | lower-better → flipped | yes |
+| Axis | Estimand | Confirmatory in manuscript | Code |
+|------|----------|----------------------------|------|
+| Scoring | Pearson \(r\) of method score vs experimental \(\mathrm{p}K_i\) | yes (target-wise \(r\); panel summary = **median** of within-target \(r\)) | `src/analysis/correlations.py`, `plots/correlations.py` |
+| Ranking | Spearman \(\rho\), Kendall \(\tau\) | no (exploratory) | same |
+| Screening | \(\mathrm{nEF}_{f}\) at fractions 1/5/10% | yes for active \(\mathrm{nEF}_{10}\); inactive \(\mathrm{nEF}_{10,\mathrm{low}}\) is exploratory | `src/analysis/enrichment.py` |
+| Pose validity | PoseBusters dock-schema checks | exploratory profiles; not a substitute for scoring | `src/analysis/posebusters.py` |
+
+ROC-AUC and BEDROC20 are **computed** in `enrichment.py` and appear in inferential families. They are not the confirmatory screening estimand. Confirmatory screening is active \(\mathrm{nEF}_{10}\).
+
+Sign flips for Pearson/Spearman/Kendall are **fixed per metric** (`SIGN_FLIP_METRICS` in `src/analysis/constants.py`). Screening ranking direction uses `detect_score_direction` in `enrichment.py` (inactive set reverses ranking).
+
+## Methods (not equivalent engines)
+
+| Method | Class | Primary column | Score direction for correlation | PoseBusters |
+|--------|-------|----------------|---------------------------------|-------------|
+| QVina2 | classical docking | `qvina_affinity_bestpose` | lower-better \(\rightarrow\) flipped | yes |
 | GNINA 1.3 | hybrid docking + CNN | `gnina_cnn_affinity_bestpose` | higher-better | yes |
 | DynamicBind | learned pose generator | `dynamicbind_affinity_bestpose` | higher-better | yes |
-| Boltz-2 | learned pose + affinity | `boltz2_affinity_pred_value` | lower-better → flipped | yes |
-| PLAPT | sequence–SMILES affinity | `plapt_affinity` | higher-better | **no** |
+| Boltz-2 | learned pose + affinity | `boltz2_affinity_pred_value` | lower-better \(\rightarrow\) flipped | yes |
+| PLAPT | sequence-SMILES affinity | `plapt_affinity` | higher-better | **no** |
 
-Sign flips are **fixed per metric**, not chosen per target (`SIGN_FLIP_METRICS` in `src/analysis/constants.py`). Screening uses `detect_score_direction` in `src/analysis/enrichment.py` (inactive set reverses ranking).
+Third-party pins: [SOFTWARE_REGISTRY.md](SOFTWARE_REGISTRY.md).
 
-Third-party software pins and remaining gaps: [docs/SOFTWARE_REGISTRY.md](SOFTWARE_REGISTRY.md).
+## Inferential tests
 
-## Confirmatory vs exploratory
+Confirmatory: target-wise Pearson \(r\) and active \(\mathrm{nEF}_{10}\), paired Wilcoxon across 16 targets, Holm within each family (`src/analysis/inferential.py`).
 
-Confirmatory (manuscript): target-wise Pearson \(r\) and active \(\mathrm{nEF}_{10}\), paired Wilcoxon across 16 targets, Holm within each family.
-
-Exploratory: Spearman, Kendall, inactive \(\mathrm{nEF}_{10,\mathrm{low}}\), PoseBusters profiles, cognate RMSD redocking anchor (QVina2/GNINA), RMSE/MAE.
+Exploratory: Spearman, Kendall, inactive \(\mathrm{nEF}_{10,\mathrm{low}}\), PoseBusters profiles, cognate RMSD redocking (QVina2/GNINA), RMSE/MAE, ROC-AUC, BEDROC20.
 
 ## nEF
 
@@ -34,17 +45,19 @@ with \(T=\lceil f N\rceil\). If \(A\ge T\), nEF is precision at fraction \(f\); 
 ## PoseBusters summaries (do not mix)
 
 1. Pass-all: fraction of poses with all 20 checks True (`pass_rate_all`).
-2. At least \(N\) checks: cumulative `% ligands` with `passed >= N`.
-3. Mean per-check compliance: average fraction of checks passed (`mean_frac_pass`). **Not** “valid pose rate”.
+2. At least \(N\) checks: cumulative % ligands with `passed >= N`.
+3. Mean per-check compliance: average fraction of checks passed (`mean_frac_pass`). This is **not** a valid-pose rate.
 4. Per-check pass rates: one heatmap row per check.
 
 ## Cognate RMSD redocking anchor
 
-CASF-style geometry check on drug-like co-crystal ligands only (`src/analysis/cognate_rmsd_redocking.py`):
-- Tables: `analysis/tables/cognate_rmsd_redocking.csv`, `cognate_rmsd_summary.csv`
-- Primary AffiTox docking power remains PoseBusters on the BindingDB panel
+CASF-style geometry check on drug-like co-crystal ligands (`src/analysis/cognate_rmsd_redocking.py`):
+
+- Tables (when generated): `analysis/tables/cognate_rmsd_redocking.csv`, `cognate_rmsd_summary.csv`
+- **Not** invoked by `run_article_analysis.sh`
+- Primary AffiTox pose-validity endpoint remains PoseBusters on the BindingDB panel
 - DynamicBind / Boltz-2 cognate redock deferred; PLAPT has no poses
 
 ## RMSE/MAE
 
-OLS in-sample calibration of score → experimental pKi, then residual RMSE/MAE. Not raw-score error.
+OLS in-sample calibration of score \(\rightarrow\) experimental pKi, then residual RMSE/MAE. Not raw-score error.

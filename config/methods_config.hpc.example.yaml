@@ -1,10 +1,9 @@
-# Cluster-local AffiTox method paths (authors' HPC).
-# Do not use this file as the public default. Copy it, edit paths, then:
-#   export METHODS_CONFIG=/path/to/this/file
+# Cluster-style AffiTox method paths (template).
+# Do not use this file as the public default. Copy it, replace the placeholders
+# with paths on your machine, then:
+#   export METHODS_CONFIG=/path/to/your/copy.yaml
 #
-# Public checkout uses config/methods_config.yaml (placeholders + environment variables).
-
-# Methods configuration for docking benchmark 2.0
+# Public checkout uses config/methods_config.yaml (empty paths + environment variables).
 
 gnina:
   binary: "gnina"
@@ -15,28 +14,28 @@ gnina:
   # GNINA 1.3 still writes CNN pose/affinity columns to the log; the primary
   # benchmark score is gnina_cnn_affinity_bestpose (pose with max CNN pose score).
   use_cnn: false
-  docking_timeout: 600  # Timeout per ligand in seconds (10 minutes default). Set to null for no timeout.
-  conda_env: "gnina"  # Optional: conda environment name
+  docking_timeout: 600
+  conda_env: "gnina"
 
 qvina:
   binary: "qvina02"
   exhaustiveness: 8
   random_seed: 42
   num_modes: 10
-  energy_range: 10  # Energy range for detailed output (kcal/mol)
-  verbose_energy: true  # Enable detailed energy breakdown in logs
+  energy_range: 10
+  verbose_energy: true
   docking_timeout: null
-  conda_env: "docking"  # Optional: conda environment name
+  conda_env: "docking"
 
 plapt:
-  plapt_path: "/mnt/tank/scratch/okonovalova/WELP-PLAPT"
-  device: "cuda"  # "cuda" or "cpu"
+  plapt_path: "/path/to/WELP-PLAPT"
+  device: "cuda"
   batch_size: 16
-  docking_timeout: 300  # 5 minutes default
-  conda_env: "plapt"  # Optional: conda environment name
+  docking_timeout: 300
+  conda_env: "plapt"
 
 dynamicbind:
-  dynamicbind_path: "/mnt/tank/scratch/okonovalova/DynamicBind"
+  dynamicbind_path: "/path/to/DynamicBind"
   device: 0
   samples_per_complex: 10
   savings_per_complex: 10
@@ -45,17 +44,18 @@ dynamicbind:
   use_relax: false
   protein_dynamic: false
   random_seed: 42
-  python_env: "/mnt/tank/scratch/okonovalova/miniconda3/envs/dynamicbind/bin/python"
-  relax_python_env: "/mnt/tank/scratch/okonovalova/miniconda3/envs/relax/bin/python"
+  python_env: "/path/to/envs/dynamicbind/bin/python"
+  relax_python_env: "/path/to/envs/relax/bin/python"
   conda_env: "dynamicbind"
 
 interformer:
-  repo_path: "/mnt/tank/scratch/okonovalova/Interformer_bench"
+  # Optional adapter; not part of the published 16-target comparison.
+  repo_path: "/path/to/Interformer"
   conda_env: "interformer"
   gpus: 1
   omp_threads: 8
   pocket_radius: 10.0
-  energy_checkpoint: "/mnt/tank/scratch/okonovalova/Interformer_bench/checkpoints/v0.2_energy_model"
-  affinity_checkpoint: "/mnt/tank/scratch/okonovalova/Interformer_bench/checkpoints/v0.2_affinity_model/model*"
+  energy_checkpoint: "/path/to/Interformer/checkpoints/v0.2_energy_model"
+  affinity_checkpoint: "/path/to/Interformer/checkpoints/v0.2_affinity_model/model*"
   affinity_batch_size: 20
   num_output_poses: 20

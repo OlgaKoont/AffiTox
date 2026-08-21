@@ -16,7 +16,7 @@ documented in the repository. Third-party source data remain subject to their
 original licenses.
 
 Until the software and umbrella DOIs exist, cite the six open records
-`10.5281/zenodo.20825057`–`10.5281/zenodo.20825067` and
+`10.5281/zenodo.20825057` to `10.5281/zenodo.20825067` and
 https://github.com/OlgaKoont/AffiTox.
 
 Do not add `.zenodo.json` alongside `CITATION.cff`: if both exist, Zenodo ignores

@@ -1,69 +1,47 @@
-# AffiTox example (smoke-test pipeline)
+# AffiTox example (mini pipeline)
 
-Mini-dataset: **16 targets × 2 ligands** → full pipeline into `example/`.
+Intended layout: 16 targets \(\times\) 2 ligands, writing under `example/` rather than the production tree.
 
-## Layout
+## Incomplete on GitHub
+
+Git currently tracks:
+
+- `example/README.md` (this file)
+- `example/scripts/run_boltz2_example.sh`
+
+It does **not** track `example/run_example_pipeline.sh`, `example/run_example_pipeline.sbatch`, `config/project.env.example.sh`, `config/toxdock_config.example.yaml`, or the mini `example/input/` tree. Commands below describe the **local** driver when those files are present. They are not a verified public-clone recipe.
+
+For manuscript statistics, use [docs/INSTALL.md](../docs/INSTALL.md) (analysis from `analysis/tables/`).
+
+## Local driver stages (when `run_example_pipeline.sh` exists)
 
 ```text
-example/
-├── input/           mini CSV + protein PDB symlinks
-├── boltz/           Boltz-2 staging (CIF, MSA, mini ligands)
-├── processed/       prepared structures
-├── results/         docking outputs (all methods incl. Boltz after sync)
-├── analysis/        merged tables + figures
-├── logs/            SLURM logs
-├── run_example_pipeline.sh
-└── run_example_pipeline.sbatch
+prepare-inputs   2 ligands/target + protein links
+install          pip install -e . (skipped when SKIP_INSTALL=1)
+prepare          protein/ligand/box preparation
+dock             qvina, gnina, plapt, dynamicbind
+boltz-prepare    stage mini ligands + CIF + MSA
+boltz-run        boltz predict (GPU; skipped when BOLTZ_SKIP_RUN=1)
+boltz-sync       import into example/results/
+merge            merged tables + pValue
+posebusters      PoseBusters
+analysis         scoring, ranking, screening, pose aggregations, figures
+all              the above (install still skipped unless SKIP_INSTALL=0)
 ```
 
-Code and configs stay in repo root (`src/`, `config/`, `pipeline/`).
-
-## Quick start (local)
-
 ```bash
-cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-export PYTHON="$(command -v python)"
-
-# 1) Inputs only
-bash example/run_example_pipeline.sh prepare-inputs boltz-prepare
-
-# 2) Full pipeline (skip pip install)
+# only if the untracked driver is on disk
 SKIP_INSTALL=1 bash example/run_example_pipeline.sh all
 ```
 
-## SLURM (recommended for dock + analysis)
-
-```bash
-cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-
-# Dock + postprocess (prepare already done)
-sbatch --export=ALL,EXAMPLE_STAGES="dock boltz-sync merge posebusters analysis" \
-  example/run_example_pipeline.sbatch
-
-# Full run from scratch + Boltz GPU predict
-sbatch --export=ALL,BOLTZ_SKIP_RUN=0 \
-  example/run_example_pipeline.sbatch
-```
-
-## Boltz-2
-
-| Variable | Default | Meaning |
-|----------|---------|---------|
-| `BOLTZ_ROOT` | `.../boltz/data` | External Boltz workspace |
-| `BOLTZ_WRITE_DIR` | `${BOLTZ_ROOT}/results` | Where `boltz predict` writes |
-| `BOLTZ_SKIP_RUN` | `1` | Skip GPU predict in `all` / sbatch |
-| `BOLTZ_SYNC_MODE` | `symlink` | Import into `example/results/` |
-| `BOLTZ_USE_EXTERNAL=1` | off | Merge reads `boltz/data/results` directly |
-
-Manual Boltz on GPU node:
+Boltz GPU (tracked script, but it sources untracked `config/project.env.example.sh` and `config/boltz_example.env.sh`):
 
 ```bash
 bash example/scripts/run_boltz2_example.sh
-bash example/run_example_pipeline.sh boltz-sync merge posebusters analysis
 ```
 
-## Outputs
+## Outputs (local tree)
 
-- Merged tables: `example/analysis/tables/`
-- PoseBusters: `example/analysis/tables/posebuster/`
-- Figures: `example/analysis/figures/`
+- `example/analysis/tables/`
+- `example/analysis/tables/posebuster/`
+- `example/analysis/figures/`

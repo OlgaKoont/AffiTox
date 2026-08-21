@@ -3,9 +3,9 @@
 Analysis-level reproduction from deposited tables does **not** require these binaries.
 Full docking does. The table below mixes three evidence sources:
 
-1. **Adapter / YAML** — what AffiTox *intends* to call (`src/docking_benchmark2/docking/`, `config/methods_config.yaml`).
-2. **Published logs** — what a deposited run actually printed (local `results/` mirrors Zenodo raw parts).
-3. **Current cluster checkout** — git HEAD / `gnina --version` / conda *today*. This can drift after the paper run.
+1. **Adapter / YAML**: what AffiTox *intends* to call (`src/docking_benchmark2/docking/`, `config/methods_config.yaml`).
+2. **Published logs**: what a deposited run actually printed (local `results/` mirrors Zenodo raw parts).
+3. **Current cluster checkout**: git HEAD / `gnina --version` / conda *today*. This can drift after the paper run.
 
 Do not treat (3) as the paper pin unless it matches (2).
 
@@ -15,8 +15,8 @@ Set install locations with `PLAPT_PATH`, `DYNAMICBIND_PATH`, `BOLTZ_ROOT`, `GNIN
 
 | Method | Recovered from published logs / deposited CSVs | Current cluster snapshot (may have drifted) | Still open |
 |--------|-------------------------------------------------|---------------------------------------------|------------|
-| QVina2 | Log banner = Quick Vina 2 (Alhossary 2015). Example `4f65/ligand_1.log`: 9 modes, exhaustiveness described as “low”, **printed seed is not 42**. Logs do **not** store the argv. | `qvina02` is **not** in conda env `docking` (that env has AutoDock Vina **1.2.6**). A `qvina02` ELF exists at `freedpp/freedpp/env/qvina02` (BuildID `ce2229e9…`). | Confirm which `qvina02` binary wrote the BindingDB logs; QVina2 does not print a version string. |
-| GNINA 1.3 | Log header **`gnina v1.3 master:97fa6bc+` Built Oct 3 2024**. Full argv with `--no_gpu`, no `--cnn`. | Same binary `/mnt/tank/scratch/okonovalova/gnina/gnina` (needs `libcudart` from env `gnina`). Default `--cnn_scoring=rescore`. | Named CNN weights are the GNINA 1.3 built-in default (not passed on the CLI). |
+| QVina2 | Log banner = Quick Vina 2 (Alhossary 2015). Example `4f65/ligand_1.log`: 9 modes, exhaustiveness described as "low", **printed seed is not 42**. Logs do **not** store the argv. | `qvina02` is **not** in conda env `docking` (that env has AutoDock Vina **1.2.6**). | Confirm which `qvina02` binary wrote the BindingDB logs; QVina2 does not print a version string. |
+| GNINA 1.3 | Log header **`gnina v1.3 master:97fa6bc+` Built Oct 3 2024**. Full argv with `--no_gpu`, no `--cnn`. | Authors' cluster binary named `gnina` (needs `libcudart` from a GNINA env). Default `--cnn_scoring=rescore`. | Named CNN weights are the GNINA 1.3 built-in default (not passed on the CLI). |
 | DynamicBind | Log argv: `run_single_protein_inference.py`, `--inference_steps 20 --seed 42 --no_relax`. **`--samples_per_complex 5 --savings_per_complex 1`** (not 10). No `--rigid_protein` in the logged command. CWD = DynamicBind checkout. | git `abdcd83` (`v1.0-6-gabdcd83`), origin `luwei0917/DynamicBind`. Checkpoints in `workdir/big_score_model_sanyueqi_with_time/`. | YAML in the repo currently lists `samples_per_complex: 10`; **logs are the paper run**. |
 | Boltz-2 | Run tag `boltz2_s80_d10_seed42` / `boltz2_s80_d10_seed42_aff_s80_d1`. SLURM script: `--model boltz2 --seed 42 --sampling_steps 80 --diffusion_samples 10 --sampling_steps_affinity 80 --diffusion_samples_affinity 1 --affinity_mw_correction`. YAML `version: 1` with protein MSA + ligand SMILES + CIF template + affinity binder. | Package **boltz 2.2.0**, git `ac33fe0` (`v2.2.0-18-gac33fe0`). Weights `~/.boltz/boltz2_conf.ckpt` and `boltz2_aff.ckpt`. | Confirm those `.ckpt` files were not overwritten after the run. |
 | PLAPT | Per-ligand JSON with `affinity` / `affinity_uM` (no version field). Adapter loads `WELP-PLAPT/plapt.py` + `models/affinity_predictor.onnx`. | git `ebc6391` (`trrt-good/WELP-PLAPT`). ONNX MD5 `4a340ab3a3179417ce41f3f44328ee38`. | JSON does not record the git commit. |
@@ -24,7 +24,7 @@ Set install locations with `PLAPT_PATH`, `DYNAMICBIND_PATH`, `BOLTZ_ROOT`, `GNIN
 
 ---
 
-## QVina2 — example log (no argv)
+## QVina2: example log (no argv)
 
 Source: `results/4f65/docking/qvina/ligand_1.log` (same files ship in Zenodo raw `results_4f65.zip`).
 
@@ -55,14 +55,14 @@ qvina02 --receptor <protein.pdbqt> --ligand <ligand.pdbqt>
 
 ---
 
-## GNINA 1.3 — example command line (authoritative)
+## GNINA 1.3: example command line (authoritative)
 
 Source: `results/4f65/docking/gnina/ligand_1.log`.
 
 ```text
 gnina v1.3 master:97fa6bc+   Built Oct  3 2024.
 gnina is based on smina and AutoDock Vina.
-Commandline: /mnt/tank/scratch/okonovalova/gnina/gnina
+Commandline: gnina
   --receptor .../proteins/4f65.pdbqt
   --ligand   .../ligands/4f65/FGFR1_Ki_WT_ChEMBL_134_nodubl/ligand_1.pdbqt
   --out      .../gnina/ligand_1_out.pdbqt
@@ -80,14 +80,14 @@ No `--cnn` flag: GNINA 1.3 still writes CNN pose/affinity columns (default `cnn_
 
 ---
 
-## DynamicBind — example command line (authoritative)
+## DynamicBind: example command line (authoritative)
 
 Source: `results/4f65/docking/dynamicbind_new/FGFR1_Ki_WT_ChEMBL_134_nodubl/4f65_FGFR1_Ki_WT_ChEMBL_134_nodubl_dynamicbind.log`  
 (same pattern for `1g5m` / BCL2).
 
 ```text
 Command: .../envs/dynamicbind/bin/python
-  /mnt/tank/scratch/okonovalova/DynamicBind/run_single_protein_inference.py
+  <DynamicBind_checkout>/run_single_protein_inference.py
   <protein.pdb> <ligands.csv>
   --header 4f65_FGFR1_Ki_WT_ChEMBL_134_nodubl
   --results <dataset_dir>
@@ -100,7 +100,7 @@ Command: .../envs/dynamicbind/bin/python
   --relax_python .../envs/relax/bin/python
   --num_workers 20
   --no_relax
-Working directory: /mnt/tank/scratch/okonovalova/DynamicBind
+Working directory: <DynamicBind_checkout>
 ```
 
 Checkpoints expected under that checkout:
@@ -115,7 +115,7 @@ MD5 on the current cluster copies: `24eea910a7cf815b3d93c69010fc2782` and `f304e
 
 ---
 
-## Boltz-2 — example YAML + CLI
+## Boltz-2: example YAML + CLI
 
 Production tree: `boltz/data/results/4f65/docking/boltz2_s80_d10_seed42/`  
 (also mirrored under AffiTox `results/4f65/docking/boltz2_s80_d10_seed42_aff_s80_d1/`).
@@ -128,12 +128,12 @@ sequences:
   - protein:
       id: A
       sequence: ELPEDPRWELPRDRLVLGKPLGEGAFGQVVLAEAIGL...
-      msa: /mnt/tank/scratch/okonovalova/boltz/data/msa_cache/precomputed/a3m/4f65_chainA.a3m
+      msa: <msa_cache>/precomputed/a3m/4f65_chainA.a3m
   - ligand:
       id: "134"
       smiles: 'Cc1ccc(OCCNc2nc(Nc3cc(C)[nH]n3)cc(C)c2C#N)cn1'
 templates:
-  - cif: /mnt/tank/scratch/okonovalova/boltz/data/input/proteins/4f65.cif
+  - cif: <boltz_input>/proteins/4f65.cif
     chain_id: A
 properties:
   - affinity:
@@ -161,7 +161,7 @@ Package on this cluster today: `boltz==2.2.0`. Weights: `~/.boltz/boltz2_conf.ck
 
 ---
 
-## PLAPT — example output record
+## PLAPT: example output record
 
 Source: `results/4f65/docking/plapt/FGFR1_Ki_WT_ChEMBL_134_nodubl/ligand_100.json`.
 
@@ -180,7 +180,7 @@ No engine version in the JSON. Adapter identity: WELP-PLAPT `plapt.py` + `models
 
 ---
 
-## PoseBusters — deposited CSV schema (no version field)
+## PoseBusters: deposited CSV schema (no version field)
 
 Source: `analysis/tables/posebuster/posebusters_results_4f65_qvina.csv` (and gnina / dynamicbind_new / boltz2). These tables are in git and in the analysis bundle; they are **not** in the 202 GB raw Zenodo zips alone.
 
@@ -208,4 +208,4 @@ bust -t <posebusters_input_*.csv> --outfmt csv --output <posebusters_results_*.c
 
 Do not cite the live conda pin **0.4.6** as the manuscript version unless a run log with `bust --version` is recovered. Until then: “PoseBusters ≥0.3 dock schema, 20 checks; exact package version not stored in the result CSV.”
 
-Raw docking archives (Zenodo parts 1–6) are listed in `docs/zenodo/affitox_data_manifest.tsv`.
+Raw docking archives (Zenodo parts 1 to 6) are listed in `docs/zenodo/affitox_data_manifest.tsv`.

@@ -2,17 +2,23 @@
 
 Scientific plotting code is `src/analysis/plots/`. Do not treat root-level PNG copies as the generator.
 
+The overview graphic on the main README is [`docs/assets/affitox_overview.svg`](assets/affitox_overview.svg). It is a static schematic (dataset, methods, analysis axes). It is **not** produced by `run_article_analysis.sh`.
+
 | Artifact | Generator | Source table | Notes |
 |----------|-----------|--------------|-------|
-| `analysis/figures/enrichment/figures/summary_nEF{1,5,10}_combined.{png,svg}` | `plots/enrichment.py` `plot_nef_violins` | `tables/enrichment/ef_summary_all_proteins.csv` | Canonical nEF violins |
-| `nEF10.svg` | `scripts/plot_nef10_svg.py` | same CSV | Standalone SVG; layout mirrors enrichment.py |
+| `analysis/figures/enrichment/figures/summary_nEF{1,5,10}_combined.{png,svg}` | `plots/enrichment.py` `plot_nef_violins` | `tables/enrichment/ef_summary_all_proteins.csv` | Screening violins |
+| `nEF10.svg` | `scripts/plot_nef10_svg.py` (local/untracked in git at documentation time) | same CSV | Standalone SVG; layout mirrors enrichment.py |
 | `nEF10.png` / `nef_10.png` | manuscript copies | same metrics | May differ in DPI/crop from pipeline PNG |
-| `analysis/figures/correlations/heatmaps/heatmap_pearson_r.{png,svg}` | `plots/correlations.py` | `tables/correlations/summary_all_proteins.csv` | Confirmatory scoring |
-| `heatmap_spearman_rho`, `heatmap_kendall_tau`, `heatmap_correlations_combined` | same | same | Exploratory ranking |
+| `analysis/figures/correlations/heatmaps/heatmap_pearson_r.{png,svg}` | `plots/correlations.py` | `tables/correlations/summary_all_proteins.csv` | Confirmatory **scoring** |
+| `heatmap_pearson_r_with_baselines` / `manuscript/pearson_heatmap_with_property_baselines.{png,svg}` | same (+ `property_baselines.py`) | `property_null_baselines.csv` + summary | Extra rows: HAC, MW, cLogP, permutation floor; summary = **Median** (not pooled) |
+| `analysis/figures/correlations/pki_range/boltz2_pearson_r_vs_pki_sd.*` | `plots/correlations.py` `plot_r_vs_pki_spread` | `pki_range_by_target.csv` | r vs pKi SD |
+| `pearson_r_vs_pki_spread.*` | same | same | All methods vs SD/IQR |
+| `tables/correlations/median_vs_pooled_summary.csv` | `plots/correlations.py` | (derived) | Median vs pooled estimands |
+| `heatmap_spearman_rho`, `heatmap_kendall_tau`, `heatmap_correlations_combined` | same | same | Exploratory **ranking** |
 | `analysis/figures/correlations/scatter/scatter_<pdb>.{png,svg}` | `plots/scatter.py` | merged CSVs | Per-target pKi vs score |
-| `analysis/figures/posebusters/pass_count_at_least_with_all_tests.{png,svg}` | `plots/posebusters.py` `plot_posebusters_at_least_all_tests_combined` | PoseBusters CSVs + pass-rate tables | Panel A: ≥N checks; B: mean per-check (not pass-all) |
+| `analysis/figures/posebusters/pass_count_at_least_with_all_tests.{png,svg}` | `plots/posebusters.py` `plot_posebusters_at_least_all_tests_combined` | PoseBusters CSVs + pass-rate tables | Panel A: \(\ge N\) checks; B: mean per-check (not pass-all) |
 | `pass_count_at_least_with_all_tests_var2` | same module, `*_var2` | same | Layout variant |
-| `analysis/figures/posebusters/heatmaps/heatmap_posebusters_combined` | `plot_posebusters_combined` | `pass_rates_by_target_method.csv` + per-check rates | pass-all / ≥90% / mean |
+| `analysis/figures/posebusters/heatmaps/heatmap_posebusters_combined` | `plot_posebusters_combined` | `pass_rates_by_target_method.csv` + per-check rates | pass-all / \(\ge\)90% / mean |
 | `heatmap_pass_rate_all`, `_90pct`, `_50pct` | `plot_posebusters_summary` | `pass_rates_by_target_method.csv` | Strict vs relaxed |
 | `heatmap_checks_{boltz2,dynamicbind,gnina,qvina}` | `plot_posebusters_per_check` | `pass_rates_by_check_target_method.csv` | PLAPT omitted |
 | `analysis/figures/inferential/heatmap_wilcoxon_*` | `plots/inferential.py` | `tables/inferential/` | Holm families |
@@ -22,11 +28,17 @@ Scientific plotting code is `src/analysis/plots/`. Do not treat root-level PNG c
 Regenerate analysis figures:
 
 ```bash
-bash pipeline/postprocess/run_article_analysis.sh
+bash pipeline/postprocess/run_article_analysis.sh   # writes analysis/figures/ from analysis/tables/
 ```
 
-SI PNG flatten:
+Standalone nEF10 SVG: `scripts/plot_nef10_svg.py` exists in some working trees but was **not** in `git ls-files` at documentation time. Canonical nEF figures come from `run_article_analysis.sh`.
+
+## Incomplete: SI PNG flatten
+
+`analysis/README.md` previously documented:
 
 ```bash
 bash manuscript/supplementary/build_si.sh
 ```
+
+`manuscript/` is in `.gitignore`. That command is **not** available in a public clone.

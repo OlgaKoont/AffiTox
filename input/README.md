@@ -1,105 +1,31 @@
-# AffiTox Input Data
+# AffiTox input data
 
-This directory contains the source input assets for the AffiTox benchmark pipeline.  
-It is intended for users who want to run preparation and docking stages from raw structures and curated ligand tables.  
-In this repository, the canonical input contract is: protein structures in `input/proteins`, per-target ligand/activity tables in `input/ligands_nodubl`, and upstream raw BindingDB dumps in `input/bindingdb`.  
-The active benchmark panel used downstream is the curated 16-target set from `config/project.env.sh` (`TARGETS`).  
-`input/bindingdb` is retained for provenance and regeneration workflows; routine benchmarking reads from curated `ligands_nodubl` files.
+Canonical inputs for prepare/dock:
 
-## Repository layout
+- `input/proteins/<pdb>.pdb` or `.cif`
+- `input/ligands_nodubl/*_nodubl.csv`
 
-```text
-input/
-├── proteins/                 raw target structures (.pdb/.cif)
-├── ligands_nodubl/           curated per-target ligand/activity tables
-│   ├── *_nodubl.csv
-│   ├── *_nodubl_grouped.json
-│   └── duplicates_report.json
-└── bindingdb/                upstream raw BindingDB TSV exports
-```
+Upstream BindingDB dumps in `input/bindingdb/` are provenance only and are gitignored. There is no curation CLI in `src/`. Rules: [docs/DATA_DICTIONARY.md](../docs/DATA_DICTIONARY.md).
 
-## Minimal Runnable Example
-
-From repository root:
+Panel PDB IDs: `TARGETS` in `config/project.env.sh`. Extra structures may sit in `proteins/`; only selected targets are consumed when pairing is configured.
 
 ```bash
 source config/project.env.sh
-bash run_pipeline.sh prepare
+bash run_pipeline.sh prepare   # incomplete unless interaction JSON is wired; see docs/PIPELINE.md
 ```
 
-Expected inputs used by this stage:
-- proteins: `input/proteins/<pdb>.pdb` or `input/proteins/<pdb>.cif`
-- ligands: `input/ligands_nodubl/*_nodubl.csv`
+Paths in `config/toxdock_config.yaml`: `protein_dir: input/proteins`, `ligand_dir: input/ligands_nodubl`.
 
-Main output location:
-- prepared assets: `processed/`
+| Path / field | Meaning |
+|--------------|---------|
+| `proteins/<pdb>.pdb` or `.cif` | target structure |
+| `ligands_nodubl/*_nodubl.csv` `canonical_smiles` | RDKit canonical SMILES |
+| `standard_type` | endpoint (`Ki`) |
+| `standard_value` | \(K_i\) nM |
+| `pchembl_value` | p-scale potency when present |
+| `*_nodubl_grouped.json` | grouped metadata |
+| `duplicates_report.json` | removed replicate IDs |
 
-Check config resolving these paths:
+The 16 panel CSVs currently contain 11,180 data rows. The manuscript reports 10,497 \(K_i\) records. Do not equate the two without an explicit filter.
 
-```bash
-python -c "import yaml;print(yaml.safe_load(open('config/toxdock_config.yaml'))['protein_dir']);print(yaml.safe_load(open('config/toxdock_config.yaml'))['ligand_dir'])"
-```
-
-## Input Contract
-
-| Path / field | Meaning | Units / scale | Used by |
-|---|---|---|---|
-| `proteins/<pdb>.pdb` or `proteins/<pdb>.cif` | target 3D structure | structural coordinates | `prepare` stage |
-| `ligands_nodubl/*_nodubl.csv` + `canonical_smiles` | ligand chemical structure | SMILES string | ligand prep and docking |
-| `ligands_nodubl/*_nodubl.csv` + `standard_type` | assay endpoint label (`Ki`, `IC50`, etc.) | categorical | filtering/traceability |
-| `ligands_nodubl/*_nodubl.csv` + `standard_value` | reported activity value | typically nM in source | activity normalization |
-| `ligands_nodubl/*_nodubl.csv` + `pchembl_value` | transformed potency (`-log10(M)`) | p-scale | ranking/scoring reference |
-| `ligands_nodubl/*_nodubl_grouped.json` | grouped ligands by activity bins | grouped records | reproducible grouping metadata |
-| `ligands_nodubl/duplicates_report.json` | removed duplicate summary | counts + IDs | curation QC |
-| `bindingdb/*.tsv` | raw upstream BindingDB exports | source table | provenance only |
-
-Interpretation scope:
-- `ligands_nodubl` is the benchmark-ready curation layer and should be used for production runs.
-- `bindingdb` is not benchmark-ready without additional filtering/curation.
-- Filename prefix (target name) is metadata; canonical target selection is controlled by `TARGETS`.
-
-## Reproducibility
-
-- Canonical path mapping is defined in `config/toxdock_config.yaml`:
-  - `protein_dir: input/proteins`
-  - `ligand_dir: input/ligands_nodubl`
-- Canonical target panel is defined in `config/project.env.sh` (`TARGETS`).
-- `random_state: 42` is set in `config/toxdock_config.yaml` for deterministic sampling where applicable.
-- Mixed file presence is allowed in `proteins/` (panel targets + extra structures); only selected `TARGETS` are consumed in standard runs.
-
-## Evaluation Status
-
-- Implemented now:
-  - benchmark-ready protein structures and curated ligand tables are present;
-  - duplicate-removed ligand datasets and grouped JSON descriptors are present;
-  - raw BindingDB dumps are retained for provenance.
-- Planned / evolving:
-  - optional extension of curated target set beyond current 16-target panel;
-  - additional curation reports may be added if preprocessing rules evolve.
-
-## Zenodo Artifacts
-
-| Zenodo link | What it contains | Notes |
-|---|---|---|
-| [10.5281/zenodo.20825057](https://doi.org/10.5281/zenodo.20825057) | BindingDB snapshot + part of raw docking | published / open |
-| [docs/DATA_DICTIONARY.md](../docs/DATA_DICTIONARY.md) | curated `ligands_nodubl` schema | use this for column definitions |
-
-## Citation, License, Contribution
-
-### Citation
-
-If you reuse these input assets or curation conventions, cite:
-- BindingDB data source,
-- ChEMBL source where applicable in curated files,
-- benchmark manuscript (when DOI is finalized).
-
-### License
-
-Follow the repository-level license and the original terms of third-party datasets (BindingDB/ChEMBL).  
-When redistributing subsets, preserve attribution and source identifiers.
-
-### Contribution
-
-- Keep `input/` changes traceable (what changed, why, and source).
-- Do not overwrite curated files without updating curation metadata/report artifacts.
-- When adding new targets, update both `input/` contents and path/target config in `config/`.
+Raw docking archives: [10.5281/zenodo.20825057](https://doi.org/10.5281/zenodo.20825057) (part 1 includes a BindingDB snapshot). License: MIT for code; BindingDB/ChEMBL/PDB terms for source records (`NOTICE`).

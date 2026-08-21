@@ -1,8 +1,8 @@
-# GitHub ↔ Zenodo software release (do this after CI is green)
+# GitHub to Zenodo software release (do this after CI is green)
 
-Do **not** publish GitHub `v1.0.0` until `analysis/config/defaults.sh` no longer
-hard-codes a cluster Python, `DEFAULT_METHOD_COLORS` imports succeed, and CI runs
-the analysis smoke test.
+Do **not** publish GitHub `v1.0.0` until Actions is green, including the analysis
+smoke test. `analysis/config/defaults.sh` honors `PYTHON` (no cluster interpreter
+hard-coded). `DEFAULT_METHOD_COLORS` lives in `src/analysis/constants.py`.
 
 ## 1. Release commit (on a clean, reviewed diff)
 
@@ -31,7 +31,7 @@ Keep `CITATION.cff`; do not add `.zenodo.json`.
 
 ## 3. Draft then publish GitHub release
 
-Tag: `v1.0.0` on `main`. Title: `AffiTox v1.0.0 — JCIM reproducibility release`.
+Tag: `v1.0.0` on `main`. Title: `AffiTox v1.0.0 JCIM reproducibility release`.
 
 Suggested notes:
 
@@ -52,7 +52,7 @@ Reproducibility release accompanying the AffiTox JCIM manuscript.
 ### Raw docking outputs
 
 Raw method outputs are deposited as six open Zenodo datasets:
-10.5281/zenodo.20825057–10.5281/zenodo.20825067.
+10.5281/zenodo.20825057 to 10.5281/zenodo.20825067.
 
 ### Scope
 
