@@ -70,3 +70,22 @@ def test_sign_flip_qvina_not_gnina_cnn():
 
 def test_plapt_excluded_from_posebusters():
     assert POSEBUSTERS_EXCLUDE == {"plapt"}
+
+
+def test_posebusters_pairwise_without_count_columns():
+    from analysis.inferential import run_posebusters_pairwise_tests
+
+    summary = pd.DataFrame(
+        {
+            "target": ["1g5m", "1g5m"],
+            "method_id": ["gnina", "qvina"],
+            "method_label": ["GNINA 1.3", "QVina2"],
+            "n_poses": [10, 10],
+            "pass_rate_all": [0.5, 0.4],
+            "pass_rate_90pct": [0.8, 0.7],
+            "pass_rate_50pct": [0.9, 0.85],
+        }
+    )
+    result = run_posebusters_pairwise_tests(summary)
+    assert not result.empty
+    assert result["p_raw"].notna().any()

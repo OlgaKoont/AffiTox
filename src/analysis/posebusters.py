@@ -58,17 +58,24 @@ def run_posebusters(cfg: AnalysisConfig) -> tuple[pd.DataFrame, pd.DataFrame]:
 
             bool_df = pd.DataFrame({c: _to_bool(df[c]) for c in bool_cols})
             frac_pass = bool_df.mean(axis=1)
+            n_poses = len(bool_df)
+            n_pass_all = int((frac_pass >= 1.0).sum())
+            n_pass_90pct = int((frac_pass >= 0.90).sum())
+            n_pass_50pct = int((frac_pass >= 0.50).sum())
 
             summary_rows.append(
                 {
                     "target": target.lower(),
                     "method_id": method_id,
                     "method_label": cfg.method_label(method_id),
-                    "n_poses": len(bool_df),
+                    "n_poses": n_poses,
                     "n_checks": len(bool_cols),
-                    "pass_rate_all": float((frac_pass >= 1.0).mean()),
-                    "pass_rate_90pct": float((frac_pass >= 0.90).mean()),
-                    "pass_rate_50pct": float((frac_pass >= 0.50).mean()),
+                    "n_pass_all": n_pass_all,
+                    "n_pass_90pct": n_pass_90pct,
+                    "n_pass_50pct": n_pass_50pct,
+                    "pass_rate_all": float(n_pass_all / n_poses) if n_poses else float("nan"),
+                    "pass_rate_90pct": float(n_pass_90pct / n_poses) if n_poses else float("nan"),
+                    "pass_rate_50pct": float(n_pass_50pct / n_poses) if n_poses else float("nan"),
                     "mean_frac_pass": float(frac_pass.mean()),
                 }
             )

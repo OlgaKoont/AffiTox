@@ -632,6 +632,22 @@ def _append_friedman(rows: list[dict], family: str, wide: pd.DataFrame) -> None:
     })
 
 
+def _ensure_posebusters_pass_counts(summary: pd.DataFrame) -> pd.DataFrame:
+    """Integer pass counts for Fisher tests; derive from rates if a summary omits them."""
+    out = summary.copy()
+    for rate_col, count_col in (
+        ("pass_rate_all", "n_pass_all"),
+        ("pass_rate_90pct", "n_pass_90pct"),
+        ("pass_rate_50pct", "n_pass_50pct"),
+    ):
+        if count_col in out.columns:
+            continue
+        if rate_col not in out.columns or "n_poses" not in out.columns:
+            continue
+        out[count_col] = (pd.to_numeric(out[rate_col], errors="coerce") * pd.to_numeric(out["n_poses"], errors="coerce")).round()
+    return out
+
+
 def run_posebusters_pairwise_tests(summary: pd.DataFrame) -> pd.DataFrame:
     rows: list[dict] = []
     endpoints = [
@@ -639,16 +655,15 @@ def run_posebusters_pairwise_tests(summary: pd.DataFrame) -> pd.DataFrame:
         ("pass_rate_90pct", "n_pass_90pct"),
         ("pass_rate_50pct", "n_pass_50pct"),
     ]
-    pooled = (
-        summary.groupby("method_id", as_index=False)
-        .agg(
-            method_label=("method_label", "first"),
-            n_poses=("n_poses", "sum"),
-            n_pass_all=("n_pass_all", "sum"),
-            n_pass_90pct=("n_pass_90pct", "sum"),
-            n_pass_50pct=("n_pass_50pct", "sum"),
-        )
-    )
+    summary = _ensure_posebusters_pass_counts(summary)
+    agg_kwargs: dict = {
+        "method_label": ("method_label", "first"),
+        "n_poses": ("n_poses", "sum"),
+    }
+    for _, count_col in endpoints:
+        if count_col in summary.columns:
+            agg_kwargs[count_col] = (count_col, "sum")
+    pooled = summary.groupby("method_id", as_index=False).agg(**agg_kwargs)
     for scope, grouped in [("per-target", summary.groupby("target")), ("all-targets", [("all", pooled)])]:
         for target, sub in grouped:
             for endpoint, success_col in endpoints:
