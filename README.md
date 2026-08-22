@@ -65,8 +65,10 @@ Pins below were checked against a live conda env named `docking` (Python 3.10.18
 git clone https://github.com/OlgaKoont/AffiTox.git   # public code, inputs, and analysis tables
 cd AffiTox
 
-conda env create -f environment.yml   # env name: docking; pins are inside that file
-conda activate docking                 # Python 3.10.18 plus RDKit, OpenBabel, Vina, CUDA toolkit, …
+conda env create -f environment.yml   # env name: docking; includes CUDA toolkit + mgltools pins
+# If that solver fails (no NVIDIA, bioconda mgltools, compilers), use the CPU file instead:
+#   conda env create -f environment.cpu.yml
+conda activate docking                 # Python 3.10.18 plus RDKit, OpenBabel, Vina, …
 
 export TOXAFFINITY_ROOT="$(pwd)"      # path contract used by every wrapper
 export PYTHON="$(command -v python)"  # use this env’s interpreter, not a random python3
@@ -74,21 +76,30 @@ export PYTHON="$(command -v python)"  # use this env’s interpreter, not a rand
 bash run_pipeline.sh install          # pip install -e ".[analysis]" into the active env
 ```
 
-Exact conda/pip versions are in [`environment.yml`](environment.yml): `python=3.10.18`, `numpy=1.26.4`, `pandas=2.3.3`, `rdkit=2025.09.3`, `openbabel=3.1.1`, `vina=1.2.6`, `mgltools=1.5.7`, `cuda-toolkit=12.6.2`, and pip pins `meeko==0.7.1`, `scipy==1.15.3`, `seaborn==0.13.2`, `biopython==1.86`, `pyyaml==6.0.3`, `gemmi==0.7.3`. Package metadata: [`setup.py`](setup.py). More context: [`docs/INSTALL.md`](docs/INSTALL.md).
+Exact conda/pip versions are in [`environment.yml`](environment.yml): `python=3.10.18`, `numpy=1.26.4`, `pandas=2.3.3`, `rdkit=2025.09.3`, `openbabel=3.1.1`, `vina=1.2.6`, `mgltools=1.5.7`, `cuda-toolkit=12.6.2`, and pip pins `meeko==0.7.1`, `scipy==1.15.3`, `seaborn==0.13.2`, `biopython==1.86`, `pyyaml==6.0.3`, `gemmi==0.7.3`. [`environment.cpu.yml`](environment.cpu.yml) is the same Python/RDKit/OpenBabel/Vina/pip pins without NVIDIA toolkit, mgltools, or compilers. Prepare uses Meeko, not mgltools. GPU methods (Boltz-2, DynamicBind, PLAPT) have their own environments. Package metadata: [`setup.py`](setup.py). More context: [`docs/INSTALL.md`](docs/INSTALL.md).
 
-### 2. If `conda env create` is slow or CUDA is unwanted
+### 2. If `conda env create -f environment.yml` fails or CUDA is unwanted
 
-The same Python packages can be installed from [`setup.py`](setup.py) after you already have RDKit and OpenBabel on the machine (they are not pip-only in this project). This is **not** a substitute for `environment.yml` if you need the chemistry binaries (`obabel`, `vina`, Meeko).
+Use [`environment.cpu.yml`](environment.cpu.yml) (same env name `docking`). That file was **not** executed in this documentation pass; it is the portable subset of the live `docking` pins.
 
 ```bash
-conda create -n docking python=3.10.18 rdkit=2025.09.3 openbabel=3.1.1 vina=1.2.6 mgltools=1.5.7 -c conda-forge -c bioconda
+conda env create -f environment.cpu.yml
+conda activate docking
+export PYTHON="$(command -v python)"
+bash run_pipeline.sh install
+```
+
+A further reduced line (also **not** re-run here) if you already have RDKit and OpenBabel:
+
+```bash
+conda create -n docking python=3.10.18 rdkit=2025.09.3 openbabel=3.1.1 vina=1.2.6 -c conda-forge -c bioconda
 conda activate docking
 python -m pip install biopython==1.86 meeko==0.7.1 scipy==1.15.3 seaborn==0.13.2 pyyaml==6.0.3 gemmi==0.7.3
 export PYTHON="$(command -v python)"
 bash run_pipeline.sh install
 ```
 
-That reduced conda line was **not** executed in this session. Prefer variant 1 if you want the file-for-file match, including CUDA toolkit pins.
+Prefer `environment.yml` only when you want the file-for-file match with the HPC env, including CUDA toolkit pins.
 
 ### 3. Docking engines (required only to rerun prepare/dock)
 
@@ -119,10 +130,10 @@ Download extra archives only for the stage you will run.
 | Stage | Already in the clone | Download |
 |-------|----------------------|----------|
 | tests, `run_pipeline.sh analysis` | `analysis/tables/`, `analysis/figures/` | nothing |
-| `prepare` | `input/proteins/`, `input/ligands_nodubl/` | an interaction JSON (not in git; see prepare below) |
-| `dock` | `processed/` | nothing from Zenodo. Install the engine binaries in the table above. |
+| `prepare` | `input/proteins/`, `input/ligands_nodubl/`, `config/interaction_protein_ligand_16target.json` | nothing |
+| `dock` | `processed/` | nothing from Zenodo. Install the engine binaries in the table above. Docking stops with a list of missing tools if they are not on PATH. |
 | `merge` | ligand CSVs under `input/` | unpack `results_<pdb>.zip` into the repo root so `results/<pdb>/` exists |
-| `posebusters` | `processed/proteins/` | the same `results_<pdb>.zip` files, plus the `bust` CLI |
+| `posebusters` | `processed/proteins/`, deposited CSVs in `analysis/tables/posebuster/` | `results_<pdb>.zip` and `bust` only if you recompute pass rates. Without `bust` or `results/`, the wrapper keeps the deposited CSVs. |
 | BindingDB provenance only | not in git (`input/bindingdb/` is ignored) | `toxdock-input-raw.zip` from part 1 |
 
 Raw docking records (open, CC BY 4.0 on AffiTox organization; third-party records keep their own terms):
@@ -171,19 +182,19 @@ Details: [`pipeline/install/README.md`](pipeline/install/README.md), [`docs/INST
 
 ### prepare
 
-Builds one prepared receptor, ligand set, and docking box per target so QVina2, GNINA, DynamicBind, and PLAPT do not each clean the protein differently. Needs: `input/` from the clone. Prepared outputs are already in `processed/` if you skip this stage.
+Builds one prepared receptor, ligand set, and docking box per target so QVina2, GNINA, DynamicBind, and PLAPT do not each clean the protein differently. Needs: `input/` and [`config/interaction_protein_ligand_16target.json`](config/interaction_protein_ligand_16target.json) from the clone. Prepared outputs are already in `processed/` if you skip this stage.
 
 ```bash
 bash run_pipeline.sh prepare     # writes processed/
 ```
 
-The wrapper calls `python -m docking_benchmark2.cli.run_benchmark --stage preparation`. Pairing of PDB codes to ligand CSV names is read from an interaction JSON. Tracked [`config/toxdock_config.yaml`](config/toxdock_config.yaml) currently has `interaction_config_file: null`; if no JSON is found, preparation sees no pairs. Pass `--interaction-config` to the wrapper, or set that key in YAML, using the schema in `src/docking_benchmark2/utils/settings.py`.
+The wrapper calls `python -m docking_benchmark2.cli.run_benchmark --stage preparation`. Pairing of PDB codes to ligand CSV names is [`config/interaction_protein_ligand_16target.json`](config/interaction_protein_ligand_16target.json), set as `interaction_config_file` in [`config/toxdock_config.yaml`](config/toxdock_config.yaml). Pass `--interaction-config` to use another JSON with the same schema (`src/docking_benchmark2/utils/settings.py`).
 
 Details: [`pipeline/prepare/README.md`](pipeline/prepare/README.md), [`config/protein_settings_keep_cofactors_v2.yaml`](config/protein_settings_keep_cofactors_v2.yaml).
 
 ### dock
 
-Runs the methods listed in [`config/toxdock_config.yaml`](config/toxdock_config.yaml): QVina2, GNINA, PLAPT, DynamicBind. Writes logs, poses, and extracted metric CSVs under `results/`. Needs: `processed/` from the clone, plus the engine binaries. No Zenodo download.
+Runs the methods listed in [`config/toxdock_config.yaml`](config/toxdock_config.yaml): QVina2, GNINA, PLAPT, DynamicBind. Writes logs, poses, and extracted metric CSVs under `results/`. Needs: `processed/` from the clone, plus the engine binaries. No Zenodo download. If a listed engine is missing, this stage stops and prints what to install. Boltz-2 is not started here.
 
 ```bash
 bash run_pipeline.sh dock        # does not run Boltz-2
@@ -215,7 +226,7 @@ Details: [`pipeline/postprocess/README.md`](pipeline/postprocess/README.md). Scr
 
 ### posebusters
 
-Runs PoseBusters (`bust`) on predicted poses for QVina2, GNINA, and DynamicBind. PLAPT has no poses and is skipped. Boltz-2 is included only when `BOLTZ_RESULTS_DIR` is set. Needs: poses under `results/` (Zenodo zips or a local dock), `processed/proteins/` from the clone, and `bust` on `PATH`. Deposited PoseBusters CSVs are already in `analysis/tables/posebuster/`.
+Runs PoseBusters (`bust`) on predicted poses for QVina2, GNINA, and DynamicBind. PLAPT has no poses and is skipped. Boltz-2 is included only when `BOLTZ_RESULTS_DIR` is set. Needs: poses under `results/` and `bust` on `PATH` to recompute. If `bust` or `results/` is missing, the wrapper keeps the deposited CSVs in `analysis/tables/posebuster/` and exits 0.
 
 ```bash
 bash run_pipeline.sh posebusters
@@ -254,6 +265,6 @@ Details: [`analysis/README.md`](analysis/README.md), [`docs/METHODS.md`](docs/ME
 bash run_pipeline.sh all         # prepare, dock, merge, posebusters, analysis
 ```
 
-This skips `install` and still skips Boltz-2 inference. Needs: engine binaries and an interaction JSON for prepare. Do not download Zenodo `results_*.zip` unless you intend to skip dock and start at merge.
+This skips `install` and still skips Boltz-2 inference. Needs: engine binaries for dock. Prepare uses the tracked 16-target JSON. PoseBusters without `bust` keeps deposited CSVs. `all` will still stop at dock if QVina2, GNINA, PLAPT, or DynamicBind are not installed; use `bash run_pipeline.sh analysis` for manuscript tables.
 
 Licence: [MIT](LICENSE) for this repository’s source. BindingDB, ChEMBL, PDB records and third-party weights follow their own terms ([NOTICE](NOTICE)).

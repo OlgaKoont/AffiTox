@@ -4,7 +4,7 @@ Linux x86_64. Windows is not supported.
 
 There is no Docker image, lock file, or `requirements.txt`. Versions for the shared chemistry environment are [`environment.yml`](../environment.yml) (env name `docking`). The Python package is [`setup.py`](../setup.py) (import name `docking_benchmark2`).
 
-`environment.yml` does **not** install QVina2 (`qvina02`), GNINA, DynamicBind, Boltz-2, PLAPT, or PoseBusters.
+`environment.yml` does **not** install QVina2 (`qvina02`), GNINA, DynamicBind, Boltz-2, PLAPT, or PoseBusters. [`environment.cpu.yml`](../environment.cpu.yml) is the same chemistry stack without `cuda-toolkit` and `mgltools` (prepare uses Meeko).
 
 The first-page walkthrough is in the repository [README](../README.md). This page is the longer install note.
 
@@ -35,7 +35,9 @@ Checked against a live env named `docking` (not a fresh `conda env create` in th
 ```bash
 git clone https://github.com/OlgaKoont/AffiTox.git
 cd AffiTox
-conda env create -f environment.yml   # not re-run in this documentation pass
+conda env create -f environment.yml   # not re-run in this documentation pass; CUDA + mgltools pins
+# fallback without NVIDIA / mgltools:
+# conda env create -f environment.cpu.yml
 conda activate docking
 export TOXAFFINITY_ROOT="$(pwd)"
 export PYTHON="$(command -v python)"

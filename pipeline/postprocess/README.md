@@ -16,7 +16,7 @@ bash pipeline/postprocess/run_si_full.sh   # N_BOOTSTRAP=10000 N_PERMUTATION=100
 | Script | Input | Output |
 |--------|-------|--------|
 | `run_merge.sh` | `results/`, optional `BOLTZ_RESULTS_DIR` | `analysis/tables/merged_ligands_docking_<pdb>.csv` plus `pValue` |
-| `run_posebusters.sh` | poses in `results/`, `processed/proteins`; Boltz if `BOLTZ_RESULTS_DIR` set | `analysis/tables/posebuster/*.csv` (`bust` required) |
+| `run_posebusters.sh` | poses in `results/` plus `bust`, or deposited CSVs if those are missing | `analysis/tables/posebuster/*.csv` |
 | `run_article_analysis.sh` | merged CSVs + PoseBusters CSVs | correlations, enrichment, inferential tables, figures |
 | `run_si_full.sh` | same | same with forced 10k/10k |
 

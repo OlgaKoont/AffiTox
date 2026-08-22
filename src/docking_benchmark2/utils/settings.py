@@ -1,9 +1,13 @@
 """Settings loading utilities."""
 
 from pathlib import Path
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Dict, Any, List, Optional, Tuple, Union
 import json
+import os
 import yaml
+
+_REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+_DEFAULT_INTERACTION_JSON = _REPO_ROOT / "config" / "interaction_protein_ligand_16target.json"
 
 
 def _load_settings_file(path: Optional[Path]) -> Dict[str, Any]:
@@ -39,30 +43,48 @@ def load_box_settings(path: Optional[Path] = None) -> Dict[str, Any]:
     return _load_settings_file(path)
 
 
+def _resolve_interaction_path(path: Union[str, Path, None]) -> Path:
+    if path is None or str(path).strip() in {"", "null", "None"}:
+        return _DEFAULT_INTERACTION_JSON
+    resolved = Path(path).expanduser()
+    if resolved.is_absolute():
+        return resolved
+    candidates = []
+    env_root = os.environ.get("TOXAFFINITY_ROOT")
+    if env_root:
+        candidates.append(Path(env_root) / resolved)
+    candidates.append(Path.cwd() / resolved)
+    candidates.append(_REPO_ROOT / resolved)
+    for cand in candidates:
+        if cand.exists():
+            return cand.resolve()
+    return candidates[0].resolve()
+
+
 def load_interaction_config(path: Optional[Path] = None) -> Dict[str, List[str]]:
     """
     Load protein-ligand interaction configuration.
-    
+
     Expected format:
     {
-        "protein": ["8zyq", "1ere"],
-        "ligand": ["hERG_Ki_WT_curated", "ERalpha_ki_df"],
-        "ref_ligand": ["1II", "EST"],
+        "protein": ["1g5m", "2z5x"],
+        "ligand": ["BCL2_Ki_WT_ChEMBL_252_nodubl", "MAO-B_Ki_WT_ChEMBL_246_nodubl"],
+        "ref_ligand": ["", ""],
         "safe_chain": ["A", "A"]
     }
     """
-    if path is None:
-        package_root = Path(__file__).parent.parent.parent.parent
-        config_dir = package_root / "config"
-        path = config_dir / "interaction_protein_ligand.json"
-    
-    resolved = Path(path).expanduser()
+    resolved = _resolve_interaction_path(path)
     if not resolved.exists():
-        return {}
-    
+        raise FileNotFoundError(
+            f"Missing protein-ligand pairing file: {resolved}. "
+            "Public checkout uses config/interaction_protein_ligand_16target.json."
+        )
+
     with resolved.open("r", encoding="utf-8") as handle:
         data = json.load(handle) or {}
-    
+
+    if not isinstance(data, dict):
+        raise ValueError(f"Interaction config must be a JSON object: {resolved}")
     return data
 
 

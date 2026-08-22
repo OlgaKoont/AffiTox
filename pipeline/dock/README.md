@@ -17,4 +17,4 @@ bash pipeline/dock/run_docking.sh --methods gnina qvina
 
 Outputs: `results/<target>/docking/<method>/` and per-method metrics CSVs used by merge.
 
-Hyperparameters: `config/methods_config.yaml`. Log-recovered pins (which can disagree with YAML): [docs/SOFTWARE_REGISTRY.md](../../docs/SOFTWARE_REGISTRY.md). Empty `plapt_path` / `dynamicbind_path` fail unless `PLAPT_PATH` / `DYNAMICBIND_PATH` are set.
+Hyperparameters: `config/methods_config.yaml`. Log-recovered pins (which can disagree with YAML): [docs/SOFTWARE_REGISTRY.md](../../docs/SOFTWARE_REGISTRY.md). Empty `plapt_path` / `dynamicbind_path` fail the whole dock stage unless `PLAPT_PATH` / `DYNAMICBIND_PATH` are set. Missing `qvina02` or `gnina` also stop the stage (they are not in `environment.yml`). Boltz-2 is not started here.

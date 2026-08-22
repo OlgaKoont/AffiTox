@@ -48,13 +48,13 @@ input/proteins + input/ligands_nodubl
 
 **install.** Editable pip install only. [`pipeline/install/README.md`](../pipeline/install/README.md).
 
-**prepare.** Shared structures for all methods. Needs an interaction JSON that lists PDB codes and ligand CSV stems. Tracked `config/toxdock_config.yaml` has `interaction_config_file: null`. The loader defaults to `config/interaction_protein_ligand.json`. If that file is missing, pairing is empty. [`pipeline/prepare/README.md`](../pipeline/prepare/README.md).
+**prepare.** Shared structures for all methods. Pairing is [`config/interaction_protein_ligand_16target.json`](../config/interaction_protein_ligand_16target.json) via `interaction_config_file` in [`config/toxdock_config.yaml`](../config/toxdock_config.yaml). [`pipeline/prepare/README.md`](../pipeline/prepare/README.md).
 
-**dock.** Methods in `config/toxdock_config.yaml`: `qvina`, `gnina`, `plapt`, `dynamicbind`. Boltz-2 is not in that list. `METHODS` in `project.env.sh` is consumed by **analysis**, not by `run_docking.sh`. Subset engines with `--methods`. [`pipeline/dock/README.md`](../pipeline/dock/README.md).
+**dock.** Methods in `config/toxdock_config.yaml`: `qvina`, `gnina`, `plapt`, `dynamicbind`. Boltz-2 is not in that list. Missing binaries stop the stage with a list (no silent skip of the whole engine set). `METHODS` in `project.env.sh` is consumed by **analysis**, not by `run_docking.sh`. Subset engines with `--methods`. [`pipeline/dock/README.md`](../pipeline/dock/README.md).
 
 **merge.** `src/analysis/merge_ligands_docking_from_dir.py` then `add_pvalue_column.py`. Optional `--boltz-results-dir` / `BOLTZ_RESULTS_DIR`. DynamicBind subdirectory default: `dynamicbind_new`. [`pipeline/postprocess/README.md`](../pipeline/postprocess/README.md).
 
-**posebusters.** `prepare_and_run_posebusters.py`; Boltz helper only if `BOLTZ_RESULTS_DIR` is set. PLAPT excluded. Needs `bust`.
+**posebusters.** `prepare_and_run_posebusters.py`; Boltz helper only if `BOLTZ_RESULTS_DIR` is set. PLAPT excluded. Needs `bust` and `results/` to recompute. Without them, [`run_posebusters.sh`](../pipeline/postprocess/run_posebusters.sh) keeps deposited CSVs.
 
 **analysis.** [`analysis/config/defaults.sh`](../analysis/config/defaults.sh). Skip pieces with `RUN_FIGURES=0` and similar. SI: `bash pipeline/postprocess/run_si_full.sh`. [`analysis/README.md`](../analysis/README.md).
 

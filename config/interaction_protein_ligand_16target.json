@@ -1,0 +1,44 @@
+{
+  "protein": [
+    "1g5m",
+    "2z5x",
+    "3eyg",
+    "3jy9",
+    "3lxk",
+    "3mjg",
+    "4ase",
+    "4f65",
+    "4tz4",
+    "4zau",
+    "5jkv",
+    "5mo4",
+    "6gqj",
+    "6jok",
+    "7awe",
+    "7kk3"
+  ],
+  "ligand": [
+    "BCL2_Ki_WT_ChEMBL_252_nodubl",
+    "MAO-B_Ki_WT_ChEMBL_246_nodubl",
+    "JAK1_Ki_WT_ChEMBL_2255_nodubl",
+    "JAK2_Ki_WT_ChEMBL_2027_nodubl",
+    "JAK3_Ki_WT_ChEMBL_786_nodubl",
+    "PDGFRB_Ki_WT_ChEMBL_275_nodubl",
+    "VEGFR2_Ki_WT_ChEMBL_875_nodubl",
+    "FGFR1_Ki_WT_ChEMBL_134_nodubl",
+    "CRBN_Ki_WT_ChEMBL_127_nodubl",
+    "EGFR_Ki_WT_curated_251_nodubl",
+    "CYP19A1_Aromatase_Ki_WT_ChEMBL_548_nodubl",
+    "ABL1_BCR-ABL_Ki_WT_ChEMBL_693_nodubl",
+    "KIT_Ki_WT_curated_1298_nodubl",
+    "PDGFRA_Ki_WT_curated_250_nodubl",
+    "PSMB5_Ki_WT_ChEMBL_88_nodubl",
+    "PARP1_Ki_WT_ChEMBL_1075_nodubl"
+  ],
+  "ref_ligand": [
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+  ],
+  "safe_chain": [
+    "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A"
+  ]
+}

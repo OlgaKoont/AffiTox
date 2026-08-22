@@ -1,0 +1,30 @@
+name: docking
+channels:
+  - defaults
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.10.18
+  - numpy=1.26.4
+  - pandas=2.3.3
+  - matplotlib-base=3.10.8
+  - rdkit=2025.09.3
+  - openbabel=3.1.1
+  - vina=1.2.6
+  - openssl=3.6.0
+  - ca-certificates
+  - pip
+  - pip:
+      - biopython==1.86
+      - meeko==0.7.1
+      - plotly==6.5.0
+      - seaborn==0.13.2
+      - scipy==1.15.3
+      - pyyaml==6.0.3
+      - tqdm==4.67.1
+      - gemmi==0.7.3
+      - requests==2.32.5
+      - certifi==2025.11.12
+      - urllib3==2.5.0
+      - idna==3.11
+      - narwhals==2.14.0

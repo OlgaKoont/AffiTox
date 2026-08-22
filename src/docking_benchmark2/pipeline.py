@@ -2,13 +2,53 @@
 
 from pathlib import Path
 from typing import Dict, List, Optional
+import os
+import shutil
 
 from .config import load_config, load_methods_config
 from .docking import METHODS
 from .aggregation import aggregate_all_proteins
 # Lazy import analysis to avoid dependency issues in method-specific environments
 # from .analysis import calculate_protein_statistics, compare_methods, generate_protein_plots
-from .utils.settings import load_interaction_config, load_protein_settings, load_box_settings
+from .utils.settings import (
+    get_protein_ligand_pairs,
+    load_interaction_config,
+    load_protein_settings,
+    load_box_settings,
+)
+
+
+def _binary_available(binary: str) -> bool:
+    if not binary:
+        return False
+    path = Path(binary).expanduser()
+    if path.exists():
+        return True
+    return shutil.which(str(binary)) is not None
+
+
+def missing_dock_tools(methods: List[str], methods_config: Dict) -> List[str]:
+    """Human-readable list of docking engines that are not installed or not pointed at."""
+    missing: List[str] = []
+    for method in methods:
+        cfg = methods_config.get(method, {}) or {}
+        if method == "qvina":
+            binary = os.environ.get("QVINA_BIN") or cfg.get("binary", "qvina02")
+            if not _binary_available(str(binary)):
+                missing.append(f"qvina: binary '{binary}' not on PATH (QVina2 is not vina=1.2.6)")
+        elif method == "gnina":
+            binary = os.environ.get("GNINA_BIN") or cfg.get("binary", "gnina")
+            if not _binary_available(str(binary)):
+                missing.append(f"gnina: binary '{binary}' not on PATH (set GNINA_BIN)")
+        elif method == "plapt":
+            raw = os.environ.get("PLAPT_PATH") or cfg.get("plapt_path") or ""
+            if not str(raw).strip() or not Path(str(raw)).expanduser().exists():
+                missing.append("plapt: set PLAPT_PATH to a WELP-PLAPT checkout")
+        elif method == "dynamicbind":
+            raw = os.environ.get("DYNAMICBIND_PATH") or cfg.get("dynamicbind_path") or ""
+            if not str(raw).strip() or not Path(str(raw)).expanduser().exists():
+                missing.append("dynamicbind: set DYNAMICBIND_PATH to a DynamicBind checkout")
+    return missing
 
 
 def run_pipeline(
@@ -36,12 +76,28 @@ def run_pipeline(
     if methods_config is None:
         methods_config = load_methods_config()
     
-    # Setup directories
-    base_dir = Path(config['base_dir'])
-    protein_dir = Path(config['protein_dir'])
-    ligand_dir = Path(config['ligand_dir'])
-    processed_dir = base_dir / config.get('processed_dir', 'processed')
-    output_dir = base_dir / config.get('output_dir', 'results')
+    # Setup directories (resolve so subprocess chdir does not break relative paths)
+    _cwd = Path.cwd()
+    base_dir = Path(config["base_dir"])
+    if not base_dir.is_absolute():
+        base_dir = (_cwd / base_dir).resolve()
+    else:
+        base_dir = base_dir.resolve()
+
+    protein_dir = Path(config["protein_dir"])
+    if not protein_dir.is_absolute():
+        protein_dir = (_cwd / protein_dir).resolve()
+    else:
+        protein_dir = protein_dir.resolve()
+
+    ligand_dir = Path(config["ligand_dir"])
+    if not ligand_dir.is_absolute():
+        ligand_dir = (_cwd / ligand_dir).resolve()
+    else:
+        ligand_dir = ligand_dir.resolve()
+
+    processed_dir = (base_dir / config.get("processed_dir", "processed")).resolve()
+    output_dir = (base_dir / config.get("output_dir", "results")).resolve()
     
     # Create directories
     processed_dir.mkdir(parents=True, exist_ok=True)
@@ -55,7 +111,13 @@ def run_pipeline(
     box_settings = load_box_settings(config.get('box_settings_file'))
     labox_config = config.get('labox', {})
     interaction_config = load_interaction_config(config.get('interaction_config_file'))
-    
+    pairs = get_protein_ligand_pairs(interaction_config)
+    if not pairs:
+        raise RuntimeError(
+            "No protein-ligand pairs loaded. Set interaction_config_file to "
+            "config/interaction_protein_ligand_16target.json."
+        )
+
     print("=" * 80)
     print("DOCKING BENCHMARK PIPELINE 2.0")
     print("=" * 80)
@@ -64,6 +126,7 @@ def run_pipeline(
     print(f"Ligand directory: {ligand_dir}")
     print(f"Processed directory: {processed_dir}")
     print(f"Output directory: {output_dir}")
+    print(f"Protein-ligand pairs: {len(pairs)}")
     print("=" * 80)
     
     # Parse stage - can be comma-separated list or 'all'
@@ -162,6 +225,18 @@ def run_pipeline(
         print("\n" + "=" * 80)
         print("STAGE 2: DOCKING")
         print("=" * 80)
+
+        missing = missing_dock_tools(methods, methods_config)
+        if missing:
+            details = "\n".join(f"  - {item}" for item in missing)
+            raise RuntimeError(
+                "Docking engines are not installed or not configured:\n"
+                f"{details}\n"
+                "Install the binaries, copy config/methods_config.hpc.example.yaml, "
+                "or subset with: bash pipeline/dock/run_docking.sh --methods gnina qvina\n"
+                "Boltz-2 is not started by this stage. Manuscript tables do not need dock: "
+                "bash run_pipeline.sh analysis"
+            )
         
         for method in methods:
             if method not in METHODS:

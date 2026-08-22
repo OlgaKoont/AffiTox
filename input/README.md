@@ -11,7 +11,7 @@ Panel PDB IDs: `TARGETS` in `config/project.env.sh`. Extra structures may sit in
 
 ```bash
 source config/project.env.sh
-bash run_pipeline.sh prepare   # incomplete unless interaction JSON is wired; see docs/PIPELINE.md
+bash run_pipeline.sh prepare   # uses config/interaction_protein_ligand_16target.json
 ```
 
 Paths in `config/toxdock_config.yaml`: `protein_dir: input/proteins`, `ligand_dir: input/ligands_nodubl`.

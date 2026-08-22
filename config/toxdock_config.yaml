@@ -9,7 +9,7 @@ output_dir: "results"
 
 protein_settings_file: "config/protein_settings_keep_cofactors_v2.yaml"
 box_settings_file: null
-interaction_config_file: null
+interaction_config_file: "config/interaction_protein_ligand_16target.json"
 
 labox:
   method: "labox"

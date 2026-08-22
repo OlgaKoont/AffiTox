@@ -11,6 +11,6 @@ Calls `python -m docking_benchmark2.cli.run_benchmark --stage preparation` with 
 
 Expected outputs when protein-ligand pairing is configured: `processed/proteins/*.pdbqt`, `processed/ligands/<target>/<dataset>/*.pdbqt`, `processed/boxes/*.json`, `processed/plapt_sequences/*.txt`.
 
-**Incomplete without an interaction file.** Tracked `config/toxdock_config.yaml` has `interaction_config_file: null`. The adapter defaults to `config/interaction_protein_ligand.json`, which is not in git. Pass a JSON or set the YAML key before relying on this stage. See [docs/PIPELINE.md](../../docs/PIPELINE.md).
+Pairing file (tracked): [`config/interaction_protein_ligand_16target.json`](../../config/interaction_protein_ligand_16target.json), set in [`config/toxdock_config.yaml`](../../config/toxdock_config.yaml) as `interaction_config_file`. Override with `--interaction-config`.
 
 Settings that change downstream docking: `config/protein_settings_keep_cofactors_v2.yaml`, `labox` in `toxdock_config.yaml`, `random_state: 42`.
