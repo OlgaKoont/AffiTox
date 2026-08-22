@@ -17,6 +17,8 @@ Stages (default: analysis):
 
 With no arguments the driver runs **analysis**, not `all`.
 
+Clone vs Zenodo: which archives to download for merge or PoseBusters is in the repository [README](../README.md) (**What to download**). Analysis does not need those zips.
+
 Manuscript tables and figures come from `src/analysis/run_pipeline.py` via [`pipeline/postprocess/run_article_analysis.sh`](../pipeline/postprocess/run_article_analysis.sh). The older CLI stages `aggregation` / `analysis` on `python -m docking_benchmark2.cli.run_benchmark` are a different, narrower code path. Do not use them for the paper figures.
 
 ## Flow

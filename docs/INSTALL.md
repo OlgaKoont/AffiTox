@@ -62,6 +62,8 @@ PYTHONPATH=src pytest tests -q
 
 ## Data
 
+Which archives to download for which pipeline stage is in the repository [README](../README.md) (section **What to download**). Analysis and tests use files already in git. Unpack `results_<pdb>.zip` into the clone root only if you re-run merge or PoseBusters.
+
 Raw docking zips (open):
 
 | Part | DOI |
@@ -73,4 +75,4 @@ Raw docking zips (open):
 | 5/6 | [10.5281/zenodo.20825065](https://doi.org/10.5281/zenodo.20825065) |
 | 6/6 | [10.5281/zenodo.20825067](https://doi.org/10.5281/zenodo.20825067) |
 
-Checksums: [`zenodo/affitox_data_manifest.tsv`](zenodo/affitox_data_manifest.tsv).
+Checksums: [`docs/zenodo/affitox_data_manifest.tsv`](zenodo/affitox_data_manifest.tsv).

@@ -40,7 +40,7 @@ Read the folders in the order you actually run the work.
    Output of **prepare**. Shared PDBQT receptors, ligand files, search boxes, and protein sequences for PLAPT. Every docking method is supposed to see this same prepared input. How it is built: [`pipeline/prepare/README.md`](pipeline/prepare/README.md).
 
 4. **`results/`**  
-   Output of **dock**. One tree per target and method (`results/<pdb>/docking/<method>/`). Git ignores this directory because it is large. Raw archives are on Zenodo (DOIs in [`docs/INSTALL.md`](docs/INSTALL.md)). What each engine writes: [`pipeline/dock/README.md`](pipeline/dock/README.md).
+   Output of **dock**. One tree per target and method (`results/<pdb>/docking/<method>/`). Git ignores this directory because it is large. Download the Zenodo zips listed under **What to download** if you want to re-run merge or PoseBusters without docking. What each engine writes: [`pipeline/dock/README.md`](pipeline/dock/README.md).
 
 5. **[`analysis/tables/`](analysis/README.md)**  
    Output of **merge** and **posebusters**, then of **analysis**. Merged ligand tables (`merged_ligands_docking_<pdb>.csv`) plus correlation, nEF, inferential, and PoseBusters summaries. These tables are tracked in git, so you can rebuild figures without docking.
@@ -110,6 +110,42 @@ python -c "import docking_benchmark2; print('ok')"   # prepare/dock import path
 PYTHONPATH=src pytest tests -q                       # Ki to pKi and nEF invariants
 ```
 
+## What to download
+
+`git clone` already has the files for tests and for **analysis**: curated $K_i$ tables (`input/ligands_nodubl/`), protein structures (`input/proteins/`), prepared receptors and ligand PDBQT (`processed/`), merged score tables, PoseBusters CSVs, and manuscript figures. It does **not** contain `results/` (raw docking poses and logs). That tree is gitignored because it is about 202 GB.
+
+Download extra archives only for the stage you will run.
+
+| Stage | Already in the clone | Download |
+|-------|----------------------|----------|
+| tests, `run_pipeline.sh analysis` | `analysis/tables/`, `analysis/figures/` | nothing |
+| `prepare` | `input/proteins/`, `input/ligands_nodubl/` | an interaction JSON (not in git; see prepare below) |
+| `dock` | `processed/` | nothing from Zenodo. Install the engine binaries in the table above. |
+| `merge` | ligand CSVs under `input/` | unpack `results_<pdb>.zip` into the repo root so `results/<pdb>/` exists |
+| `posebusters` | `processed/proteins/` | the same `results_<pdb>.zip` files, plus the `bust` CLI |
+| BindingDB provenance only | not in git (`input/bindingdb/` is ignored) | `toxdock-input-raw.zip` from part 1 |
+
+Raw docking records (open, CC BY 4.0 on AffiTox organization; third-party records keep their own terms):
+
+| Part | DOI | Files |
+|------|-----|--------|
+| 1/6 | [10.5281/zenodo.20825057](https://doi.org/10.5281/zenodo.20825057) | `results_{1g5m,2z5x,3mjg,4f65,4tz4,4zau,7awe}.zip`, `toxdock-input-raw.zip` |
+| 2/6 | [10.5281/zenodo.20825059](https://doi.org/10.5281/zenodo.20825059) | `results_{3lxk,5jkv,6jok}.zip` |
+| 3/6 | [10.5281/zenodo.20825061](https://doi.org/10.5281/zenodo.20825061) | `results_{4ase,6gqj}.zip` |
+| 4/6 | [10.5281/zenodo.20825063](https://doi.org/10.5281/zenodo.20825063) | `results_{5mo4,7kk3}.zip` |
+| 5/6 | [10.5281/zenodo.20825065](https://doi.org/10.5281/zenodo.20825065) | `results_3jy9.zip` |
+| 6/6 | [10.5281/zenodo.20825067](https://doi.org/10.5281/zenodo.20825067) | `results_3eyg.zip` |
+
+MD5 checksums and byte sizes: [`docs/zenodo/affitox_data_manifest.tsv`](docs/zenodo/affitox_data_manifest.tsv). Each `results_<pdb>.zip` unpacks as `results/<pdb>/` (the zip already contains that prefix). Unpack from the repository root:
+
+```bash
+# example: 1g5m only (~2.8 GB). File is on part 1.
+unzip results_1g5m.zip
+ls results/1g5m/docking
+```
+
+You do not need all six parts unless you re-merge or re-run PoseBusters on every target. Boltz-2 poses, if present, live inside those zips under `results/<pdb>/docking/`; set `BOLTZ_RESULTS_DIR` only if you keep Boltz output in a separate tree.
+
 ## Pipeline
 
 AffiTox takes protein structures and experimental $K_i$ tables and produces, for five methods, per-ligand scores (and poses where the method has them), then the manuscript tables and figures. Scoring asks how well a score tracks $pK_i$. Ranking asks whether the order of compounds is preserved. Screening asks whether strong binders (and, separately, weak binders) rise to the top of a sorted list. Pose validity asks whether a predicted pose passes PoseBusters checks. Those four questions are different; the pipeline keeps them in separate tables.
@@ -125,7 +161,7 @@ Settings for each stage are **not** copied into this page. Follow the link under
 
 ### install
 
-Puts this repository on `PYTHONPATH` via an editable pip install. It does not download GNINA or Boltz.
+Puts this repository on `PYTHONPATH` via an editable pip install. It does not download GNINA, Boltz, or Zenodo archives. Needs: the clone only.
 
 ```bash
 bash run_pipeline.sh install     # same as pipeline/install/setup_environment.sh
@@ -135,7 +171,7 @@ Details: [`pipeline/install/README.md`](pipeline/install/README.md), [`docs/INST
 
 ### prepare
 
-Builds one prepared receptor, ligand set, and docking box per target so QVina2, GNINA, DynamicBind, and PLAPT do not each clean the protein differently.
+Builds one prepared receptor, ligand set, and docking box per target so QVina2, GNINA, DynamicBind, and PLAPT do not each clean the protein differently. Needs: `input/` from the clone. Prepared outputs are already in `processed/` if you skip this stage.
 
 ```bash
 bash run_pipeline.sh prepare     # writes processed/
@@ -147,7 +183,7 @@ Details: [`pipeline/prepare/README.md`](pipeline/prepare/README.md), [`config/pr
 
 ### dock
 
-Runs the methods listed in [`config/toxdock_config.yaml`](config/toxdock_config.yaml): QVina2, GNINA, PLAPT, DynamicBind. Writes logs, poses, and extracted metric CSVs under `results/`.
+Runs the methods listed in [`config/toxdock_config.yaml`](config/toxdock_config.yaml): QVina2, GNINA, PLAPT, DynamicBind. Writes logs, poses, and extracted metric CSVs under `results/`. Needs: `processed/` from the clone, plus the engine binaries. No Zenodo download.
 
 ```bash
 bash run_pipeline.sh dock        # does not run Boltz-2
@@ -169,7 +205,7 @@ Details: [`pipeline/dock/README.md`](pipeline/dock/README.md), [`config/methods_
 
 ### merge
 
-Joins each target’s ligand table with per-method scores and adds `pValue` ($pK_i = 9 - \log_{10}(K_i)$ with $K_i$ in nM).
+Joins each target’s ligand table with per-method scores and adds `pValue` ($pK_i = 9 - \log_{10}(K_i)$ with $K_i$ in nM). Needs: `results/<pdb>/` from your own dock run, or unpacked `results_<pdb>.zip` from Zenodo. The published merged CSVs are already in `analysis/tables/`; skip this stage unless you are rebuilding them.
 
 ```bash
 bash run_pipeline.sh merge       # writes analysis/tables/merged_ligands_docking_<pdb>.csv
@@ -179,7 +215,7 @@ Details: [`pipeline/postprocess/README.md`](pipeline/postprocess/README.md). Scr
 
 ### posebusters
 
-Runs PoseBusters (`bust`) on predicted poses for QVina2, GNINA, and DynamicBind. PLAPT has no poses and is skipped. Boltz-2 is included only when `BOLTZ_RESULTS_DIR` is set.
+Runs PoseBusters (`bust`) on predicted poses for QVina2, GNINA, and DynamicBind. PLAPT has no poses and is skipped. Boltz-2 is included only when `BOLTZ_RESULTS_DIR` is set. Needs: poses under `results/` (Zenodo zips or a local dock), `processed/proteins/` from the clone, and `bust` on `PATH`. Deposited PoseBusters CSVs are already in `analysis/tables/posebuster/`.
 
 ```bash
 bash run_pipeline.sh posebusters
@@ -189,7 +225,7 @@ Details: [`pipeline/postprocess/README.md`](pipeline/postprocess/README.md), [`d
 
 ### analysis
 
-Computes scoring, ranking, screening, pose-validity summaries, and figures from the merged tables. **You can run this stage on the tables already in git.** Docking is not required.
+Computes scoring, ranking, screening, pose-validity summaries, and figures from the merged tables. **You can run this stage on the tables already in git.** Needs: `analysis/tables/` from the clone. No Zenodo download. Docking is not required.
 
 ```bash
 bash run_pipeline.sh analysis    # default if you call run_pipeline.sh with no arguments
@@ -218,6 +254,6 @@ Details: [`analysis/README.md`](analysis/README.md), [`docs/METHODS.md`](docs/ME
 bash run_pipeline.sh all         # prepare, dock, merge, posebusters, analysis
 ```
 
-This skips `install` and still skips Boltz-2 inference.
+This skips `install` and still skips Boltz-2 inference. Needs: engine binaries and an interaction JSON for prepare. Do not download Zenodo `results_*.zip` unless you intend to skip dock and start at merge.
 
 Licence: [MIT](LICENSE) for this repository’s source. BindingDB, ChEMBL, PDB records and third-party weights follow their own terms ([NOTICE](NOTICE)).
