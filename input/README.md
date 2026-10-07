@@ -1,31 +1,33 @@
 # AffiTox input data
 
-Canonical inputs for prepare/dock:
+One parent directory holds proteins and ligands:
 
-- `input/proteins/<pdb>.pdb` or `.cif`
-- `input/ligands_nodubl/*_nodubl.csv`
+- `input/proteins/<pdb>.pdb` — RCSB PDB snapshots for the public 16-target panel
+- `input/ligands/` — raw ChEMBL API extracts (layer 1)
+- `input/ligands_nodubl/` — frozen curated tables (row order used for docking)
+- `input/ligands_curated/<pdb>_ligands.csv` — same rows plus `ligand_id`, `pKi`, `is_active`
 
-Upstream BindingDB dumps in `input/bindingdb/` are provenance only and are gitignored. There is no curation CLI in `src/`. Rules: [docs/DATA_DICTIONARY.md](../docs/DATA_DICTIONARY.md).
-
-Panel PDB IDs: `TARGETS` in `config/project.env.sh`. Extra structures may sit in `proteins/`; only selected targets are consumed when pairing is configured.
+Do not ship 7awe, 2z5x, or 3mjg as panel members. Extra PDBs may remain on disk for provenance.
 
 ```bash
 source config/project.env.sh
-bash run_pipeline.sh prepare   # uses config/interaction_protein_ligand_16target.json
+bash run_pipeline.sh curate    # default: freeze nodubl order and assign ligand_0001…
+# bash pipeline/prepare/run_curate.sh --mode from-raw   # apply Ki/MW filters to layer 1
 ```
 
-Paths in `config/toxdock_config.yaml`: `protein_dir: input/proteins`, `ligand_dir: input/ligands_nodubl`.
+Join key for docking files and merge: `ligand_id` (`ligand_0001`, …). `molecule_chembl_id` and SMILES are attributes. Sidecar maps: `processed/id_maps/`.
+
+Panel PDB IDs: `TARGETS` in `config/project.env.sh`.
 
 | Path / field | Meaning |
 |--------------|---------|
-| `proteins/<pdb>.pdb` or `.cif` | target structure |
-| `ligands_nodubl/*_nodubl.csv` `canonical_smiles` | RDKit canonical SMILES |
-| `standard_type` | endpoint (`Ki`) |
+| `proteins/<pdb>.pdb` | target structure |
+| `ligands/*.csv` | ChEMBL API snapshot (semicolon) |
+| `ligands_curated/<pdb>_ligands.csv` `ligand_id` | stable id assigned before docking |
 | `standard_value` | \(K_i\) nM |
-| `pchembl_value` | p-scale potency when present |
-| `*_nodubl_grouped.json` | grouped metadata |
-| `duplicates_report.json` | removed replicate IDs |
+| `pKi` / `pValue` | \(9 - \log_{10}(K_i[\mathrm{nM}])\) |
+| `is_active` | \(K_i < 1000\) nM |
 
-The 16 panel CSVs currently contain 11,180 data rows. The manuscript reports 10,497 \(K_i\) records. Do not equate the two without an explicit filter.
+N is recounted after the ligand_id merge (no SMILES collapse). See `input/ligands_curated/N_panel.txt`.
 
-Raw docking archives: [10.5281/zenodo.20825057](https://doi.org/10.5281/zenodo.20825057) (part 1 includes a BindingDB snapshot). License: MIT for code; BindingDB/ChEMBL/PDB terms for source records (`NOTICE`).
+License: MIT for code; ChEMBL/PDB terms for source records (`NOTICE`).

@@ -34,12 +34,15 @@ POOLED_LABEL = "Pooled"
 
 def _pivot(corr: pd.DataFrame, value_col: str, cfg: AnalysisConfig) -> pd.DataFrame:
     labels = [cfg.method_label(m) for m in cfg.methods]
-    idx = [t.upper() for t in cfg.targets]
+    idx = [cfg.target_label(t) for t in cfg.targets]
     mat = pd.DataFrame(index=idx, columns=labels, dtype=float)
     for _, row in corr.iterrows():
         if row["method_id"] not in cfg.methods:
             continue
-        mat.loc[row["target"].upper(), cfg.method_label(row["method_id"])] = row[value_col]
+        mat.loc[
+            cfg.target_label(str(row["target"])),
+            cfg.method_label(row["method_id"]),
+        ] = row[value_col]
     return mat
 
 
@@ -303,7 +306,7 @@ def plot_r_vs_pki_spread(panel: pd.DataFrame, cfg: AnalysisConfig) -> None:
             if method_id == "boltz2":
                 for _, row in panel.loc[mask].iterrows():
                     ax.annotate(
-                        str(row["target"]).upper(),
+                        cfg.target_label(str(row["target"])),
                         (row[spread_col], row[col]),
                         textcoords="offset points",
                         xytext=(3, 3),
@@ -332,7 +335,7 @@ def plot_r_vs_pki_spread(panel: pd.DataFrame, cfg: AnalysisConfig) -> None:
     ax.scatter(x[mask], y[mask], s=55, color=color, edgecolors="white", linewidths=0.5, zorder=3)
     for _, row in panel.loc[mask].iterrows():
         ax.annotate(
-            str(row["target"]).upper(),
+            cfg.target_label(str(row["target"])),
             (row["pki_sd"], row["pearson_r_boltz2"]),
             textcoords="offset points",
             xytext=(4, 4),

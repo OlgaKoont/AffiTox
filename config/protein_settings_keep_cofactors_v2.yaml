@@ -55,9 +55,30 @@ _default:
   include_cofactors: true
   keep_het_resnames: [FAD]
 
-4tz4:
-  # CRBN: keep structural Zn (co-crystal ligand LVY removed)
+2v5z:
+  # MAO-B: keep FAD, drop cognate SAG / waters
   chain: A
+  include_cofactors: true
+  keep_het_resnames: [FAD]
+
+11ue:
+  # PDGFRB kinase domain: no cofactors; drop A1DA1 / waters (same default as 6jok)
+  chain: A
+  include_ligands: false
+  include_cofactors: false
+  include_waters: false
+
+5lf3:
+  # Constitutive 20S β5 (PSMB5 / P28074). Drop covalent bortezomib (BO2) and waters.
+  # Chain is auto-checked in prepare_5lf3.py (P28074 ∩ BO2/CFZ; author K/Y).
+  chain: K
+  include_ligands: false
+  include_cofactors: false
+  include_waters: false
+
+4tz4:
+  # CRBN (author C / Q96SW2 construct): keep structural Zn, drop LVY / DDB1
+  chain: C
   include_cofactors: true
   keep_het_resnames: [ZN]
 

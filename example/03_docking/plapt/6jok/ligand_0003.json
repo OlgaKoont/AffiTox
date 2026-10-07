@@ -1,0 +1,8 @@
+{
+  "protein": "6jok",
+  "ligand_id": "ligand_3",
+  "smiles": "CC(=O)c1ccccc1-c1ncnc2[nH]ccc12",
+  "affinity": 5.645982424158476,
+  "affinity_uM": 2.2595272111447176,
+  "prediction_time": 0.0008646345138549805
+}

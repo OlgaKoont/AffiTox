@@ -1,0 +1,8 @@
+{
+  "protein": "4f65",
+  "ligand_id": "ligand_5",
+  "smiles": "CCN(OCCN1CCNCC1)C(=O)c1ccc(N/C(=C2\\C(=O)Nc3cc(C(=O)OC)c(C)cc32)c2ccccc2)cc1",
+  "affinity": 5.097986319685463,
+  "affinity_uM": 7.980198245670168,
+  "prediction_time": 0.0171463187061139
+}

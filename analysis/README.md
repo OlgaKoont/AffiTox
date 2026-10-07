@@ -3,7 +3,7 @@
 Post-docking statistics and figures for the 16-target panel. Entry point:
 
 ```bash
-bash pipeline/postprocess/run_article_analysis.sh   # reads analysis/tables/, writes tables + figures
+bash pipeline/postprocess/run_article_analysis.sh   # canonical root: analysis/excluding_2z5x_3mjg/
 ```
 
 CLI (flags required if you call Python directly):

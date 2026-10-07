@@ -193,7 +193,7 @@ def prepare_ligands(
         pdbqt_paths = []
         for idx, ligand_data in enumerate(ligands):
             smiles = ligand_data['smiles']
-            ligand_id = f"ligand_{idx+1}"  # Simple sequential naming
+            ligand_id = ligand_data.get("ligand_id") or f"ligand_{idx+1:04d}"
             
             sdf_path = ligand_sdf_dir / f"{ligand_id}.sdf"
             pdbqt_path = ligand_pdbqt_dir / f"{ligand_id}.pdbqt"

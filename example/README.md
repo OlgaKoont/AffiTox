@@ -1,47 +1,18 @@
-# AffiTox example (mini pipeline)
+# AffiTox GitHub example (16 targets × 5 ligands × 5 methods)
 
-Intended layout: 16 targets \(\times\) 2 ligands, writing under `example/` rather than the production tree.
-
-## Incomplete on GitHub
-
-Git currently tracks:
-
-- `example/README.md` (this file)
-- `example/scripts/run_boltz2_example.sh`
-
-It does **not** track `example/run_example_pipeline.sh`, `example/run_example_pipeline.sbatch`, `config/project.env.example.sh`, `config/toxdock_config.example.yaml`, or the mini `example/input/` tree. Commands below describe the **local** driver when those files are present. They are not a verified public-clone recipe.
-
-For manuscript statistics, use [docs/INSTALL.md](../docs/INSTALL.md) (analysis from `analysis/tables/`).
-
-## Local driver stages (when `run_example_pipeline.sh` exists)
-
-```text
-prepare-inputs   2 ligands/target + protein links
-install          pip install -e . (skipped when SKIP_INSTALL=1)
-prepare          protein/ligand/box preparation
-dock             qvina, gnina, plapt, dynamicbind
-boltz-prepare    stage mini ligands + CIF + MSA
-boltz-run        boltz predict (GPU; skipped when BOLTZ_SKIP_RUN=1)
-boltz-sync       import into example/results/
-merge            merged tables + pValue
-posebusters      PoseBusters
-analysis         scoring, ranking, screening, pose aggregations, figures
-all              the above (install still skipped unless SKIP_INSTALL=0)
-```
+Same six information blocks as the Zenodo records, truncated to `ligand_0001` … `ligand_0000005`
+for every target and every method. Seed 42. If a method failed one of these five ligands, the
+row stays with a missing score; do not substitute `ligand_0006`.
 
 ```bash
-# only if the untracked driver is on disk
-SKIP_INSTALL=1 bash example/run_example_pipeline.sh all
+source config/project.env.sh
+# EXAMPLE_N=5  # first five ligand_id rows; omit the variable for the full panel
+bash pipeline/prepare/run_curate.sh
+PYTHONPATH=src python src/analysis/ligand_identity.py
+bash pipeline/postprocess/run_merge.sh   # full panel → analysis/excluding_2z5x_3mjg/tables
+EXAMPLE_N=5 bash pipeline/postprocess/run_merge.sh --output-dir example/04_merged
 ```
 
-Boltz GPU (tracked script, but it sources untracked `config/project.env.example.sh` and `config/boltz_example.env.sh`):
-
-```bash
-bash example/scripts/run_boltz2_example.sh
-```
-
-## Outputs (local tree)
-
-- `example/analysis/tables/`
-- `example/analysis/tables/posebuster/`
-- `example/analysis/figures/`
+Full-panel PoseBusters conversion and docking dumps are on Zenodo records 03 and 05
+(not the historical DOIs 10.5281/zenodo.20825057–067). Boltz-2 / DynamicBind folders
+for this 16×5 slice stay on disk locally; they are gitignored (too large for GitHub).

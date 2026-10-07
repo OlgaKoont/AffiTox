@@ -1,0 +1,8 @@
+{
+  "protein": "11ue",
+  "ligand_id": "ligand_3",
+  "smiles": "CC(=O)Nc1ccc(-n2nc3ccc(N)nc3n2)cc1",
+  "affinity": 5.647447768105559,
+  "affinity_uM": 2.2519162347797392,
+  "prediction_time": 0.039145284999500624
+}

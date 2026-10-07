@@ -76,6 +76,8 @@ def add_pvalue_column(input_dir: Path, output_dir: Path):
             # Или: pValue = 9 - log10(standard_value)
             df["pValue"] = np.nan
             df.loc[valid_mask, "pValue"] = 9 - np.log10(df.loc[valid_mask, "standard_value"])
+            df["pKi"] = df["pValue"]
+            df["is_active"] = valid_mask & (df["standard_value"] < 1000.0)
 
             # Добавляем класс активности по standard_value (Ki в нМ)
             df["activity_class"] = df["standard_value"].apply(assign_activity_class)
@@ -138,12 +140,12 @@ def main():
     if args.input_dir:
         input_dir = Path(args.input_dir)
     else:
-        input_dir = base_dir / "analysis" / "tables"
+        input_dir = base_dir / "analysis" / "excluding_2z5x_3mjg" / "tables"
     
     if args.output_dir:
         output_dir = Path(args.output_dir)
     else:
-        output_dir = base_dir / "analysis" / "tables"
+        output_dir = base_dir / "analysis" / "excluding_2z5x_3mjg" / "tables"
     
     # Создаем выходную директорию
     output_dir.mkdir(parents=True, exist_ok=True)

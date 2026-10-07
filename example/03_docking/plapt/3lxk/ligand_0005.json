@@ -1,0 +1,8 @@
+{
+  "protein": "3lxk",
+  "ligand_id": "ligand_5",
+  "smiles": "C=CC(=O)N1CC(CCn2c(=O)ccc3cnc(Nc4ccc(C5CCN(C)CC5)cc4)nc32)C1",
+  "affinity": 7.332873346624586,
+  "affinity_uM": 0.046465076164838845,
+  "prediction_time": 0.008291151687389111
+}

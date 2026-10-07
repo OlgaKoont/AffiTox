@@ -1,0 +1,8 @@
+{
+  "protein": "3jy9",
+  "ligand_id": "ligand_3",
+  "smiles": "C=CC(=O)N1CC[C@@H](Oc2cc(-c3ccc(O)cc3)cn3cncc23)C[C@H]1C",
+  "affinity": 6.176482675558893,
+  "affinity_uM": 0.666066090810797,
+  "prediction_time": 0.006818478955502691
+}

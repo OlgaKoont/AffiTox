@@ -1,0 +1,8 @@
+{
+  "protein": "2v5z",
+  "ligand_id": "ligand_1",
+  "smiles": "Brc1cccc(COc2ccc(C3C[C@@H]3NCCC3CCCCC3)cc2)c1",
+  "affinity": 6.537509441375732,
+  "affinity_uM": 0.2900618139813671,
+  "prediction_time": 0.2820255766069986
+}

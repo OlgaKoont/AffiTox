@@ -11,12 +11,22 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.collections import Collection, QuadMesh
 from matplotlib.gridspec import GridSpec
+from matplotlib.lines import Line2D
+from matplotlib.patches import Patch
 
 from ..config import AnalysisConfig
 from ..constants import DEFAULT_METHOD_COLORS, METHOD_COLOR_CORRELATION_ANCHORS
 
 ALL_TARGETS_LABEL = "All targets"
+MM_PER_INCH = 25.4
+FULL_WIDTH_MM = 170.0
+HALF_WIDTH_MM = 85.0
+MAX_HEIGHT_MM = 225.0
+WEB_HIGH_RES_WIDTH_PX = 4000
+MIN_PNG_DPI = 300.0
+MIN_LINE_WIDTH_PT = 0.25
 # Vertical/horizontal gap between summary (All targets) and per-target blocks in GridSpec.
 GAP_RATIO = 0.025  # was 0.10; 4× tighter summary-to-body spacing
 SUMMARY_BODY_HSPACE = GAP_RATIO * 5  # combined multi-panel heatmaps (e.g. correlations_combined)
@@ -24,23 +34,16 @@ SUMMARY_BODY_HSPACE = GAP_RATIO * 5  # combined multi-panel heatmaps (e.g. corre
 # Article diverging palette: blue (negative) → gray/white (0) → salmon (positive).
 # Positions are in colormap space [0, 1] matching data range [-1, +1] with center=0.
 CORRELATION_DIVERGING_STOPS: list[tuple[float, str]] = [
-    (0.0, "#6584E1"),    # -1.0  saturated blue
-    (0.25, "#A2BFFF"),   # -0.5  periwinkle
-    (0.375, "#B7CAEA"),  # -0.25 light blue
-    (0.5, "#DEDAD7"),    #  0.0  light gray / near-white
-    (0.625, "#F0D1BF"),  # +0.25 peach
-    (0.75, "#FDBBAB"),   # +0.5  light salmon
-    (0.875, "#F18C6E"),  # +0.75 salmon-orange
-    (1.0, "#E5885F"),    # +1.0  saturated salmon
+    (0.0, "#3558C5"),
+    (0.5, "#FFF9EE"),
+    (1.0, "#EF4938"),
 ]
 
 # Sequential variant for bounded positive metrics (nEF 0–1, pass rates 0–100).
 POSITIVE_SEQUENTIAL_STOPS: list[tuple[float, str]] = [
-    (0.0, "#6584E1"),
-    (0.35, "#B7CAEA"),
-    (0.55, "#DEDAD7"),
-    (0.75, "#FDBBAB"),
-    (1.0, "#E5885F"),
+    (0.0, "#3558C5"),
+    (0.5, "#FFF9EE"),
+    (1.0, "#EF4938"),
 ]
 
 
@@ -93,14 +96,201 @@ def apply_style(cfg: AnalysisConfig) -> None:
             "figure.dpi": cfg.figure_dpi,
             "savefig.dpi": cfg.figure_dpi,
             "svg.fonttype": "none",
+            "pdf.fonttype": 42,
+            "lines.linewidth": 0.5,
+            "patch.linewidth": 0.5,
         }
     )
 
 
+def _bboxes_overlap(a, b, pad_px: float = 2.0) -> bool:
+    return not (
+        a.x1 + pad_px < b.x0
+        or b.x1 + pad_px < a.x0
+        or a.y1 + pad_px < b.y0
+        or b.y1 + pad_px < a.y0
+    )
+
+
+def _visible_tick_labels(ax: plt.Axes, axis: str):
+    ticks = ax.get_xticklabels() if axis == "x" else ax.get_yticklabels()
+    return [t for t in ticks if t.get_text().strip() and t.get_visible()]
+
+
+def _shrink_text_to_box(text, max_width: float | None, max_height: float | None, renderer, min_fs: float = 4.5) -> None:
+    fs = float(text.get_fontsize())
+    for _ in range(18):
+        bbox = text.get_window_extent(renderer)
+        too_wide = max_width is not None and bbox.width > max_width
+        too_tall = max_height is not None and bbox.height > max_height
+        if not too_wide and not too_tall:
+            return
+        if fs <= min_fs:
+            return
+        fs = max(min_fs, fs - 0.4)
+        text.set_fontsize(fs)
+
+
+def _fit_axis_tick_labels(fig: plt.Figure, ax: plt.Axes, renderer) -> None:
+    labels = _visible_tick_labels(ax, "x")
+    if len(labels) >= 2:
+        bboxes = [t.get_window_extent(renderer) for t in labels]
+        overlap = any(
+            _bboxes_overlap(bboxes[i], bboxes[i + 1], pad_px=3.0)
+            for i in range(len(bboxes) - 1)
+        )
+        if overlap:
+            ax.tick_params(axis="x", rotation=40)
+            plt.setp(labels, rotation=40, ha="right")
+            fig.canvas.draw()
+            renderer = fig.canvas.get_renderer()
+            for _ in range(10):
+                bboxes = [t.get_window_extent(renderer) for t in labels]
+                if not any(
+                    _bboxes_overlap(bboxes[i], bboxes[i + 1], pad_px=2.0)
+                    for i in range(len(bboxes) - 1)
+                ):
+                    break
+                for t in labels:
+                    t.set_fontsize(max(5.0, float(t.get_fontsize()) - 0.6))
+                fig.canvas.draw()
+                renderer = fig.canvas.get_renderer()
+
+    ylabels = _visible_tick_labels(ax, "y")
+    if len(ylabels) >= 2:
+        fig.canvas.draw()
+        renderer = fig.canvas.get_renderer()
+        for _ in range(10):
+            bboxes = [t.get_window_extent(renderer) for t in ylabels]
+            overlap = any(
+                _bboxes_overlap(bboxes[i], bboxes[i + 1], pad_px=1.5)
+                for i in range(len(bboxes) - 1)
+            )
+            if not overlap:
+                break
+            for t in ylabels:
+                t.set_fontsize(max(5.0, float(t.get_fontsize()) - 0.5))
+            fig.canvas.draw()
+            renderer = fig.canvas.get_renderer()
+
+
+def _fit_heatmap_cell_text(fig: plt.Figure, ax: plt.Axes, renderer) -> None:
+    if not ax.findobj(QuadMesh):
+        return
+    texts = [t for t in ax.texts if t.get_text().strip()]
+    if len(texts) < 2:
+        return
+    xs = sorted({round(float(t.get_position()[0]), 4) for t in texts})
+    ys = sorted({round(float(t.get_position()[1]), 4) for t in texts})
+    n_cols = max(len(xs), 1)
+    n_rows = max(len(ys), 1)
+    ax_bbox = ax.get_window_extent(renderer)
+    cell_w = 0.86 * ax_bbox.width / n_cols
+    cell_h = 0.80 * ax_bbox.height / n_rows
+    for text in texts:
+        _shrink_text_to_box(text, cell_w, cell_h, renderer)
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    for _ in range(8):
+        bboxes = [t.get_window_extent(renderer) for t in texts]
+        collided = False
+        for i in range(len(texts)):
+            for j in range(i + 1, len(texts)):
+                if _bboxes_overlap(bboxes[i], bboxes[j], pad_px=0.5):
+                    collided = True
+                    break
+            if collided:
+                break
+        if not collided:
+            return
+        for text in texts:
+            text.set_fontsize(max(4.5, float(text.get_fontsize()) - 0.4))
+        fig.canvas.draw()
+        renderer = fig.canvas.get_renderer()
+
+
+def _prevent_overlapping_text(fig: plt.Figure) -> None:
+    """Shrink or rotate labels so BMC-scaled PDFs do not stack text."""
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    for ax in fig.axes:
+        if len(_visible_tick_labels(ax, "x")) <= 1 and len(ax.texts) < 2:
+            continue
+        _fit_heatmap_cell_text(fig, ax, renderer)
+        renderer = fig.canvas.get_renderer()
+        _fit_axis_tick_labels(fig, ax, renderer)
+        renderer = fig.canvas.get_renderer()
+
+
+def _enforce_minimum_line_width(fig: plt.Figure) -> None:
+    """Ensure every visible vector stroke remains at least 0.25 pt."""
+    for line in fig.findobj(match=Line2D):
+        width = float(line.get_linewidth())
+        if 0 < width < MIN_LINE_WIDTH_PT:
+            line.set_linewidth(MIN_LINE_WIDTH_PT)
+    for patch in fig.findobj(match=Patch):
+        width = float(patch.get_linewidth())
+        if 0 < width < MIN_LINE_WIDTH_PT:
+            patch.set_linewidth(MIN_LINE_WIDTH_PT)
+    for collection in fig.findobj(match=Collection):
+        widths = np.asarray(collection.get_linewidths(), dtype=float)
+        if widths.size:
+            collection.set_linewidths(
+                np.where(
+                    (widths > 0) & (widths < MIN_LINE_WIDTH_PT),
+                    MIN_LINE_WIDTH_PT,
+                    widths,
+                )
+            )
+
+
 def save_figure(fig: plt.Figure, path_base: Path) -> None:
+    """Save a print-quality PNG (>=4000 px wide or 300 DPI) and a BMC-sized vector PDF."""
     path_base.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(path_base.with_suffix(".png"), bbox_inches="tight")
-    fig.savefig(path_base.with_suffix(".svg"), bbox_inches="tight")
+    _enforce_minimum_line_width(fig)
+
+    fig.canvas.draw()
+    _prevent_overlapping_text(fig)
+    tight_box = fig.get_tightbbox(fig.canvas.get_renderer())
+    png_dpi = max(MIN_PNG_DPI, WEB_HIGH_RES_WIDTH_PX / float(tight_box.width))
+    fig.savefig(
+        path_base.with_suffix(".png"),
+        dpi=png_dpi,
+        format="png",
+        facecolor="white",
+        bbox_inches="tight",
+        pad_inches=0.06,
+    )
+
+    aspect = float(tight_box.height / tight_box.width)
+    pdf_width_mm = FULL_WIDTH_MM
+    pdf_height_mm = pdf_width_mm * aspect
+    if pdf_height_mm > MAX_HEIGHT_MM:
+        pdf_width_mm = HALF_WIDTH_MM
+        pdf_height_mm = pdf_width_mm * aspect
+    if pdf_height_mm > MAX_HEIGHT_MM:
+        raise ValueError(
+            f"Figure aspect ratio cannot fit BMC dimensions: {path_base} "
+            f"({pdf_width_mm:.1f} x {pdf_height_mm:.1f} mm)"
+        )
+
+    target_width_in = pdf_width_mm / MM_PER_INCH
+    for _ in range(3):
+        fig.canvas.draw()
+        tight_box = fig.get_tightbbox(fig.canvas.get_renderer())
+        scale = target_width_in / float(tight_box.width)
+        current_width, current_height = fig.get_size_inches()
+        fig.set_size_inches(current_width * scale, current_height * scale, forward=True)
+
+    _prevent_overlapping_text(fig)
+    fig.savefig(
+        path_base.with_suffix(".pdf"),
+        format="pdf",
+        facecolor="white",
+        bbox_inches="tight",
+        pad_inches=0.06,
+        metadata={"Creator": "AffiTox analysis pipeline"},
+    )
     plt.close(fig)
 
 
@@ -194,7 +384,7 @@ def plot_heatmap_with_summary_row(
 
     ax_top.set_ylabel("")
     ax_top.set_xlabel("")
-    ax_top.tick_params(axis="x", labelbottom=False)
+    ax_top.tick_params(axis="x", bottom=False, labelbottom=False)
     ax_bot.set_xlabel("Docking method")
     ax_bot.set_ylabel("Target")
     ax_top.tick_params(axis="y", rotation=0)
@@ -559,11 +749,11 @@ def plot_combined_heatmaps_with_summary_row(
         height_ratios=[1.0, max(n_body, 1)],
         width_ratios=width_ratios,
         hspace=SUMMARY_BODY_HSPACE,
-        wspace=0.10,
-        left=0.06,
-        right=0.94,
+        wspace=0.16,
+        left=0.07,
+        right=0.93,
         top=0.90,
-        bottom=0.14,
+        bottom=0.20,
     )
     cbar_ax = fig.add_subplot(gs[:, n_panels])
 
@@ -574,7 +764,7 @@ def plot_combined_heatmaps_with_summary_row(
         center=center,
         linewidths=0.5,
         linecolor="white",
-        annot_kws={"size": 8, "color": "black"},
+        annot_kws={"size": 6.5, "color": "black"},
     )
 
     for idx, (title, summary_row, body) in enumerate(panels):
@@ -606,11 +796,12 @@ def plot_combined_heatmaps_with_summary_row(
         ax_top.set_title(title, fontsize=11, pad=8)
         ax_top.set_xlabel("")
         ax_top.set_ylabel("")
-        ax_top.tick_params(axis="x", labelbottom=False)
+        ax_top.tick_params(axis="x", bottom=False, labelbottom=False)
         ax_top.tick_params(axis="y", rotation=0)
 
         ax_bot.set_xlabel("")
-        ax_bot.tick_params(axis="x", rotation=0)
+        ax_bot.tick_params(axis="x", rotation=35)
+        plt.setp(ax_bot.get_xticklabels(), ha="right")
         ax_bot.tick_params(axis="y", rotation=0)
         if idx == 0:
             ax_top.set_ylabel("")

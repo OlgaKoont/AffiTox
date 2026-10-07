@@ -1,0 +1,8 @@
+{
+  "protein": "1g5m",
+  "ligand_id": "ligand_4",
+  "smiles": "CC(=O)N[C@@H](Cc1c[nH]c2ccccc12)C(=O)Nc1ccc(C(=O)NS(=O)(=O)c2ccc(NCCSc3ccccc3)c([N+](=O)[O-])c2)cc1",
+  "affinity": 6.100502707290703,
+  "affinity_uM": 0.793409310832759,
+  "prediction_time": 0.010448549474988664
+}

@@ -137,13 +137,13 @@ def run_property_baselines(cfg: AnalysisConfig, *, n_perm: int | None = None) ->
 
 
 def baseline_pearson_matrix(baselines: pd.DataFrame, cfg: AnalysisConfig) -> pd.DataFrame:
-    """Rows = baseline labels, columns = target PDB ids (uppercase)."""
+    """Rows = baseline labels, columns = configured target display labels."""
     idx = list(BASELINE_LABELS.values())
-    cols = [t.upper() for t in cfg.targets]
+    cols = [cfg.target_label(t) for t in cfg.targets]
     mat = pd.DataFrame(index=idx, columns=cols, dtype=float)
     for _, row in baselines.iterrows():
         label = row["baseline_label"]
-        tgt = str(row["target"]).upper()
+        tgt = cfg.target_label(str(row["target"]))
         if label in mat.index and tgt in mat.columns:
             mat.loc[label, tgt] = float(row["pearson_r"])
     return mat

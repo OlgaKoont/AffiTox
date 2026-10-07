@@ -1,0 +1,578 @@
+[
+  {
+    "pdb_id": "1g5m",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/1g5m/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "1g5m",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/1g5m/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "1g5m",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/1g5m/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "1g5m",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/1g5m/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "1g5m",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/1g5m/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "1g5m",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/1g5m/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  },
+  {
+    "pdb_id": "2v5z",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/2v5z/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "2v5z",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/2v5z/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "2v5z",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/2v5z/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "2v5z",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/2v5z/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "2v5z",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/2v5z/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "2v5z",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/2v5z/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  },
+  {
+    "pdb_id": "3eyg",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3eyg/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "3eyg",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3eyg/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "3eyg",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3eyg/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "3eyg",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3eyg/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "3eyg",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3eyg/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "3eyg",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3eyg/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  },
+  {
+    "pdb_id": "3jy9",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3jy9/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "3jy9",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3jy9/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "3jy9",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3jy9/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "3jy9",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3jy9/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "3jy9",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3jy9/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "3jy9",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3jy9/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  },
+  {
+    "pdb_id": "3lxk",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3lxk/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "3lxk",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3lxk/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "3lxk",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3lxk/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "3lxk",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3lxk/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "3lxk",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3lxk/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "3lxk",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/3lxk/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  },
+  {
+    "pdb_id": "11ue",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/11ue/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "11ue",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/11ue/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "11ue",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/11ue/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "11ue",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/11ue/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "11ue",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/11ue/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "11ue",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/11ue/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  },
+  {
+    "pdb_id": "4ase",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4ase/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "4ase",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4ase/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "4ase",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4ase/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "4ase",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4ase/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "4ase",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4ase/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "4ase",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4ase/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  },
+  {
+    "pdb_id": "4f65",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4f65/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "4f65",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4f65/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "4f65",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4f65/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "4f65",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4f65/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "4f65",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4f65/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "4f65",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4f65/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  },
+  {
+    "pdb_id": "4tz4",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4tz4/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "4tz4",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4tz4/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "4tz4",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4tz4/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "4tz4",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4tz4/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "4tz4",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4tz4/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "4tz4",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4tz4/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  },
+  {
+    "pdb_id": "4zau",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4zau/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "4zau",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4zau/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "4zau",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4zau/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "4zau",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4zau/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "4zau",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4zau/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "4zau",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/4zau/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  },
+  {
+    "pdb_id": "5jkv",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5jkv/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "5jkv",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5jkv/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "5jkv",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5jkv/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "5jkv",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5jkv/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "5jkv",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5jkv/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "5jkv",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5jkv/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  },
+  {
+    "pdb_id": "5mo4",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5mo4/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "5mo4",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5mo4/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "5mo4",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5mo4/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "5mo4",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5mo4/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "5mo4",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5mo4/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "5mo4",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5mo4/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  },
+  {
+    "pdb_id": "6gqj",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/6gqj/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "6gqj",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/6gqj/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "6gqj",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/6gqj/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "6gqj",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/6gqj/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "6gqj",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/6gqj/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "6gqj",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/6gqj/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  },
+  {
+    "pdb_id": "6jok",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/6jok/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "6jok",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/6jok/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "6jok",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/6jok/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "6jok",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/6jok/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "6jok",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/6jok/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "6jok",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/6jok/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  },
+  {
+    "pdb_id": "5lf3",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5lf3/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "5lf3",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5lf3/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "5lf3",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5lf3/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "5lf3",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5lf3/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "5lf3",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5lf3/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "5lf3",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/5lf3/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  },
+  {
+    "pdb_id": "7kk3",
+    "method": "qvina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/7kk3/docking/qvina",
+    "exists": true
+  },
+  {
+    "pdb_id": "7kk3",
+    "method": "gnina",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/7kk3/docking/gnina",
+    "exists": true
+  },
+  {
+    "pdb_id": "7kk3",
+    "method": "plapt",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/7kk3/docking/plapt",
+    "exists": true
+  },
+  {
+    "pdb_id": "7kk3",
+    "method": "dynamicbind_new",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/7kk3/docking/dynamicbind_new",
+    "exists": true
+  },
+  {
+    "pdb_id": "7kk3",
+    "method": "dynamicbind",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/7kk3/docking/dynamicbind",
+    "exists": false
+  },
+  {
+    "pdb_id": "7kk3",
+    "method": "boltz2",
+    "path": "/mnt/tank/scratch/okonovalova/AffiTox/results/7kk3/docking/boltz2_s80_d10_seed42_aff_s80_d1",
+    "exists": true
+  }
+]

@@ -1,0 +1,65 @@
+target,baseline_id,baseline_label,n_points,pearson_r,n_permutation,note
+1g5m,heavy_atom_count,Heavy-atom count,244,0.2787019138161947,,within_target_r_property_vs_pKi
+1g5m,mol_wt,MW,244,0.28687608573476264,,within_target_r_property_vs_pKi
+1g5m,clogp,cLogP,244,0.28039534619810746,,within_target_r_property_vs_pKi
+1g5m,permutation_floor,Permutation floor,244,0.05047472007098025,2000.0,mean_|r|_under_pKi_shuffle
+2v5z,heavy_atom_count,Heavy-atom count,213,-0.035410022562366666,,within_target_r_property_vs_pKi
+2v5z,mol_wt,MW,213,0.014947766277578989,,within_target_r_property_vs_pKi
+2v5z,clogp,cLogP,213,0.2631656024268362,,within_target_r_property_vs_pKi
+2v5z,permutation_floor,Permutation floor,213,0.05491674660426717,2000.0,mean_|r|_under_pKi_shuffle
+3eyg,heavy_atom_count,Heavy-atom count,2234,0.3959927842976536,,within_target_r_property_vs_pKi
+3eyg,mol_wt,MW,2234,0.40316595636238056,,within_target_r_property_vs_pKi
+3eyg,clogp,cLogP,2234,0.11933191588511649,,within_target_r_property_vs_pKi
+3eyg,permutation_floor,Permutation floor,2234,0.016918034099632273,2000.0,mean_|r|_under_pKi_shuffle
+3jy9,heavy_atom_count,Heavy-atom count,2014,0.5620993990112956,,within_target_r_property_vs_pKi
+3jy9,mol_wt,MW,2014,0.5659541502225921,,within_target_r_property_vs_pKi
+3jy9,clogp,cLogP,2014,0.24084179586441556,,within_target_r_property_vs_pKi
+3jy9,permutation_floor,Permutation floor,2014,0.017571450282171205,2000.0,mean_|r|_under_pKi_shuffle
+3lxk,heavy_atom_count,Heavy-atom count,758,0.11987499943891183,,within_target_r_property_vs_pKi
+3lxk,mol_wt,MW,758,0.11508810270592396,,within_target_r_property_vs_pKi
+3lxk,clogp,cLogP,758,-0.3399853961754111,,within_target_r_property_vs_pKi
+3lxk,permutation_floor,Permutation floor,758,0.028923234967511546,2000.0,mean_|r|_under_pKi_shuffle
+11ue,heavy_atom_count,Heavy-atom count,275,0.7586650555635176,,within_target_r_property_vs_pKi
+11ue,mol_wt,MW,275,0.7319193324330722,,within_target_r_property_vs_pKi
+11ue,clogp,cLogP,275,0.4641754732219595,,within_target_r_property_vs_pKi
+11ue,permutation_floor,Permutation floor,275,0.0490377877156937,2000.0,mean_|r|_under_pKi_shuffle
+4ase,heavy_atom_count,Heavy-atom count,851,0.4951397245709526,,within_target_r_property_vs_pKi
+4ase,mol_wt,MW,851,0.4953934319550104,,within_target_r_property_vs_pKi
+4ase,clogp,cLogP,851,0.45040411065869723,,within_target_r_property_vs_pKi
+4ase,permutation_floor,Permutation floor,851,0.027274227638323444,2000.0,mean_|r|_under_pKi_shuffle
+4f65,heavy_atom_count,Heavy-atom count,133,-0.012002264513320357,,within_target_r_property_vs_pKi
+4f65,mol_wt,MW,133,-0.025040513102909112,,within_target_r_property_vs_pKi
+4f65,clogp,cLogP,133,0.029217050447797557,,within_target_r_property_vs_pKi
+4f65,permutation_floor,Permutation floor,133,0.07107828897586259,2000.0,mean_|r|_under_pKi_shuffle
+4tz4,heavy_atom_count,Heavy-atom count,113,0.48559727000116387,,within_target_r_property_vs_pKi
+4tz4,mol_wt,MW,113,0.5125720441639686,,within_target_r_property_vs_pKi
+4tz4,clogp,cLogP,113,0.46723092116712167,,within_target_r_property_vs_pKi
+4tz4,permutation_floor,Permutation floor,113,0.07530699322218955,2000.0,mean_|r|_under_pKi_shuffle
+4zau,heavy_atom_count,Heavy-atom count,235,0.29801161378717617,,within_target_r_property_vs_pKi
+4zau,mol_wt,MW,235,0.28983739933162755,,within_target_r_property_vs_pKi
+4zau,clogp,cLogP,235,0.11468737843529352,,within_target_r_property_vs_pKi
+4zau,permutation_floor,Permutation floor,235,0.05189331746887931,2000.0,mean_|r|_under_pKi_shuffle
+5jkv,heavy_atom_count,Heavy-atom count,488,0.17497879363730068,,within_target_r_property_vs_pKi
+5jkv,mol_wt,MW,488,0.14100616738140434,,within_target_r_property_vs_pKi
+5jkv,clogp,cLogP,488,0.3552390994836063,,within_target_r_property_vs_pKi
+5jkv,permutation_floor,Permutation floor,488,0.03642337933179842,2000.0,mean_|r|_under_pKi_shuffle
+5mo4,heavy_atom_count,Heavy-atom count,682,0.034264431067667196,,within_target_r_property_vs_pKi
+5mo4,mol_wt,MW,682,-0.15042877525622833,,within_target_r_property_vs_pKi
+5mo4,clogp,cLogP,682,-0.15828379816501909,,within_target_r_property_vs_pKi
+5mo4,permutation_floor,Permutation floor,682,0.030931460421554393,2000.0,mean_|r|_under_pKi_shuffle
+6gqj,heavy_atom_count,Heavy-atom count,1089,0.21465373829950501,,within_target_r_property_vs_pKi
+6gqj,mol_wt,MW,1089,0.16293391757355544,,within_target_r_property_vs_pKi
+6gqj,clogp,cLogP,1089,0.20170324895645678,,within_target_r_property_vs_pKi
+6gqj,permutation_floor,Permutation floor,1089,0.024471128602437626,2000.0,mean_|r|_under_pKi_shuffle
+6jok,heavy_atom_count,Heavy-atom count,250,0.8276130556666552,,within_target_r_property_vs_pKi
+6jok,mol_wt,MW,250,0.820185796234333,,within_target_r_property_vs_pKi
+6jok,clogp,cLogP,250,0.4737294970964989,,within_target_r_property_vs_pKi
+6jok,permutation_floor,Permutation floor,250,0.052990176000934565,2000.0,mean_|r|_under_pKi_shuffle
+5lf3,heavy_atom_count,Heavy-atom count,83,0.36514791363356175,,within_target_r_property_vs_pKi
+5lf3,mol_wt,MW,83,0.39805591083628633,,within_target_r_property_vs_pKi
+5lf3,clogp,cLogP,83,-0.02902849875857783,,within_target_r_property_vs_pKi
+5lf3,permutation_floor,Permutation floor,83,0.08700491832466194,2000.0,mean_|r|_under_pKi_shuffle
+7kk3,heavy_atom_count,Heavy-atom count,1049,0.3042357013889853,,within_target_r_property_vs_pKi
+7kk3,mol_wt,MW,1049,0.2915878594913767,,within_target_r_property_vs_pKi
+7kk3,clogp,cLogP,1049,-0.2319811528715614,,within_target_r_property_vs_pKi
+7kk3,permutation_floor,Permutation floor,1049,0.024459168587201135,2000.0,mean_|r|_under_pKi_shuffle

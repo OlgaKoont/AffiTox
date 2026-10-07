@@ -32,7 +32,9 @@ jobs:
           N_PERMUTATION: "10"
           FIGURE_DPI: "72"
           ANALYSIS_ROOT: ${{ github.workspace }}/ci_analysis_out
-          MERGED_DATA_DIR: ${{ github.workspace }}/analysis/tables
-          POSEBUSTERS_DIR: ${{ github.workspace }}/analysis/tables/posebuster
-          POSEBUSTERS_BOLTZ2_DIR: ${{ github.workspace }}/analysis/tables/posebuster
+          MERGED_DATA_DIR: ${{ github.workspace }}/example/04_merged
+          POSEBUSTERS_DIR: ${{ github.workspace }}/example/05_posebusters/tables
+          POSEBUSTERS_BOLTZ2_DIR: ${{ github.workspace }}/example/05_posebusters/tables
+          RUN_FIGURES: "0"
+          RUN_POSEBUSTERS: "0"
         run: bash pipeline/postprocess/run_article_analysis.sh

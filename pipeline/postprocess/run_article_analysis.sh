@@ -41,6 +41,8 @@ ARGS=(
   --method-colors "${METHOD_COLORS}"
   --figure-dpi "${FIGURE_DPI}"
   --font-family "${FONT_FAMILY}"
+  --target-label-mode "${TARGET_LABEL_MODE}"
+  --figure-variant "${FIGURE_VARIANT}"
   --n-bootstrap "${N_BOOTSTRAP}"
   --n-permutation "${N_PERMUTATION}"
   --random-seed "${RANDOM_SEED}"

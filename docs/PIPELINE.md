@@ -24,7 +24,10 @@ Manuscript tables and figures come from `src/analysis/run_pipeline.py` via [`pip
 ## Flow
 
 ```text
-input/proteins + input/ligands_nodubl
+input/proteins + input/ligands  (ChEMBL snapshot)
+        |  curate (ligand_id)
+        v
+input/ligands_curated + processed/id_maps
         |  prepare
         v
     processed/

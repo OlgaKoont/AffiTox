@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .panel import CANONICAL_TARGETS as CANONICAL_TARGETS  # re-export
+
 # Internal method id -> article display label
 METHOD_LABELS: dict[str, str] = {
     "boltz2": "Boltz-2",
@@ -9,6 +11,27 @@ METHOD_LABELS: dict[str, str] = {
     "gnina": "GNINA 1.3",
     "plapt": "PLAPT",
     "qvina": "QVina2",
+}
+
+# PDB structure -> assayed protein target label used in publication figures.
+TARGET_LABELS: dict[str, str] = {
+    "1g5m": "BCL-2",
+    "2v5z": "MAO-B",
+    "3eyg": "JAK1",
+    "3jy9": "JAK2",
+    "3lxk": "JAK3",
+    "11ue": "PDGFRB",
+    "4ase": "VEGFR2",
+    "4f65": "FGFR1",
+    "4tz4": "CRBN",
+    "4zau": "EGFR",
+    "5jkv": "CYP19A1",
+    "5mo4": "ABL1",
+    "6gqj": "c-KIT",
+    "6jok": "PDGFRA",
+    "5lf3": "PSMB5",
+    "7awe": "PSMB5",
+    "7kk3": "PARP1",
 }
 
 # Primary affinity column per method (article convention)
@@ -34,11 +57,11 @@ METHOD_COLOR_CORRELATION_ANCHORS: dict[str, float] = {
 
 # Fallback hex (r = 1, 0.5, -0.35, -1, 0); overridden dynamically in method_color().
 DEFAULT_METHOD_COLORS: dict[str, str] = {
-    "boltz2": "#E5885F",
-    "dynamicbind": "#FDBBAA",
-    "gnina": "#AFC6F2",
-    "qvina": "#6584E1",
-    "plapt": "#DEDAD7",
+    "boltz2": "#EF4938",
+    "dynamicbind": "#F7A193",
+    "gnina": "#9AA8D9",
+    "qvina": "#3558C5",
+    "plapt": "#D9D7D0",
 }
 
 # PoseBusters CSV method keys (may differ from internal id)

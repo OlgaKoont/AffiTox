@@ -1,0 +1,6 @@
+pdb_id,ligand_id,molecule_chembl_id,canonical_smiles,csv_row_1based,vina_legacy_id,dynamicbind_legacy_id,boltz_native_id,engine_native_id
+7kk3,ligand_0001,CHEMBL362322,C/C(=N/O)c1c(-c2ccc(F)cc2)n2c3c(cccc13)C(=O)NCC2,1,ligand_1,idx_0,CHEMBL362322,ligand_0001
+7kk3,ligand_0002,CHEMBL2204335,C/C(=N\O)c1c(-c2ccc(F)cc2)n2c3c(cccc13)C(=O)NCC2,2,ligand_2,idx_1,CHEMBL2204335,ligand_0002
+7kk3,ligand_0003,CHEMBL189466,C/C(=N\O)c1cn2c3c(cccc13)C(=O)NCC2,3,ligand_3,idx_2,CHEMBL189466,ligand_0003
+7kk3,ligand_0004,CHEMBL134116,C=CCOc1cc(-c2nc3c(C(N)=O)cccc3[nH]2)ccc1OC,4,ligand_4,idx_3,CHEMBL134116,ligand_0004
+7kk3,ligand_0005,CHEMBL3937647,CC(=O)CCCC(=O)Nc1cc(Cc2n[nH]c(=O)c3c2CCCC3)ccc1F,5,ligand_5,idx_4,CHEMBL3937647,ligand_0005

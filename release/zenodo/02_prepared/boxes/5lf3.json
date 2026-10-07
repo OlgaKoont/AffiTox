@@ -1,0 +1,20 @@
+{
+  "center": [
+    9.104,
+    194.95,
+    38.956
+  ],
+  "size": [
+    20.0,
+    20.0,
+    20.0
+  ],
+  "method": "labox",
+  "scale": 2.0,
+  "min_size": 20.0,
+  "source": "5lf3_ligand.pdb",
+  "ligand": "BO2",
+  "chain": "K",
+  "uniprot": "P28074",
+  "volume": 8000.0
+}

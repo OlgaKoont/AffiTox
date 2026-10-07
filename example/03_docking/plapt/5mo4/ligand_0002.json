@@ -1,0 +1,8 @@
+{
+  "protein": "5mo4",
+  "ligand_id": "ligand_2",
+  "smiles": "C#Cc1cc(OC)c(-c2ccc3nc(NC(=O)NCO)sc3c2)cc1C=O",
+  "affinity": 6.1726237813861475,
+  "affinity_uM": 0.6720107472092218,
+  "prediction_time": 0.009443103493034066
+}

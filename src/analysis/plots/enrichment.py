@@ -8,13 +8,31 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from matplotlib.cm import ScalarMappable
+from matplotlib.colors import LinearSegmentedColormap, Normalize
+from matplotlib.gridspec import GridSpec
+
 from ..config import AnalysisConfig
-from .style import apply_style, positive_sequential_cmap, save_figure
+from .style import apply_style, save_figure
+
+# Article blue → cyan at nEF = 0.5 (same for every target) → ivory → vermilion.
+# Ivory after 0.5 keeps the 0.5 band from mixing into purple.
+NEF_POINT_CMAP = LinearSegmentedColormap.from_list(
+    "nef_points",
+    [
+        (0.00, "#3558C5"),
+        (0.50, "#7BA3E8"),
+        (0.62, "#FFF9EE"),
+        (1.00, "#EF4938"),
+    ],
+    N=256,
+)
 
 
 def _panel_plot(
     ax: plt.Axes,
     df: pd.DataFrame,
+    cfg: AnalysisConfig,
     col: str,
     title: str,
     panel_letter: str,
@@ -44,7 +62,7 @@ def _panel_plot(
         body.set_linewidth(0.6)
         body.set_alpha(0.22)
 
-    label_thr = 0.6
+    label_thr = 0.45
     for i, vals in enumerate(values_by_method):
         if len(vals) == 0:
             continue
@@ -55,7 +73,9 @@ def _panel_plot(
             .copy()
             .reset_index(drop=True)
         )
-        proteins = df_method["target"].astype(str).str.upper().to_numpy()
+        proteins = (
+            df_method["target"].astype(str).map(cfg.target_label).to_numpy()
+        )
         jitter_x = x_positions[i] + rng.uniform(-0.18, 0.18, size=len(vals))
         jitter_y = vals + rng.uniform(-0.015, 0.015, size=len(vals))
         jitter_y = np.clip(jitter_y, 0.0, 1.0)
@@ -72,13 +92,16 @@ def _panel_plot(
             linewidths=0.55,
             zorder=3,
         )
-        label_idx = sorted([j for j, yi in enumerate(vals) if yi < label_thr], key=lambda j: vals[j])
+        label_idx = sorted(
+            [j for j, yi in enumerate(vals) if yi < label_thr],
+            key=lambda j: vals[j],
+        )[:4]
         last_y_by_side = {"right": -10.0, "left": -10.0}
-        min_gap = 0.03
+        min_gap = 0.08
         for rank, j in enumerate(label_idx):
             side = "right" if rank % 2 == 0 else "left"
             ha = "left" if side == "right" else "right"
-            x_text = (jitter_x[j] + 0.08) if side == "right" else (jitter_x[j] - 0.08)
+            x_text = (jitter_x[j] + 0.10) if side == "right" else (jitter_x[j] - 0.10)
             y_text = float(jitter_y[j])
             if (y_text - last_y_by_side[side]) < min_gap:
                 y_text = last_y_by_side[side] + min_gap
@@ -91,9 +114,10 @@ def _panel_plot(
                 xytext=(x_text, y_text),
                 ha=ha,
                 va="center",
-                fontsize=7,
+                fontsize=6,
                 alpha=0.9,
                 zorder=5,
+                arrowprops=dict(arrowstyle="-", color="#666666", lw=0.4, shrinkA=0, shrinkB=2),
             )
         ax.scatter(
             [x_positions[i]],
@@ -114,9 +138,9 @@ def _panel_plot(
     ax.axhline(0.5, color="#666666", linestyle=":", linewidth=1.0, alpha=0.7)
     ax.set_title(title, fontsize=12, pad=10)
     ax.text(
-        -0.1, 1.02, panel_letter,
+        0.03, 0.98, panel_letter,
         transform=ax.transAxes,
-        fontsize=18, fontweight="bold", va="bottom", ha="right",
+        fontsize=18, fontweight="bold", va="top", ha="left",
     )
 
 
@@ -129,7 +153,6 @@ def plot_nef_violins(ef: pd.DataFrame, cfg: AnalysisConfig) -> None:
         old.unlink()
 
     order = [cfg.method_label(m) for m in cfg.methods if m in set(ef["method_id"])]
-    point_cmap = positive_sequential_cmap(cfg, name="nef_point_gradient")
 
     for frac in ("1", "5", "10"):
         active_col = f"nEF{frac}_active"
@@ -137,16 +160,33 @@ def plot_nef_violins(ef: pd.DataFrame, cfg: AnalysisConfig) -> None:
         if active_col not in ef.columns or low_col not in ef.columns:
             continue
 
-        fig, axes = plt.subplots(1, 2, figsize=(12.8, 5.6), sharey=True)
+        fig = plt.figure(figsize=(13.4, 5.6))
+        gs = GridSpec(
+            1, 3, figure=fig,
+            width_ratios=[1.0, 1.0, 0.045],
+            wspace=0.22,
+            left=0.07, right=0.94, top=0.88, bottom=0.12,
+        )
+        ax0 = fig.add_subplot(gs[0, 0])
+        ax1 = fig.add_subplot(gs[0, 1], sharey=ax0)
+        cax = fig.add_subplot(gs[0, 2])
         _panel_plot(
-            axes[0], ef, active_col,
-            f"nEF{frac} (actives: Ki < 1000 nM)", "A", order, point_cmap,
+            ax0, ef, cfg, active_col,
+            f"nEF{frac} (actives: Ki < 1000 nM)", "A", order, NEF_POINT_CMAP,
             seed=cfg.random_seed, frac=int(frac),
         )
         _panel_plot(
-            axes[1], ef, low_col,
-            f"nEF{frac} (inactives: Ki ≥ 1000 nM)", "B", order, point_cmap,
+            ax1, ef, cfg, low_col,
+            f"nEF{frac},low (inactives: Ki ≥ 1000 nM)", "B", order, NEF_POINT_CMAP,
             seed=cfg.random_seed + 1, frac=int(frac),
         )
-        plt.tight_layout()
+        sm = ScalarMappable(norm=Normalize(0.0, 1.0), cmap=NEF_POINT_CMAP)
+        sm.set_array([])
+        cbar = fig.colorbar(sm, cax=cax)
+        cbar.set_ticks([0.0, 0.5, 1.0])
+        cbar.set_label("nEF")
+        fig.canvas.draw()
+        pos = ax0.get_position()
+        cpos = cax.get_position()
+        cax.set_position([cpos.x0, pos.y0, cpos.width, pos.height])
         save_figure(fig, out_dir / f"summary_nEF{frac}_combined")

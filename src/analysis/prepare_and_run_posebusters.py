@@ -23,15 +23,52 @@ import argparse
 import csv
 import re
 import shutil
-import subprocess
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+
+try:
+    from .posebusters_runner import run_posebusters_chunked
+    from .pose_chemistry import (
+        TEMPLATE_MARKER,
+        pdbqt_to_template_mol,
+        write_pose_molecule,
+    )
+except ImportError:
+    from posebusters_runner import run_posebusters_chunked
+    from pose_chemistry import (
+        TEMPLATE_MARKER,
+        pdbqt_to_template_mol,
+        write_pose_molecule,
+    )
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 DEFAULT_POSES_DIR = PROJECT_ROOT / "results"
 DEFAULT_PROTEINS_DIR = PROJECT_ROOT / "processed" / "proteins"
-DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "analysis" / "tables" / "posebuster"
+DEFAULT_OUTPUT_DIR = (
+    PROJECT_ROOT / "analysis" / "excluding_2z5x_3mjg" / "tables" / "posebuster"
+)
+PDB_TO_LIGAND_CSV = {
+    "1g5m": "BCL2_Ki_WT_ChEMBL_252_nodubl.csv",
+    "2v5z": "MAO-B_Ki_WT_ChEMBL_246_nodubl.csv",
+    "2z5x": "MAO-B_Ki_WT_ChEMBL_246_nodubl.csv",
+    "3eyg": "JAK1_Ki_WT_ChEMBL_2255_nodubl.csv",
+    "3jy9": "JAK2_Ki_WT_ChEMBL_2027_nodubl.csv",
+    "3lxk": "JAK3_Ki_WT_ChEMBL_786_nodubl.csv",
+    "3mjg": "PDGFRB_Ki_WT_ChEMBL_275_nodubl.csv",
+    "4ase": "VEGFR2_Ki_WT_ChEMBL_875_nodubl.csv",
+    "4f65": "FGFR1_Ki_WT_ChEMBL_134_nodubl.csv",
+    "4tz4": "CRBN_Ki_WT_ChEMBL_127_nodubl.csv",
+    "4zau": "EGFR_Ki_WT_curated_251_nodubl.csv",
+    "5jkv": "CYP19A1_Aromatase_Ki_WT_ChEMBL_548_nodubl.csv",
+    "5mo4": "ABL1_BCR-ABL_Ki_WT_ChEMBL_693_nodubl.csv",
+    "6gqj": "KIT_Ki_WT_curated_1298_nodubl.csv",
+    "6jok": "PDGFRA_Ki_WT_curated_250_nodubl.csv",
+    "5lf3": "PSMB5_Ki_WT_ChEMBL_88_nodubl.csv",
+    "7awe": "PSMB5_Ki_WT_ChEMBL_88_nodubl.csv",
+    "7kk3": "PARP1_Ki_WT_ChEMBL_1075_nodubl.csv",
+    "11ue": "PDGFRB_Ki_WT_ChEMBL_275_nodubl.csv",
+}
 
 
 def _is_valid_sdf_file(sdf_path: Path) -> bool:
@@ -52,6 +89,8 @@ def _find_protein_pdb(proteins_dir: Path, protein: str) -> Optional[Path]:
     candidates = [
         proteins_dir / f"{protein.lower()}_chainA.pdb",
         proteins_dir / f"{protein.upper()}_chainA.pdb",
+        proteins_dir / f"{protein.lower()}_chainK.pdb",
+        proteins_dir / f"{protein.upper()}_chainK.pdb",
         proteins_dir / f"{protein.lower()}.pdb",
         proteins_dir / f"{protein.upper()}.pdb",
     ]
@@ -71,42 +110,78 @@ def _discover_proteins(poses_dir: Path) -> List[str]:
     return sorted(proteins)
 
 
-def _convert_pdbqt_to_sdf_top1(
-    pdbqt_path: Path, sdf_path: Path, obabel_bin: str, force: bool
-) -> bool:
-    """Convert .pdbqt -> top-1 .sdf using Open Babel."""
-    if sdf_path.exists() and not force and _is_valid_sdf_file(sdf_path):
-        return True
-    # If cache exists but is invalid/empty, drop it before reconversion.
-    if sdf_path.exists() and not _is_valid_sdf_file(sdf_path):
-        try:
-            sdf_path.unlink()
-        except OSError:
-            pass
-    sdf_path.parent.mkdir(parents=True, exist_ok=True)
-    cmd = [
-        obabel_bin,
-        "-ipdbqt",
-        str(pdbqt_path),
-        "-osdf",
-        "-O",
-        str(sdf_path),
-        "-f",
-        "1",
-        "-l",
-        "1",
-    ]
-    proc = subprocess.run(cmd, capture_output=True, text=True)
-    if proc.returncode != 0:
+def _load_smiles_by_ligand(protein: str) -> Dict[str, str]:
+    from docking_benchmark2.ligand_ids import format_ligand_id, vina_legacy_id
+
+    curated = PROJECT_ROOT / "input" / "ligands_curated" / f"{protein.lower()}_ligands.csv"
+    csv_name = PDB_TO_LIGAND_CSV.get(protein.lower())
+    csv_path = curated if curated.is_file() else (
+        PROJECT_ROOT / "input" / "ligands_nodubl" / csv_name if csv_name else None
+    )
+    if not csv_path or not csv_path.is_file():
+        return {}
+    sample = csv_path.read_text(encoding="utf-8", errors="replace")[:2048]
+    delimiter = ";" if sample.count(";") >= sample.count(",") else ","
+    with csv_path.open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle, delimiter=delimiter))
+    out: Dict[str, str] = {}
+    for row_index, row in enumerate(rows, start=1):
+        smiles = row.get("canonical_smiles") or row.get("smiles")
+        if not smiles:
+            continue
+        ligand_id = row.get("ligand_id") or format_ligand_id(row_index)
+        out[ligand_id] = smiles
+        out[vina_legacy_id(row_index)] = smiles
+        out[format_ligand_id(row_index)] = smiles
+    return out
+
+
+def _is_template_sdf_file(sdf_path: Path) -> bool:
+    if not _is_valid_sdf_file(sdf_path):
         return False
-    return _is_valid_sdf_file(sdf_path)
+    try:
+        from rdkit import Chem
+
+        supplier = Chem.SDMolSupplier(str(sdf_path), removeHs=False)
+        mol = supplier[0] if supplier and len(supplier) else None
+        return bool(
+            mol is not None
+            and mol.HasProp(TEMPLATE_MARKER)
+            and mol.GetProp(TEMPLATE_MARKER) == "1"
+        )
+    except Exception:
+        return False
+
+
+def _convert_pdbqt_to_sdf_top1(
+    pdbqt_path: Path,
+    sdf_path: Path,
+    canonical_smiles: str,
+    force: bool,
+) -> bool:
+    """Transfer canonical chemistry onto top-pose PDBQT coordinates."""
+    if sdf_path.exists() and not force and _is_template_sdf_file(sdf_path):
+        return True
+    sdf_path.unlink(missing_ok=True)
+    sdf_path.parent.mkdir(parents=True, exist_ok=True)
+
+    try:
+        fixed = pdbqt_to_template_mol(pdbqt_path, canonical_smiles)
+        write_pose_molecule(fixed, sdf_path)
+    except Exception as exc:
+        print(f"Template chemistry conversion failed [{pdbqt_path}]: {exc}")
+        sdf_path.unlink(missing_ok=True)
+        return False
+    return _is_template_sdf_file(sdf_path)
 
 
 def _parse_dynamicbind_ligand_id(index_dir_name: str) -> str:
-    """index470_idx_470 -> ligand_470; fallback to folder name."""
-    m = re.search(r"index(\d+)_idx_\d+", index_dir_name)
+    """index470_idx_470 is 0-based → ligand_0471. Fallback to folder name."""
+    from docking_benchmark2.ligand_ids import format_ligand_id
+
+    m = re.search(r"index(\d+)_idx_(\d+)", index_dir_name)
     if m:
-        return f"ligand_{m.group(1)}"
+        return format_ligand_id(int(m.group(2)) + 1)
     return index_dir_name
 
 
@@ -139,6 +214,7 @@ def _prepare_rows_for_protein(
 ) -> Tuple[Dict[str, List[Dict[str, str]]], Dict[str, int]]:
     rows_by_method: Dict[str, List[Dict[str, str]]] = {"gnina": [], "qvina": [], "dynamicbind": []}
     stats = {"gnina": 0, "qvina": 0, "dynamicbind": 0, "failed_conversions": 0}
+    smiles_by_ligand = _load_smiles_by_ligand(protein)
 
     docking_dir = poses_dir / protein / "docking"
     if not docking_dir.is_dir():
@@ -153,7 +229,13 @@ def _prepare_rows_for_protein(
             for pdbqt_path in sorted(gnina_dir.glob("ligand_*_out.pdbqt")):
                 ligand = pdbqt_path.stem.replace("_out", "")
                 sdf_path = output_sdf_dir / protein / "gnina" / f"{ligand}.sdf"
-                ok = _convert_pdbqt_to_sdf_top1(pdbqt_path, sdf_path, obabel_bin, force)
+                smiles = smiles_by_ligand.get(ligand)
+                ok = bool(
+                    smiles
+                    and _convert_pdbqt_to_sdf_top1(
+                        pdbqt_path, sdf_path, smiles, force
+                    )
+                )
                 if not ok:
                     stats["failed_conversions"] += 1
                     continue
@@ -176,7 +258,13 @@ def _prepare_rows_for_protein(
             for pdbqt_path in sorted(qvina_dir.glob("ligand_*_out.pdbqt")):
                 ligand = pdbqt_path.stem.replace("_out", "")
                 sdf_path = output_sdf_dir / protein / "qvina" / f"{ligand}.sdf"
-                ok = _convert_pdbqt_to_sdf_top1(pdbqt_path, sdf_path, obabel_bin, force)
+                smiles = smiles_by_ligand.get(ligand)
+                ok = bool(
+                    smiles
+                    and _convert_pdbqt_to_sdf_top1(
+                        pdbqt_path, sdf_path, smiles, force
+                    )
+                )
                 if not ok:
                     stats["failed_conversions"] += 1
                     continue
@@ -193,15 +281,29 @@ def _prepare_rows_for_protein(
 
     if "dynamicbind" in methods:
         dynamicbind_dir = docking_dir / dynamicbind_subdir
-        # Expected structure: dynamicbind/<dataset>/<protein_dataset>/index*_idx_*/rank*.sdf
-        for index_dir in sorted(dynamicbind_dir.glob("*/*/index*_idx_*")):
+        # DynamicBind outputs occur in both flat and nested dataset layouts.
+        candidates: Dict[str, Path] = {}
+        for index_dir in sorted(dynamicbind_dir.glob("**/index*_idx_*")):
             if not index_dir.is_dir():
                 continue
             chosen_pair = _collect_dynamicbind_rank1_pair(index_dir)
             if chosen_pair is None:
                 continue
-            chosen_ligand, chosen_receptor = chosen_pair
             ligand = _parse_dynamicbind_ligand_id(index_dir.name)
+            previous = candidates.get(ligand)
+            if previous is None or len(index_dir.relative_to(dynamicbind_dir).parts) < len(
+                previous.relative_to(dynamicbind_dir).parts
+            ):
+                candidates[ligand] = index_dir
+
+        for ligand, index_dir in sorted(
+            candidates.items(),
+            key=lambda item: int(item[0].split("_", 1)[1]),
+        ):
+            chosen_pair = _collect_dynamicbind_rank1_pair(index_dir)
+            if chosen_pair is None:
+                continue
+            chosen_ligand, chosen_receptor = chosen_pair
             # Keep a stable copy under posebusters/sdf for a unified layout.
             sdf_path = output_sdf_dir / protein / dynamicbind_method_label / f"{ligand}.sdf"
             sdf_path.parent.mkdir(parents=True, exist_ok=True)
@@ -270,22 +372,16 @@ def _run_posebusters(
     bust_bin: str,
     max_workers: int,
     posebusters_config: Optional[str] = None,
+    chunk_size: int = 100,
 ) -> None:
-    output_csv.parent.mkdir(parents=True, exist_ok=True)
-    cmd = [
-        bust_bin,
-        "-t",
-        str(table_csv),
-        "--outfmt",
-        "csv",
-        "--output",
-        str(output_csv),
-        "--max-workers",
-        str(max_workers),
-    ]
-    if posebusters_config:
-        cmd.extend(["--config", posebusters_config])
-    subprocess.run(cmd, check=True)
+    run_posebusters_chunked(
+        table_csv=table_csv,
+        output_csv=output_csv,
+        bust_bin=bust_bin,
+        max_workers=max_workers,
+        posebusters_config=posebusters_config,
+        chunk_size=chunk_size,
+    )
 
 
 def main() -> None:
@@ -341,6 +437,12 @@ def main() -> None:
         help="PoseBusters max workers when running checks.",
     )
     parser.add_argument(
+        "--chunk-size",
+        type=int,
+        default=100,
+        help="Rows per resumable PoseBusters chunk; use 0 to disable chunking.",
+    )
+    parser.add_argument(
         "--posebusters-config",
         type=str,
         default="",
@@ -371,14 +473,14 @@ def main() -> None:
     parser.add_argument(
         "--dynamicbind-subdir",
         type=str,
-        default="dynamicbind",
-        help="DynamicBind subdirectory inside docking/ (default: dynamicbind).",
+        default="dynamicbind_new",
+        help="DynamicBind subdirectory inside docking/ (default: dynamicbind_new).",
     )
     parser.add_argument(
         "--dynamicbind-method-label",
         type=str,
-        default="dynamicbind",
-        help="Method label for dynamicbind rows/output files (default: dynamicbind).",
+        default="dynamicbind_new",
+        help="Method label for dynamicbind rows/output files (default: dynamicbind_new).",
     )
 
     args = parser.parse_args()
@@ -469,6 +571,7 @@ def main() -> None:
                     bust_bin=args.bust_bin,
                     max_workers=args.max_workers,
                     posebusters_config=(args.posebusters_config.strip() or None),
+                    chunk_size=args.chunk_size,
                 )
                 print(f"PoseBusters [{protein.upper()} {method.upper()}]: {method_output}")
 
@@ -490,6 +593,7 @@ def main() -> None:
         bust_bin=args.bust_bin,
         max_workers=args.max_workers,
         posebusters_config=(args.posebusters_config.strip() or None),
+        chunk_size=args.chunk_size,
     )
     print(f"PoseBusters results: {output_csv}")
 

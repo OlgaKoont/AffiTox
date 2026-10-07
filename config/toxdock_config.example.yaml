@@ -1,0 +1,26 @@
+# AffiTox smoke-test config: all paths under example/ (relative to repo root).
+# Used by example/run_example_pipeline.sh
+
+base_dir: "example"
+protein_dir: "example/input/proteins"
+ligand_dir: "example/input/ligands_nodubl"
+processed_dir: "processed"
+output_dir: "results"
+
+protein_settings_file: "config/protein_settings_keep_cofactors_v2.yaml"
+box_settings_file: null
+interaction_config_file: "config/interaction_protein_ligand_16target.json"
+
+labox:
+  method: "labox"
+  scale: 2.0
+  min_size: 4.0
+  fallback_method: "default"
+
+random_state: 42
+
+methods:
+  - qvina
+  - gnina
+  - plapt
+  - dynamicbind

@@ -10,7 +10,7 @@ from scipy.stats import kendalltau, pearsonr, spearmanr
 
 from .config import AnalysisConfig
 from .data import load_merged, prepare_xy
-from .inferential import benjamini_hochberg, bootstrap_ci, permutation_p
+from .inferential import benjamini_hochberg, bootstrap_ci, bootstrap_error_ci, calibrated_error, permutation_p
 
 
 def compute_correlation_row(
@@ -110,6 +110,15 @@ def add_bootstrap_permutation(cfg: AnalysisConfig, summary: pd.DataFrame) -> pd.
         s_lo, s_hi, _ = bootstrap_ci(
             x, y, method="spearman", n_boot=cfg.n_bootstrap, seed=cfg.random_seed + 1
         )
+        k_lo, k_hi, _ = bootstrap_ci(
+            x, y, method="kendall", n_boot=cfg.n_bootstrap, seed=cfg.random_seed + 4
+        )
+        rmse_lo, rmse_hi, rmse_mean = bootstrap_error_ci(
+            x, y, metric="rmse", n_boot=cfg.n_bootstrap, seed=cfg.random_seed + 5
+        )
+        mae_lo, mae_hi, mae_mean = bootstrap_error_ci(
+            x, y, metric="mae", n_boot=cfg.n_bootstrap, seed=cfg.random_seed + 6
+        )
         rec["pearson_ci_low"] = p_lo
         rec["pearson_ci_high"] = p_hi
         rec["pearson_perm_p"] = permutation_p(
@@ -120,6 +129,19 @@ def add_bootstrap_permutation(cfg: AnalysisConfig, summary: pd.DataFrame) -> pd.
         rec["spearman_perm_p"] = permutation_p(
             x, y, method="spearman", n_perm=cfg.n_permutation, seed=cfg.random_seed + 3
         )
+        rec["kendall_ci_low"] = k_lo
+        rec["kendall_ci_high"] = k_hi
+        rec["kendall_perm_p"] = permutation_p(
+            x, y, method="kendall", n_perm=cfg.n_permutation, seed=cfg.random_seed + 7
+        )
+        rec["calibrated_rmse"] = calibrated_error(x, y, "rmse")
+        rec["calibrated_rmse_ci_low"] = rmse_lo
+        rec["calibrated_rmse_ci_high"] = rmse_hi
+        rec["calibrated_rmse_boot_mean"] = rmse_mean
+        rec["calibrated_mae"] = calibrated_error(x, y, "mae")
+        rec["calibrated_mae_ci_low"] = mae_lo
+        rec["calibrated_mae_ci_high"] = mae_hi
+        rec["calibrated_mae_boot_mean"] = mae_mean
         ext_rows.append(rec)
 
     extended = pd.DataFrame(ext_rows)

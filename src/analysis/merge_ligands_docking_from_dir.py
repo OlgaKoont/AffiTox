@@ -18,6 +18,22 @@ from typing import Dict, Optional, List, Tuple
 
 import pandas as pd
 
+_SRC = Path(__file__).resolve().parent.parent
+if str(_SRC) not in sys.path:
+    sys.path.insert(0, str(_SRC))
+
+from analysis.ligand_identity import chembl_to_ligand_ids, native_to_ligand_id
+from analysis.panel import (
+    CANONICAL_TARGETS,
+    LEGACY_PDB_TO_NODUBL_STEM,
+    nodubl_csv_name,
+)
+from docking_benchmark2.ligand_ids import (
+    format_ligand_id,
+    normalize_ligand_id,
+    parse_dynamicbind_idx,
+    parse_ligand_number,
+)
 
 # Маппинг PDB кодов на имена CSV файлов в ligands_nodubl (без _nodubl.csv)
 PDB_TO_CSV_MAPPING = {
@@ -25,6 +41,7 @@ PDB_TO_CSV_MAPPING = {
     "1g5m": "BCL2_Ki_WT_ChEMBL_252",
     "1g5m_wrong": "BCL2L1_BCL-XL_Ki_WT_ChEMBL_287",
     "1tqn": "CYP3A4_Ki_WT_ChEMBL_1",
+    "2v5z": "MAO-B_Ki_WT_ChEMBL_246",
     "2z5x": "MAO-B_Ki_WT_ChEMBL_246",
     "3eyg": "JAK1_Ki_WT_ChEMBL_2255",
     "3jy9": "JAK2_Ki_WT_ChEMBL_2027",
@@ -40,18 +57,26 @@ PDB_TO_CSV_MAPPING = {
     "5mo4": "ABL1_BCR-ABL_Ki_WT_ChEMBL_693",
     "6gqj": "KIT_Ki_WT_curated_1298",
     "6jok": "PDGFRA_Ki_WT_curated_250",
+    "5lf3": "PSMB5_Ki_WT_ChEMBL_88",
     "7awe": "PSMB5_Ki_WT_ChEMBL_88",
     "7kk3": "PARP1_Ki_WT_ChEMBL_1075",
     "8zyq": "hERG_Ki_WT_curated_417",
+    "11ue": "PDGFRB_Ki_WT_ChEMBL_275",
 }
 
-# Столбцы для извлечения из ligands_nodubl CSV
+# Столбцы для извлечения из ligands_nodubl / ligands_curated CSV
 LIGANDS_COLUMNS = [
+    "ligand_id",
+    "molecule_chembl_id",
     "canonical_smiles",
     "assay_chembl_id",
     "standard_value",
     "value",
     "pchembl_value",
+    "pKi",
+    "pValue",
+    "is_active",
+    "activity_class",
     "assay_type",
     "document_chembl_id",
     "type",
@@ -401,6 +426,28 @@ def dynamicbind_ligand_from_folder(folder_name: str) -> str:
     return folder_name
 
 
+def dynamicbind_ligand_from_csv_row(row: pd.Series) -> Optional[str]:
+    """Return the explicit source ligand ID from a DynamicBind summary row.
+
+    DynamicBind can omit failed ligands from affinity_prediction.csv while
+    preserving their original ``idx_N`` names.  Therefore the DataFrame row
+    number is not a ligand identifier and must never be used as one.
+    """
+    for column in ("name", "ligand_id", "ligand", "id"):
+        if column not in row.index or pd.isna(row[column]):
+            continue
+        value = str(row[column]).strip()
+        idx_match = re.fullmatch(r"idx_(\d+)", value)
+        if idx_match:
+            return f"idx_{int(idx_match.group(1))}"
+        ligand_match = re.fullmatch(r"ligand_(\d+)", value)
+        if ligand_match:
+            return format_ligand_id(int(ligand_match.group(1)))
+        if re.fullmatch(r"\d+", value):
+            return f"idx_{int(value)}"
+    return None
+
+
 def collect_metrics_from_docking_dir(
     protein: str, docking_dir: Path, dynamicbind_subdir: str = "dynamicbind"
 ) -> Dict[str, Dict[str, float]]:
@@ -423,7 +470,7 @@ def collect_metrics_from_docking_dir(
         for fname in os.listdir(qvina_dir):
             if not fname.endswith(".log") or not fname.startswith("ligand_"):
                 continue
-            ligand = os.path.splitext(fname)[0]  # ligand_1
+            ligand = os.path.splitext(fname)[0]
             log_path = qvina_dir / fname
             parsed = parse_qvina_log(str(log_path))
             if parsed:
@@ -442,7 +489,7 @@ def collect_metrics_from_docking_dir(
         for fname in os.listdir(gnina_dir):
             if not fname.endswith(".log") or not fname.startswith("ligand_"):
                 continue
-            ligand = os.path.splitext(fname)[0]  # ligand_1
+            ligand = os.path.splitext(fname)[0]
             log_path = gnina_dir / fname
             parsed = parse_gnina_log(str(log_path))
             if parsed:
@@ -465,7 +512,7 @@ def collect_metrics_from_docking_dir(
             for fname in os.listdir(sub_dir):
                 if not fname.endswith(".json") or not fname.startswith("ligand_"):
                     continue
-                ligand = os.path.splitext(fname)[0]  # ligand_1
+                ligand = os.path.splitext(fname)[0]
                 jpath = sub_dir / fname
                 parsed = parse_plapt_json(str(jpath))
                 if parsed:
@@ -481,81 +528,133 @@ def collect_metrics_from_docking_dir(
     if dynamicbind_dir.exists():
         print(f"   Собираю метрики dynamicbind...")
         count = 0
-        for dataset in os.listdir(dynamicbind_dir):
-            ds_dir = dynamicbind_dir / dataset
-            if not ds_dir.is_dir():
-                continue
-            for pd_name in os.listdir(ds_dir):
-                pd_dir = ds_dir / pd_name
-                if not pd_dir.is_dir():
+        # Some result trees contain a stale nested copy plus a newer direct
+        # rerun (notably 4tz4).  Prefer the shallowest summary deterministically;
+        # never combine multiple panels with the same idx_N identifiers.
+        summary_candidates = sorted(dynamicbind_dir.glob("**/affinity_prediction.csv"))
+        if summary_candidates:
+            depths = {
+                path: len(path.relative_to(dynamicbind_dir).parts)
+                for path in summary_candidates
+            }
+            min_depth = min(depths.values())
+            preferred = [path for path in summary_candidates if depths[path] == min_depth]
+            if len(preferred) > 1:
+                raise RuntimeError(
+                    "Ambiguous DynamicBind summaries at equal depth: "
+                    + ", ".join(str(path) for path in preferred)
+                )
+            csv_path = preferred[0]
+            ignored = [path for path in summary_candidates if path != csv_path]
+            print(f"     DynamicBind summary: {csv_path}")
+            if ignored:
+                print(
+                    "     WARNING: ignored deeper stale DynamicBind summaries: "
+                    + ", ".join(str(path) for path in ignored)
+                )
+            df_csv = pd.read_csv(csv_path)
+            aff_col = next(
+                (
+                    column
+                    for column in ("affinity", "predicted_affinity", "affinity_pred")
+                    if column in df_csv.columns
+                ),
+                None,
+            )
+            if aff_col is None:
+                raise ValueError(f"No affinity column in DynamicBind summary {csv_path}")
+            missing_explicit_id = 0
+            duplicate_ids: set[str] = set()
+            seen_ids: set[str] = set()
+            for _, row in df_csv.iterrows():
+                try:
+                    aff = float(row[aff_col])
+                except (TypeError, ValueError):
                     continue
-                for folder in os.listdir(pd_dir):
-                    idx_dir = pd_dir / folder
-                    if not idx_dir.is_dir() or not folder.startswith("index"):
-                        continue
-                    
-                    ligand = dynamicbind_ligand_from_folder(folder)  # idx_0, idx_1, ...
-                    
-                    lddt_vals: List[float] = []
-                    aff_vals: List[float] = []
-                    
-                    for fname in os.listdir(idx_dir):
-                        if not fname.endswith(".sdf") or "lddt" not in fname or "affinity" not in fname:
-                            continue
-                        parsed = parse_dynamicbind_filename(fname)
-                        if parsed:
-                            lddt, aff = parsed
-                            lddt_vals.append(lddt)
-                            aff_vals.append(aff)
-                    
-                    if lddt_vals:
-                        max_aff = max(aff_vals)
-                        idx_max_aff = aff_vals.index(max_aff)
-                        lddt_at_max_aff = lddt_vals[idx_max_aff]
-                        max_lddt = max(lddt_vals)
-                        idx_max_lddt = lddt_vals.index(max_lddt)
-                        aff_at_max_lddt = aff_vals[idx_max_lddt]
-                        
-                        if ligand not in all_metrics:
-                            all_metrics[ligand] = {}
-                        all_metrics[ligand]["dynamicbind_affinity_maxaff"] = max_aff
-                        all_metrics[ligand]["dynamicbind_lddt_maxaff"] = lddt_at_max_aff
-                        all_metrics[ligand]["dynamicbind_lddt_bestpose"] = max_lddt
-                        all_metrics[ligand]["dynamicbind_affinity_bestpose"] = aff_at_max_lddt
-                        count += 1
-                # Fallback: если нет папок index*_idx_*, читаем affinity из CSV в pd_dir
-                for csv_name in ("affinity_prediction.csv", "complete_affinity_prediction.csv"):
-                    csv_path = pd_dir / csv_name
-                    if not csv_path.exists():
-                        continue
-                    try:
-                        df_csv = pd.read_csv(csv_path)
-                    except Exception:
-                        continue
-                    aff_col = None
-                    for c in ("affinity", "predicted_affinity", "affinity_pred"):
-                        if c in df_csv.columns:
-                            aff_col = c
-                            break
-                    if aff_col is None:
-                        continue
-                    for i, row in df_csv.iterrows():
-                        try:
-                            aff = float(row[aff_col])
-                        except (TypeError, ValueError):
-                            continue
-                        ligand = f"idx_{i}"
-                        if ligand not in all_metrics:
-                            all_metrics[ligand] = {}
-                        all_metrics[ligand]["dynamicbind_affinity_maxaff"] = aff
-                        all_metrics[ligand]["dynamicbind_affinity_bestpose"] = aff
-                        all_metrics[ligand]["dynamicbind_lddt_maxaff"] = float("nan")
-                        all_metrics[ligand]["dynamicbind_lddt_bestpose"] = float("nan")
-                        count += 1
-                    break  # один CSV на pd_dir достаточно
+                ligand = dynamicbind_ligand_from_csv_row(row)
+                if ligand is None:
+                    missing_explicit_id += 1
+                    continue
+                if ligand in seen_ids:
+                    duplicate_ids.add(ligand)
+                    continue
+                seen_ids.add(ligand)
+                if ligand not in all_metrics:
+                    all_metrics[ligand] = {}
+                all_metrics[ligand]["dynamicbind_affinity_maxaff"] = aff
+                all_metrics[ligand]["dynamicbind_affinity_bestpose"] = aff
+                all_metrics[ligand]["dynamicbind_lddt_maxaff"] = float("nan")
+                all_metrics[ligand]["dynamicbind_lddt_bestpose"] = float("nan")
+                count += 1
+            if missing_explicit_id:
+                raise ValueError(
+                    f"{missing_explicit_id} DynamicBind rows lack explicit ligand IDs "
+                    f"in {csv_path}"
+                )
+            if duplicate_ids:
+                raise ValueError(
+                    "Duplicate DynamicBind ligand IDs in summary: "
+                    + ", ".join(sorted(duplicate_ids))
+                )
         print(f"     Найдено {count} метрик dynamicbind")
     
     return all_metrics
+
+
+def _resolve_canonical_ligand_id(
+    native: str, lookup: dict[str, str]
+) -> Optional[str]:
+    """Map an engine filename/folder token onto ligand_0001. Never use glob order."""
+    if native in lookup:
+        return lookup[native]
+    upper = native.upper()
+    if upper in lookup:
+        return lookup[upper]
+    padded = normalize_ligand_id(native)
+    if padded and padded in lookup:
+        return padded
+    number = parse_ligand_number(native)
+    if number is not None:
+        candidate = format_ligand_id(number)
+        if candidate in lookup:
+            return candidate
+        return candidate
+    db_number = parse_dynamicbind_idx(native)
+    if db_number is not None:
+        candidate = format_ligand_id(db_number)
+        if candidate in lookup:
+            return candidate
+        return candidate
+    return None
+
+
+def _remap_metrics_to_ligand_id(
+    metrics_by_native: Dict[str, Dict[str, float]], lookup: dict[str, str]
+) -> Dict[str, Dict[str, float]]:
+    remapped: Dict[str, Dict[str, float]] = {}
+    unmatched: list[str] = []
+    for native, metrics in metrics_by_native.items():
+        ligand_id = _resolve_canonical_ligand_id(native, lookup)
+        if ligand_id is None:
+            unmatched.append(native)
+            continue
+        remapped.setdefault(ligand_id, {}).update(metrics)
+    if unmatched:
+        print(
+            f"   WARNING: {len(unmatched)} engine tokens not in ligand_id map "
+            f"(first 8: {unmatched[:8]})"
+        )
+    return remapped
+
+
+def _load_ligand_map(base_dir: Path, protein: str) -> pd.DataFrame:
+    path = base_dir / "processed" / "id_maps" / f"{protein}_ligand_id_map.csv"
+    if path.is_file():
+        return pd.read_csv(path)
+    nodubl = base_dir / "input" / "ligands_nodubl" / nodubl_csv_name(protein)
+    from analysis.ligand_identity import map_rows_from_nodubl
+
+    return map_rows_from_nodubl(protein, nodubl)
 
 
 def merge_ligands_with_docking(
@@ -566,6 +665,7 @@ def merge_ligands_with_docking(
     use_metrics_csv: bool = True,
     dynamicbind_subdir: str = "dynamicbind",
     results_dir: Path | None = None,
+    example_n: int | None = None,
 ) -> pd.DataFrame:
     """
     Объединяет данные лигандов с метриками докинга (boltz2 и exp_*).
@@ -580,15 +680,15 @@ def merge_ligands_with_docking(
         Объединенный DataFrame
     """
     print(f"📖 Читаю лиганды из: {ligands_csv.name}")
-    
-    # Читаем ligands CSV (разделитель ;)
+
     try:
-        ligands_df = pd.read_csv(ligands_csv, sep=";", low_memory=False)
+        sample = ligands_csv.read_text(encoding="utf-8", errors="replace")[:2048]
+        sep = ";" if sample.count(";") >= sample.count(",") else ","
+        ligands_df = pd.read_csv(ligands_csv, sep=sep, low_memory=False)
     except Exception as e:
         print(f"❌ Ошибка при чтении {ligands_csv}: {e}")
         sys.exit(1)
-    
-    # Проверяем наличие нужных столбцов
+
     missing_cols = [col for col in LIGANDS_COLUMNS if col not in ligands_df.columns]
     if missing_cols:
         print(f"⚠️  Отсутствуют столбцы в ligands CSV: {missing_cols}")
@@ -596,148 +696,80 @@ def merge_ligands_with_docking(
         ligands_selected = ligands_df[available_cols].copy()
     else:
         ligands_selected = ligands_df[LIGANDS_COLUMNS].copy()
-    
-    # Добавляем molecule_chembl_id, если его нет, но он есть в исходном файле
+
     if "molecule_chembl_id" not in ligands_selected.columns and "molecule_chembl_id" in ligands_df.columns:
         ligands_selected["molecule_chembl_id"] = ligands_df["molecule_chembl_id"]
-    
+
+    id_map = _load_ligand_map(base_dir, protein)
+    lookup = native_to_ligand_id(id_map)
+    if "ligand_id" not in ligands_selected.columns:
+        ligands_selected.insert(
+            0,
+            "ligand_id",
+            [format_ligand_id(i) for i in range(1, len(ligands_selected) + 1)],
+        )
+    else:
+        ligands_selected["ligand_id"] = ligands_selected["ligand_id"].map(
+            lambda x: normalize_ligand_id(str(x)) or x
+        )
+
+    if example_n:
+        keep = {format_ligand_id(i) for i in range(1, int(example_n) + 1)}
+        ligands_selected = ligands_selected[ligands_selected["ligand_id"].isin(keep)].copy()
+        print(f"   EXAMPLE_N={example_n}: keeping {len(ligands_selected)} ligand_id rows")
+
     print(f"   Найдено {len(ligands_selected)} записей лигандов")
-    
-    # Collect docking metrics from per-target raw results
+
     if results_dir is None:
         results_dir = base_dir / "results"
     docking_dir = results_dir / protein / "docking"
-    print(f"🔍 Собираю метрики докинга из исходных файлов...")
-    all_metrics_by_ligand = collect_metrics_from_docking_dir(
+    print("🔍 Собираю метрики докинга из исходных файлов...")
+    all_metrics_by_native = collect_metrics_from_docking_dir(
         protein, docking_dir, dynamicbind_subdir=dynamicbind_subdir
     )
-    print(f"   Найдено метрик для {len(all_metrics_by_ligand)} лигандов")
-    
-    # Собираем метрики Boltz из JSON файлов
+    all_metrics_by_ligand = _remap_metrics_to_ligand_id(all_metrics_by_native, lookup)
+    print(f"   Найдено метрик для {len(all_metrics_by_ligand)} ligand_id")
+
     print(f"🔍 Собираю метрики Boltz для {protein}...")
     boltz_metrics = collect_boltz_metrics(protein, boltz_results_dir)
-    print(f"   Найдено {len(boltz_metrics)} метрик Boltz")
-    
-    # Создаем DataFrame с метриками Boltz
-    if boltz_metrics:
-        boltz_data = []
-        for chembl_id, metrics in boltz_metrics.items():
-            boltz_data.append({"molecule_chembl_id": chembl_id, **metrics})
-        boltz_df = pd.DataFrame(boltz_data)
-    else:
-        # Создаем пустой DataFrame с нужными колонками
-        boltz_df = pd.DataFrame(columns=["molecule_chembl_id"] + BOLTZ_COLUMNS)
-    
-    # Преобразуем метрики в DataFrame и маппим к molecule_chembl_id
-    # Маппинг: ligand_1 -> индекс 0, ligand_2 -> индекс 1, ... (для qvina, gnina, plapt)
-    # Маппинг: idx_0 -> индекс 0, idx_1 -> индекс 1, ... (для dynamicbind)
-    
-    all_metrics_dfs = {}
-    if all_metrics_by_ligand and "molecule_chembl_id" in ligands_selected.columns:
-        # Создаем маппинг ligand_id -> csv_index -> molecule_chembl_id
-        ligands_for_merge = ligands_selected[["molecule_chembl_id"]].copy()
-        ligands_for_merge["csv_index"] = ligands_for_merge.index
-        
-        # Преобразуем метрики в список словарей
-        metrics_rows = []
-        for ligand_id, metrics in all_metrics_by_ligand.items():
-            # Определяем индекс в CSV
-            if ligand_id.startswith("ligand_"):
-                # ligand_1 -> индекс 0, ligand_2 -> индекс 1, ...
-                match = re.search(r'ligand_(\d+)$', ligand_id)
-                if match:
-                    ligand_num = int(match.group(1))
-                    csv_index = ligand_num - 1
-                else:
-                    continue
-            elif ligand_id.startswith("idx_"):
-                # idx_0 -> индекс 0, idx_1 -> индекс 1, ...
-                match = re.search(r'idx_(\d+)$', ligand_id)
-                if match:
-                    csv_index = int(match.group(1))
-                else:
-                    continue
-            else:
-                continue
-            
-            if csv_index >= 0 and csv_index < len(ligands_for_merge):
-                row = {"csv_index": csv_index, **metrics}
-                metrics_rows.append(row)
-        
-        if metrics_rows:
-            metrics_df = pd.DataFrame(metrics_rows)
-            # Мерджим molecule_chembl_id
-            metrics_df = metrics_df.merge(
-                ligands_for_merge,
-                on="csv_index",
-                how="left",
-            )
-            metrics_df = metrics_df.drop(columns=["csv_index"])
-            all_metrics_dfs = {"all_methods": metrics_df}
-    
-    # Добавляем экспериментальные данные из ligands_df
-    # exp_value = value, exp_standard_value = standard_value, exp_pchembl_value = pchembl_value
+    boltz_by_ligand: Dict[str, Dict[str, float]] = {}
+    chembl_lookup = chembl_to_ligand_ids(id_map)
+    unmatched_boltz = []
+    for chembl_id, metrics in boltz_metrics.items():
+        lids = chembl_lookup.get(chembl_id) or chembl_lookup.get(str(chembl_id).upper(), [])
+        if not lids:
+            unmatched_boltz.append(chembl_id)
+            continue
+        for lid in lids:
+            boltz_by_ligand.setdefault(lid, {}).update(metrics)
+    if unmatched_boltz:
+        print(
+            f"   WARNING: {len(unmatched_boltz)} Boltz CHEMBL ids not in map "
+            f"(first 8: {unmatched_boltz[:8]})"
+        )
+    print(f"   Найдено {len(boltz_metrics)} Boltz native / {len(boltz_by_ligand)} ligand_id")
+
     ligands_selected["exp_value"] = ligands_selected.get("value", None)
     ligands_selected["exp_standard_value"] = ligands_selected.get("standard_value", None)
     ligands_selected["exp_pchembl_value"] = ligands_selected.get("pchembl_value", None)
-    
-    # Объединяем все метрики
-    print(f"🔗 Объединяю данные...")
-    
+
+    print("🔗 Объединяю данные по (pdb_id, ligand_id)...")
     merged_df = ligands_selected.copy()
-    
-    # Объединяем метрики других методов
-    for method, method_df in all_metrics_dfs.items():
-        if "molecule_chembl_id" in method_df.columns and "molecule_chembl_id" in merged_df.columns:
-            merged_df = merged_df.merge(
-                method_df,
-                on="molecule_chembl_id",
-                how="left",
-                suffixes=("", f"_{method}"),
-            )
-    
-    # Объединяем с метриками Boltz по molecule_chembl_id
-    if "molecule_chembl_id" in merged_df.columns and "molecule_chembl_id" in boltz_df.columns:
-        merged_df = merged_df.merge(
-            boltz_df,
-            on="molecule_chembl_id",
-            how="left",
-            suffixes=("", "_boltz"),
+    if all_metrics_by_ligand:
+        metrics_df = pd.DataFrame(
+            [{"ligand_id": lid, **metrics} for lid, metrics in all_metrics_by_ligand.items()]
         )
-    elif "canonical_smiles" in merged_df.columns:
-        # Если нет molecule_chembl_id, объединяем по canonical_smiles
-        if "canonical_smiles" in ligands_selected.columns:
-            # Нужно сначала добавить canonical_smiles к boltz_df через molecule_chembl_id
-            if "molecule_chembl_id" in ligands_selected.columns and "molecule_chembl_id" in boltz_df.columns:
-                # Создаем маппинг molecule_chembl_id -> canonical_smiles
-                smiles_mapping = ligands_selected[["molecule_chembl_id", "canonical_smiles"]].drop_duplicates()
-                boltz_df_with_smiles = boltz_df.merge(
-                    smiles_mapping,
-                    on="molecule_chembl_id",
-                    how="left",
-                )
-                # Группируем boltz метрики по SMILES (если один SMILES имеет несколько molecule_chembl_id)
-                boltz_df_grouped = group_by_smiles(boltz_df_with_smiles, smiles_col="canonical_smiles")
-                merged_df = ligands_selected.merge(
-                    boltz_df_grouped.drop(columns=["molecule_chembl_id"]),
-                    on="canonical_smiles",
-                    how="left",
-                    suffixes=("", "_boltz"),
-                )
-            else:
-                merged_df = ligands_selected.copy()
-        else:
-            merged_df = ligands_selected.copy()
-    
-    # Группируем по canonical_smiles, если есть дубликаты
-    if "canonical_smiles" in merged_df.columns:
-        initial_len = len(merged_df)
-        merged_df = group_by_smiles(merged_df, smiles_col="canonical_smiles")
-        if len(merged_df) < initial_len:
-            print(f"   После группировки по SMILES: {len(merged_df)} уникальных SMILES (было {initial_len})")
-    
-    # Добавляем PDB ID как столбец
+        merged_df = merged_df.merge(metrics_df, on="ligand_id", how="left", validate="one_to_one")
+    if boltz_by_ligand:
+        boltz_df = pd.DataFrame(
+            [{"ligand_id": lid, **metrics} for lid, metrics in boltz_by_ligand.items()]
+        )
+        merged_df = merged_df.merge(boltz_df, on="ligand_id", how="left", validate="one_to_one")
+
     merged_df["protein_pdb_id"] = protein.upper()
+    leading = ["protein_pdb_id", "ligand_id"]
+    rest = [c for c in merged_df.columns if c not in leading]
+    merged_df = merged_df[leading + rest]
     
     # Статистика объединения
     total_ligands = len(merged_df)
@@ -750,7 +782,15 @@ def merge_ligands_with_docking(
     print(f"   Всего лигандов: {total_ligands}")
     print(f"   Лигандов с данными Boltz: {has_boltz_data}")
     print(f"   Лигандов без данных Boltz: {total_ligands - has_boltz_data}")
-    
+    for col, label in (
+        ("qvina_affinity_bestpose", "qvina"),
+        ("gnina_cnn_affinity_bestpose", "gnina"),
+        ("plapt_affinity", "plapt"),
+        ("dynamicbind_affinity_bestpose", "dynamicbind"),
+    ):
+        if col in merged_df.columns:
+            print(f"   {label} scored: {int(merged_df[col].notna().sum())}")
+
     return merged_df
 
 
@@ -761,6 +801,7 @@ def process_single_protein(
     boltz_results_dir: str = BOLTZ_RESULTS_DIR,
     dynamicbind_subdir: str = "dynamicbind_new",
     results_dir: Path | None = None,
+    example_n: int | None = None,
 ) -> bool:
     """
     Обрабатывает один белок: объединяет лиганды с метриками докинга.
@@ -775,22 +816,22 @@ def process_single_protein(
         True если успешно, False иначе
     """
     pdb_id_lower = pdb_id.lower()
-    
-    # Проверяем маппинг
-    if pdb_id_lower not in PDB_TO_CSV_MAPPING:
+    if pdb_id_lower not in LEGACY_PDB_TO_NODUBL_STEM:
         print(f"❌ PDB ID {pdb_id} не найден в маппинге")
         return False
-    
-    csv_name = PDB_TO_CSV_MAPPING[pdb_id_lower]
-    ligands_csv = base_dir / "input" / "ligands_nodubl" / f"{csv_name}_nodubl.csv"
-    
+
+    curated = base_dir / "input" / "ligands_curated" / f"{pdb_id_lower}_ligands.csv"
+    ligands_csv = (
+        curated
+        if curated.is_file()
+        else base_dir / "input" / "ligands_nodubl" / nodubl_csv_name(pdb_id_lower)
+    )
     if not ligands_csv.exists():
         print(f"❌ Файл лигандов не найден: {ligands_csv}")
         return False
-    
-    # Output directory for merged tables
+
     if output_dir is None:
-        output_dir = base_dir / "analysis" / "tables"
+        output_dir = base_dir / "analysis" / "excluding_2z5x_3mjg" / "tables"
     
     # Создаем выходной файл
     output_csv = output_dir / f"merged_ligands_docking_{pdb_id_lower}.csv"
@@ -804,6 +845,7 @@ def process_single_protein(
             boltz_results_dir,
             dynamicbind_subdir=dynamicbind_subdir,
             results_dir=results_dir,
+            example_n=example_n,
         )
         
         # Сохраняем результат
@@ -824,6 +866,7 @@ def process_all_proteins(
     boltz_results_dir: str = BOLTZ_RESULTS_DIR,
     dynamicbind_subdir: str = "dynamicbind_new",
     results_dir: Path | None = None,
+    example_n: int | None = None,
 ) -> None:
     """
     Обрабатывает все белки из маппинга.
@@ -839,12 +882,12 @@ def process_all_proteins(
     print()
     
     if output_dir is None:
-        output_dir = base_dir / "analysis" / "tables"
-    
+        output_dir = base_dir / "analysis" / "excluding_2z5x_3mjg" / "tables"
+
     success_count = 0
     fail_count = 0
-    
-    for pdb_id in sorted(PDB_TO_CSV_MAPPING.keys()):
+
+    for pdb_id in CANONICAL_TARGETS:
         print(f"\n{'=' * 80}")
         print(f"Обработка белка: {pdb_id.upper()}")
         print(f"{'=' * 80}")
@@ -856,6 +899,7 @@ def process_all_proteins(
             boltz_results_dir,
             dynamicbind_subdir=dynamicbind_subdir,
             results_dir=results_dir,
+            example_n=example_n,
         ):
             success_count += 1
         else:
@@ -909,7 +953,13 @@ def main():
         default="dynamicbind_new",
         help="Подпапка DynamicBind внутри docking (по умолчанию: dynamicbind_new)",
     )
-    
+    parser.add_argument(
+        "--example-n",
+        type=int,
+        default=None,
+        help="Keep only ligand_0001..ligand_000N (GitHub example). Default: all rows.",
+    )
+
     args = parser.parse_args()
     
     if args.base_dir:
@@ -920,7 +970,10 @@ def main():
     output_dir = Path(args.output_dir) if args.output_dir else None
     results_dir = Path(args.results_dir) if args.results_dir else None
     boltz_dir = args.boltz_results_dir or os.environ.get("BOLTZ_RESULTS_DIR", "")
-    
+    example_n = args.example_n
+    if example_n is None and os.environ.get("EXAMPLE_N"):
+        example_n = int(os.environ["EXAMPLE_N"])
+
     if args.pdb_id:
         success = process_single_protein(
             args.pdb_id,
@@ -929,6 +982,7 @@ def main():
             boltz_dir,
             dynamicbind_subdir=args.dynamicbind_subdir,
             results_dir=results_dir,
+            example_n=example_n,
         )
         sys.exit(0 if success else 1)
     else:
@@ -938,6 +992,7 @@ def main():
             boltz_dir,
             dynamicbind_subdir=args.dynamicbind_subdir,
             results_dir=results_dir,
+            example_n=example_n,
         )
 
 

@@ -38,10 +38,12 @@ def main():
                        help='Gnina exhaustiveness parameter')
     parser.add_argument('--gnina-num-modes', type=int,
                        help='Number of binding modes to generate')
-    parser.add_argument('--gnina-use-cnn', action='store_true',
-                       help='Use CNN scoring for Gnina')
+    parser.add_argument('--gnina-use-cnn', dest='gnina_use_cnn',
+                       action='store_true', default=None,
+                       help='Use CNN scoring for Gnina (--cnn --no_gpu)')
     parser.add_argument('--gnina-no-cnn', dest='gnina_use_cnn',
-                       action='store_false', help='Disable CNN scoring for Gnina')
+                       action='store_false',
+                       help='Disable CNN scoring for Gnina (--no_gpu only; AffiTox default)')
     parser.add_argument('--gnina-random-seed', type=int,
                        help='Random seed for Gnina (default: 42)')
     parser.add_argument('--gnina-docking-timeout', type=int,
@@ -159,7 +161,7 @@ def main():
         methods_config.setdefault('gnina', {})['exhaustiveness'] = args.gnina_exhaustiveness
     if args.gnina_num_modes:
         methods_config.setdefault('gnina', {})['num_modes'] = args.gnina_num_modes
-    if hasattr(args, 'gnina_use_cnn'):
+    if args.gnina_use_cnn is not None:
         methods_config.setdefault('gnina', {})['use_cnn'] = args.gnina_use_cnn
     if args.gnina_random_seed:
         methods_config.setdefault('gnina', {})['random_seed'] = args.gnina_random_seed

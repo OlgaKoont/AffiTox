@@ -1,0 +1,8 @@
+{
+  "protein": "5lf3",
+  "ligand_id": "ligand_1",
+  "smiles": "C(=C(c1ccc(OCCN2CCCCCC2)cc1)c1ccc(OCCN2CCCCCC2)cc1)c1ccccc1",
+  "affinity": 4.8887372515216425,
+  "affinity_uM": 12.9200069857348,
+  "prediction_time": 0.06105316227132624
+}

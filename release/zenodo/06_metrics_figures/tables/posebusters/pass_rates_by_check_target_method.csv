@@ -1,0 +1,1345 @@
+target,method_id,method_label,check,pass_rate
+1g5m,boltz2,Boltz-2,mol_pred_loaded,1.0
+1g5m,boltz2,Boltz-2,mol_cond_loaded,1.0
+1g5m,boltz2,Boltz-2,sanitization,1.0
+1g5m,boltz2,Boltz-2,inchi_convertible,1.0
+1g5m,boltz2,Boltz-2,all_atoms_connected,1.0
+1g5m,boltz2,Boltz-2,bond_lengths,1.0
+1g5m,boltz2,Boltz-2,bond_angles,1.0
+1g5m,boltz2,Boltz-2,internal_steric_clash,0.9917695473251029
+1g5m,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+1g5m,boltz2,Boltz-2,non-aromatic_ring_non-flatness,1.0
+1g5m,boltz2,Boltz-2,double_bond_flatness,0.9835390946502057
+1g5m,boltz2,Boltz-2,internal_energy,1.0
+1g5m,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+1g5m,boltz2,Boltz-2,minimum_distance_to_protein,0.9588477366255144
+1g5m,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+1g5m,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+1g5m,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+1g5m,boltz2,Boltz-2,volume_overlap_with_protein,1.0
+1g5m,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+1g5m,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+1g5m,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+1g5m,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+1g5m,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+1g5m,dynamicbind,DynamicBind,sanitization,1.0
+1g5m,dynamicbind,DynamicBind,inchi_convertible,1.0
+1g5m,dynamicbind,DynamicBind,all_atoms_connected,1.0
+1g5m,dynamicbind,DynamicBind,bond_lengths,1.0
+1g5m,dynamicbind,DynamicBind,bond_angles,1.0
+1g5m,dynamicbind,DynamicBind,internal_steric_clash,0.9682539682539683
+1g5m,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+1g5m,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,1.0
+1g5m,dynamicbind,DynamicBind,double_bond_flatness,1.0
+1g5m,dynamicbind,DynamicBind,internal_energy,0.9484126984126984
+1g5m,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+1g5m,dynamicbind,DynamicBind,minimum_distance_to_protein,0.0
+1g5m,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+1g5m,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+1g5m,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+1g5m,dynamicbind,DynamicBind,volume_overlap_with_protein,0.031746031746031744
+1g5m,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+1g5m,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+1g5m,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+1g5m,gnina,GNINA 1.3,mol_pred_loaded,1.0
+1g5m,gnina,GNINA 1.3,mol_cond_loaded,1.0
+1g5m,gnina,GNINA 1.3,sanitization,1.0
+1g5m,gnina,GNINA 1.3,inchi_convertible,1.0
+1g5m,gnina,GNINA 1.3,all_atoms_connected,1.0
+1g5m,gnina,GNINA 1.3,bond_lengths,1.0
+1g5m,gnina,GNINA 1.3,bond_angles,1.0
+1g5m,gnina,GNINA 1.3,internal_steric_clash,0.98
+1g5m,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+1g5m,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,1.0
+1g5m,gnina,GNINA 1.3,double_bond_flatness,1.0
+1g5m,gnina,GNINA 1.3,internal_energy,0.968
+1g5m,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+1g5m,gnina,GNINA 1.3,minimum_distance_to_protein,1.0
+1g5m,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,1.0
+1g5m,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+1g5m,gnina,GNINA 1.3,minimum_distance_to_waters,1.0
+1g5m,gnina,GNINA 1.3,volume_overlap_with_protein,1.0
+1g5m,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+1g5m,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+1g5m,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+1g5m,qvina,QVina2,mol_pred_loaded,1.0
+1g5m,qvina,QVina2,mol_cond_loaded,1.0
+1g5m,qvina,QVina2,sanitization,1.0
+1g5m,qvina,QVina2,inchi_convertible,1.0
+1g5m,qvina,QVina2,all_atoms_connected,1.0
+1g5m,qvina,QVina2,bond_lengths,1.0
+1g5m,qvina,QVina2,bond_angles,1.0
+1g5m,qvina,QVina2,internal_steric_clash,0.988
+1g5m,qvina,QVina2,aromatic_ring_flatness,1.0
+1g5m,qvina,QVina2,non-aromatic_ring_non-flatness,1.0
+1g5m,qvina,QVina2,double_bond_flatness,1.0
+1g5m,qvina,QVina2,internal_energy,0.984
+1g5m,qvina,QVina2,protein-ligand_maximum_distance,1.0
+1g5m,qvina,QVina2,minimum_distance_to_protein,1.0
+1g5m,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+1g5m,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+1g5m,qvina,QVina2,minimum_distance_to_waters,1.0
+1g5m,qvina,QVina2,volume_overlap_with_protein,1.0
+1g5m,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+1g5m,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+1g5m,qvina,QVina2,volume_overlap_with_waters,1.0
+2v5z,boltz2,Boltz-2,mol_pred_loaded,1.0
+2v5z,boltz2,Boltz-2,mol_cond_loaded,1.0
+2v5z,boltz2,Boltz-2,sanitization,1.0
+2v5z,boltz2,Boltz-2,inchi_convertible,1.0
+2v5z,boltz2,Boltz-2,all_atoms_connected,1.0
+2v5z,boltz2,Boltz-2,bond_lengths,1.0
+2v5z,boltz2,Boltz-2,bond_angles,1.0
+2v5z,boltz2,Boltz-2,internal_steric_clash,1.0
+2v5z,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+2v5z,boltz2,Boltz-2,non-aromatic_ring_non-flatness,1.0
+2v5z,boltz2,Boltz-2,double_bond_flatness,0.9901960784313726
+2v5z,boltz2,Boltz-2,internal_energy,1.0
+2v5z,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+2v5z,boltz2,Boltz-2,minimum_distance_to_protein,0.8431372549019608
+2v5z,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+2v5z,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+2v5z,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+2v5z,boltz2,Boltz-2,volume_overlap_with_protein,1.0
+2v5z,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+2v5z,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+2v5z,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+2v5z,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+2v5z,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+2v5z,dynamicbind,DynamicBind,sanitization,1.0
+2v5z,dynamicbind,DynamicBind,inchi_convertible,1.0
+2v5z,dynamicbind,DynamicBind,all_atoms_connected,0.9836734693877551
+2v5z,dynamicbind,DynamicBind,bond_lengths,1.0
+2v5z,dynamicbind,DynamicBind,bond_angles,1.0
+2v5z,dynamicbind,DynamicBind,internal_steric_clash,0.9836734693877551
+2v5z,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+2v5z,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,1.0
+2v5z,dynamicbind,DynamicBind,double_bond_flatness,1.0
+2v5z,dynamicbind,DynamicBind,internal_energy,1.0
+2v5z,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+2v5z,dynamicbind,DynamicBind,minimum_distance_to_protein,0.3020408163265306
+2v5z,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+2v5z,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+2v5z,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+2v5z,dynamicbind,DynamicBind,volume_overlap_with_protein,0.7061224489795919
+2v5z,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+2v5z,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+2v5z,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+2v5z,gnina,GNINA 1.3,mol_pred_loaded,1.0
+2v5z,gnina,GNINA 1.3,mol_cond_loaded,1.0
+2v5z,gnina,GNINA 1.3,sanitization,1.0
+2v5z,gnina,GNINA 1.3,inchi_convertible,1.0
+2v5z,gnina,GNINA 1.3,all_atoms_connected,1.0
+2v5z,gnina,GNINA 1.3,bond_lengths,1.0
+2v5z,gnina,GNINA 1.3,bond_angles,1.0
+2v5z,gnina,GNINA 1.3,internal_steric_clash,0.9791666666666666
+2v5z,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+2v5z,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,1.0
+2v5z,gnina,GNINA 1.3,double_bond_flatness,1.0
+2v5z,gnina,GNINA 1.3,internal_energy,0.9
+2v5z,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+2v5z,gnina,GNINA 1.3,minimum_distance_to_protein,0.7791666666666667
+2v5z,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,0.9833333333333333
+2v5z,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+2v5z,gnina,GNINA 1.3,minimum_distance_to_waters,0.9833333333333333
+2v5z,gnina,GNINA 1.3,volume_overlap_with_protein,0.975
+2v5z,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+2v5z,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+2v5z,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+2v5z,qvina,QVina2,mol_pred_loaded,1.0
+2v5z,qvina,QVina2,mol_cond_loaded,1.0
+2v5z,qvina,QVina2,sanitization,1.0
+2v5z,qvina,QVina2,inchi_convertible,1.0
+2v5z,qvina,QVina2,all_atoms_connected,1.0
+2v5z,qvina,QVina2,bond_lengths,1.0
+2v5z,qvina,QVina2,bond_angles,1.0
+2v5z,qvina,QVina2,internal_steric_clash,1.0
+2v5z,qvina,QVina2,aromatic_ring_flatness,1.0
+2v5z,qvina,QVina2,non-aromatic_ring_non-flatness,1.0
+2v5z,qvina,QVina2,double_bond_flatness,1.0
+2v5z,qvina,QVina2,internal_energy,0.9833333333333333
+2v5z,qvina,QVina2,protein-ligand_maximum_distance,1.0
+2v5z,qvina,QVina2,minimum_distance_to_protein,0.9083333333333333
+2v5z,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+2v5z,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+2v5z,qvina,QVina2,minimum_distance_to_waters,1.0
+2v5z,qvina,QVina2,volume_overlap_with_protein,1.0
+2v5z,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+2v5z,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+2v5z,qvina,QVina2,volume_overlap_with_waters,1.0
+3eyg,boltz2,Boltz-2,mol_pred_loaded,1.0
+3eyg,boltz2,Boltz-2,mol_cond_loaded,1.0
+3eyg,boltz2,Boltz-2,sanitization,1.0
+3eyg,boltz2,Boltz-2,inchi_convertible,1.0
+3eyg,boltz2,Boltz-2,all_atoms_connected,1.0
+3eyg,boltz2,Boltz-2,bond_lengths,1.0
+3eyg,boltz2,Boltz-2,bond_angles,1.0
+3eyg,boltz2,Boltz-2,internal_steric_clash,0.9982078853046595
+3eyg,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+3eyg,boltz2,Boltz-2,non-aromatic_ring_non-flatness,1.0
+3eyg,boltz2,Boltz-2,double_bond_flatness,0.9982078853046595
+3eyg,boltz2,Boltz-2,internal_energy,0.9959677419354839
+3eyg,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+3eyg,boltz2,Boltz-2,minimum_distance_to_protein,0.9189068100358423
+3eyg,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+3eyg,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+3eyg,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+3eyg,boltz2,Boltz-2,volume_overlap_with_protein,1.0
+3eyg,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+3eyg,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+3eyg,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+3eyg,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+3eyg,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+3eyg,dynamicbind,DynamicBind,sanitization,1.0
+3eyg,dynamicbind,DynamicBind,inchi_convertible,1.0
+3eyg,dynamicbind,DynamicBind,all_atoms_connected,1.0
+3eyg,dynamicbind,DynamicBind,bond_lengths,1.0
+3eyg,dynamicbind,DynamicBind,bond_angles,1.0
+3eyg,dynamicbind,DynamicBind,internal_steric_clash,0.9760425909494232
+3eyg,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+3eyg,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,1.0
+3eyg,dynamicbind,DynamicBind,double_bond_flatness,1.0
+3eyg,dynamicbind,DynamicBind,internal_energy,0.9192546583850931
+3eyg,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+3eyg,dynamicbind,DynamicBind,minimum_distance_to_protein,0.04303460514640639
+3eyg,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+3eyg,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+3eyg,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+3eyg,dynamicbind,DynamicBind,volume_overlap_with_protein,0.7985803016858918
+3eyg,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+3eyg,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+3eyg,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+3eyg,gnina,GNINA 1.3,mol_pred_loaded,1.0
+3eyg,gnina,GNINA 1.3,mol_cond_loaded,1.0
+3eyg,gnina,GNINA 1.3,sanitization,1.0
+3eyg,gnina,GNINA 1.3,inchi_convertible,1.0
+3eyg,gnina,GNINA 1.3,all_atoms_connected,1.0
+3eyg,gnina,GNINA 1.3,bond_lengths,1.0
+3eyg,gnina,GNINA 1.3,bond_angles,1.0
+3eyg,gnina,GNINA 1.3,internal_steric_clash,0.9849726775956285
+3eyg,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+3eyg,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,1.0
+3eyg,gnina,GNINA 1.3,double_bond_flatness,1.0
+3eyg,gnina,GNINA 1.3,internal_energy,0.9458105646630237
+3eyg,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+3eyg,gnina,GNINA 1.3,minimum_distance_to_protein,0.9990892531876139
+3eyg,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,1.0
+3eyg,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+3eyg,gnina,GNINA 1.3,minimum_distance_to_waters,1.0
+3eyg,gnina,GNINA 1.3,volume_overlap_with_protein,1.0
+3eyg,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+3eyg,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+3eyg,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+3eyg,qvina,QVina2,mol_pred_loaded,1.0
+3eyg,qvina,QVina2,mol_cond_loaded,1.0
+3eyg,qvina,QVina2,sanitization,1.0
+3eyg,qvina,QVina2,inchi_convertible,1.0
+3eyg,qvina,QVina2,all_atoms_connected,1.0
+3eyg,qvina,QVina2,bond_lengths,1.0
+3eyg,qvina,QVina2,bond_angles,1.0
+3eyg,qvina,QVina2,internal_steric_clash,0.9968210717529519
+3eyg,qvina,QVina2,aromatic_ring_flatness,1.0
+3eyg,qvina,QVina2,non-aromatic_ring_non-flatness,1.0
+3eyg,qvina,QVina2,double_bond_flatness,1.0
+3eyg,qvina,QVina2,internal_energy,0.9881925522252498
+3eyg,qvina,QVina2,protein-ligand_maximum_distance,1.0
+3eyg,qvina,QVina2,minimum_distance_to_protein,0.9995458673932789
+3eyg,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+3eyg,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+3eyg,qvina,QVina2,minimum_distance_to_waters,1.0
+3eyg,qvina,QVina2,volume_overlap_with_protein,1.0
+3eyg,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+3eyg,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+3eyg,qvina,QVina2,volume_overlap_with_waters,1.0
+3jy9,boltz2,Boltz-2,mol_pred_loaded,1.0
+3jy9,boltz2,Boltz-2,mol_cond_loaded,1.0
+3jy9,boltz2,Boltz-2,sanitization,1.0
+3jy9,boltz2,Boltz-2,inchi_convertible,1.0
+3jy9,boltz2,Boltz-2,all_atoms_connected,1.0
+3jy9,boltz2,Boltz-2,bond_lengths,0.9990054699154649
+3jy9,boltz2,Boltz-2,bond_angles,0.9995027349577325
+3jy9,boltz2,Boltz-2,internal_steric_clash,0.9970164097463948
+3jy9,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+3jy9,boltz2,Boltz-2,non-aromatic_ring_non-flatness,0.9970164097463948
+3jy9,boltz2,Boltz-2,double_bond_flatness,0.9995027349577325
+3jy9,boltz2,Boltz-2,internal_energy,0.9955246146195923
+3jy9,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+3jy9,boltz2,Boltz-2,minimum_distance_to_protein,0.9065141720537047
+3jy9,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+3jy9,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+3jy9,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+3jy9,boltz2,Boltz-2,volume_overlap_with_protein,1.0
+3jy9,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+3jy9,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+3jy9,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+3jy9,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+3jy9,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+3jy9,dynamicbind,DynamicBind,sanitization,1.0
+3jy9,dynamicbind,DynamicBind,inchi_convertible,1.0
+3jy9,dynamicbind,DynamicBind,all_atoms_connected,0.9995064165844028
+3jy9,dynamicbind,DynamicBind,bond_lengths,1.0
+3jy9,dynamicbind,DynamicBind,bond_angles,1.0
+3jy9,dynamicbind,DynamicBind,internal_steric_clash,0.9659427443237907
+3jy9,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+3jy9,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,1.0
+3jy9,dynamicbind,DynamicBind,double_bond_flatness,1.0
+3jy9,dynamicbind,DynamicBind,internal_energy,0.9407407407407408
+3jy9,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+3jy9,dynamicbind,DynamicBind,minimum_distance_to_protein,0.27295162882527146
+3jy9,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+3jy9,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+3jy9,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+3jy9,dynamicbind,DynamicBind,volume_overlap_with_protein,0.9901283316880553
+3jy9,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+3jy9,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+3jy9,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+3jy9,gnina,GNINA 1.3,mol_pred_loaded,1.0
+3jy9,gnina,GNINA 1.3,mol_cond_loaded,1.0
+3jy9,gnina,GNINA 1.3,sanitization,1.0
+3jy9,gnina,GNINA 1.3,inchi_convertible,1.0
+3jy9,gnina,GNINA 1.3,all_atoms_connected,1.0
+3jy9,gnina,GNINA 1.3,bond_lengths,1.0
+3jy9,gnina,GNINA 1.3,bond_angles,1.0
+3jy9,gnina,GNINA 1.3,internal_steric_clash,0.9969666329625885
+3jy9,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+3jy9,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,1.0
+3jy9,gnina,GNINA 1.3,double_bond_flatness,1.0
+3jy9,gnina,GNINA 1.3,internal_energy,0.980788675429727
+3jy9,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+3jy9,gnina,GNINA 1.3,minimum_distance_to_protein,0.9994944388270981
+3jy9,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,1.0
+3jy9,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+3jy9,gnina,GNINA 1.3,minimum_distance_to_waters,1.0
+3jy9,gnina,GNINA 1.3,volume_overlap_with_protein,1.0
+3jy9,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+3jy9,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+3jy9,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+3jy9,qvina,QVina2,mol_pred_loaded,1.0
+3jy9,qvina,QVina2,mol_cond_loaded,1.0
+3jy9,qvina,QVina2,sanitization,1.0
+3jy9,qvina,QVina2,inchi_convertible,1.0
+3jy9,qvina,QVina2,all_atoms_connected,1.0
+3jy9,qvina,QVina2,bond_lengths,1.0
+3jy9,qvina,QVina2,bond_angles,1.0
+3jy9,qvina,QVina2,internal_steric_clash,0.9969666329625885
+3jy9,qvina,QVina2,aromatic_ring_flatness,1.0
+3jy9,qvina,QVina2,non-aromatic_ring_non-flatness,1.0
+3jy9,qvina,QVina2,double_bond_flatness,1.0
+3jy9,qvina,QVina2,internal_energy,0.9969666329625885
+3jy9,qvina,QVina2,protein-ligand_maximum_distance,1.0
+3jy9,qvina,QVina2,minimum_distance_to_protein,1.0
+3jy9,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+3jy9,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+3jy9,qvina,QVina2,minimum_distance_to_waters,1.0
+3jy9,qvina,QVina2,volume_overlap_with_protein,1.0
+3jy9,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+3jy9,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+3jy9,qvina,QVina2,volume_overlap_with_waters,1.0
+3lxk,boltz2,Boltz-2,mol_pred_loaded,1.0
+3lxk,boltz2,Boltz-2,mol_cond_loaded,1.0
+3lxk,boltz2,Boltz-2,sanitization,1.0
+3lxk,boltz2,Boltz-2,inchi_convertible,1.0
+3lxk,boltz2,Boltz-2,all_atoms_connected,1.0
+3lxk,boltz2,Boltz-2,bond_lengths,1.0
+3lxk,boltz2,Boltz-2,bond_angles,1.0
+3lxk,boltz2,Boltz-2,internal_steric_clash,1.0
+3lxk,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+3lxk,boltz2,Boltz-2,non-aromatic_ring_non-flatness,1.0
+3lxk,boltz2,Boltz-2,double_bond_flatness,0.9986772486772487
+3lxk,boltz2,Boltz-2,internal_energy,1.0
+3lxk,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+3lxk,boltz2,Boltz-2,minimum_distance_to_protein,0.8042328042328042
+3lxk,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+3lxk,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+3lxk,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+3lxk,boltz2,Boltz-2,volume_overlap_with_protein,1.0
+3lxk,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+3lxk,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+3lxk,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+3lxk,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+3lxk,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+3lxk,dynamicbind,DynamicBind,sanitization,1.0
+3lxk,dynamicbind,DynamicBind,inchi_convertible,1.0
+3lxk,dynamicbind,DynamicBind,all_atoms_connected,0.9987261146496815
+3lxk,dynamicbind,DynamicBind,bond_lengths,1.0
+3lxk,dynamicbind,DynamicBind,bond_angles,1.0
+3lxk,dynamicbind,DynamicBind,internal_steric_clash,0.9745222929936306
+3lxk,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+3lxk,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,1.0
+3lxk,dynamicbind,DynamicBind,double_bond_flatness,1.0
+3lxk,dynamicbind,DynamicBind,internal_energy,0.9452229299363057
+3lxk,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+3lxk,dynamicbind,DynamicBind,minimum_distance_to_protein,0.13248407643312102
+3lxk,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+3lxk,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+3lxk,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+3lxk,dynamicbind,DynamicBind,volume_overlap_with_protein,0.8815286624203822
+3lxk,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+3lxk,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+3lxk,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+3lxk,gnina,GNINA 1.3,mol_pred_loaded,1.0
+3lxk,gnina,GNINA 1.3,mol_cond_loaded,1.0
+3lxk,gnina,GNINA 1.3,sanitization,1.0
+3lxk,gnina,GNINA 1.3,inchi_convertible,1.0
+3lxk,gnina,GNINA 1.3,all_atoms_connected,1.0
+3lxk,gnina,GNINA 1.3,bond_lengths,1.0
+3lxk,gnina,GNINA 1.3,bond_angles,1.0
+3lxk,gnina,GNINA 1.3,internal_steric_clash,0.979381443298969
+3lxk,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+3lxk,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,1.0
+3lxk,gnina,GNINA 1.3,double_bond_flatness,1.0
+3lxk,gnina,GNINA 1.3,internal_energy,0.9188144329896907
+3lxk,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+3lxk,gnina,GNINA 1.3,minimum_distance_to_protein,0.970360824742268
+3lxk,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,1.0
+3lxk,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+3lxk,gnina,GNINA 1.3,minimum_distance_to_waters,1.0
+3lxk,gnina,GNINA 1.3,volume_overlap_with_protein,1.0
+3lxk,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+3lxk,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+3lxk,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+3lxk,qvina,QVina2,mol_pred_loaded,1.0
+3lxk,qvina,QVina2,mol_cond_loaded,1.0
+3lxk,qvina,QVina2,sanitization,1.0
+3lxk,qvina,QVina2,inchi_convertible,1.0
+3lxk,qvina,QVina2,all_atoms_connected,1.0
+3lxk,qvina,QVina2,bond_lengths,1.0
+3lxk,qvina,QVina2,bond_angles,1.0
+3lxk,qvina,QVina2,internal_steric_clash,0.9961340206185567
+3lxk,qvina,QVina2,aromatic_ring_flatness,1.0
+3lxk,qvina,QVina2,non-aromatic_ring_non-flatness,1.0
+3lxk,qvina,QVina2,double_bond_flatness,1.0
+3lxk,qvina,QVina2,internal_energy,0.9780927835051546
+3lxk,qvina,QVina2,protein-ligand_maximum_distance,1.0
+3lxk,qvina,QVina2,minimum_distance_to_protein,0.9961340206185567
+3lxk,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+3lxk,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+3lxk,qvina,QVina2,minimum_distance_to_waters,1.0
+3lxk,qvina,QVina2,volume_overlap_with_protein,1.0
+3lxk,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+3lxk,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+3lxk,qvina,QVina2,volume_overlap_with_waters,1.0
+11ue,boltz2,Boltz-2,mol_pred_loaded,1.0
+11ue,boltz2,Boltz-2,mol_cond_loaded,1.0
+11ue,boltz2,Boltz-2,sanitization,1.0
+11ue,boltz2,Boltz-2,inchi_convertible,1.0
+11ue,boltz2,Boltz-2,all_atoms_connected,1.0
+11ue,boltz2,Boltz-2,bond_lengths,1.0
+11ue,boltz2,Boltz-2,bond_angles,1.0
+11ue,boltz2,Boltz-2,internal_steric_clash,0.9963503649635036
+11ue,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+11ue,boltz2,Boltz-2,non-aromatic_ring_non-flatness,1.0
+11ue,boltz2,Boltz-2,double_bond_flatness,0.9963503649635036
+11ue,boltz2,Boltz-2,internal_energy,0.9963503649635036
+11ue,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+11ue,boltz2,Boltz-2,minimum_distance_to_protein,0.948905109489051
+11ue,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+11ue,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+11ue,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+11ue,boltz2,Boltz-2,volume_overlap_with_protein,1.0
+11ue,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+11ue,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+11ue,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+11ue,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+11ue,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+11ue,dynamicbind,DynamicBind,sanitization,1.0
+11ue,dynamicbind,DynamicBind,inchi_convertible,1.0
+11ue,dynamicbind,DynamicBind,all_atoms_connected,0.9963636363636363
+11ue,dynamicbind,DynamicBind,bond_lengths,1.0
+11ue,dynamicbind,DynamicBind,bond_angles,1.0
+11ue,dynamicbind,DynamicBind,internal_steric_clash,0.9818181818181818
+11ue,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+11ue,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,1.0
+11ue,dynamicbind,DynamicBind,double_bond_flatness,1.0
+11ue,dynamicbind,DynamicBind,internal_energy,0.9490909090909091
+11ue,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+11ue,dynamicbind,DynamicBind,minimum_distance_to_protein,0.17454545454545456
+11ue,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+11ue,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+11ue,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+11ue,dynamicbind,DynamicBind,volume_overlap_with_protein,0.850909090909091
+11ue,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+11ue,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+11ue,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+11ue,gnina,GNINA 1.3,mol_pred_loaded,1.0
+11ue,gnina,GNINA 1.3,mol_cond_loaded,1.0
+11ue,gnina,GNINA 1.3,sanitization,1.0
+11ue,gnina,GNINA 1.3,inchi_convertible,1.0
+11ue,gnina,GNINA 1.3,all_atoms_connected,1.0
+11ue,gnina,GNINA 1.3,bond_lengths,1.0
+11ue,gnina,GNINA 1.3,bond_angles,1.0
+11ue,gnina,GNINA 1.3,internal_steric_clash,0.9812734082397003
+11ue,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+11ue,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,1.0
+11ue,gnina,GNINA 1.3,double_bond_flatness,1.0
+11ue,gnina,GNINA 1.3,internal_energy,0.9101123595505618
+11ue,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+11ue,gnina,GNINA 1.3,minimum_distance_to_protein,0.8951310861423221
+11ue,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,1.0
+11ue,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+11ue,gnina,GNINA 1.3,minimum_distance_to_waters,1.0
+11ue,gnina,GNINA 1.3,volume_overlap_with_protein,0.9962546816479401
+11ue,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+11ue,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+11ue,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+11ue,qvina,QVina2,mol_pred_loaded,1.0
+11ue,qvina,QVina2,mol_cond_loaded,1.0
+11ue,qvina,QVina2,sanitization,1.0
+11ue,qvina,QVina2,inchi_convertible,1.0
+11ue,qvina,QVina2,all_atoms_connected,1.0
+11ue,qvina,QVina2,bond_lengths,1.0
+11ue,qvina,QVina2,bond_angles,1.0
+11ue,qvina,QVina2,internal_steric_clash,0.9962546816479401
+11ue,qvina,QVina2,aromatic_ring_flatness,1.0
+11ue,qvina,QVina2,non-aromatic_ring_non-flatness,1.0
+11ue,qvina,QVina2,double_bond_flatness,1.0
+11ue,qvina,QVina2,internal_energy,0.9737827715355806
+11ue,qvina,QVina2,protein-ligand_maximum_distance,1.0
+11ue,qvina,QVina2,minimum_distance_to_protein,1.0
+11ue,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+11ue,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+11ue,qvina,QVina2,minimum_distance_to_waters,1.0
+11ue,qvina,QVina2,volume_overlap_with_protein,1.0
+11ue,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+11ue,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+11ue,qvina,QVina2,volume_overlap_with_waters,1.0
+4ase,boltz2,Boltz-2,mol_pred_loaded,1.0
+4ase,boltz2,Boltz-2,mol_cond_loaded,1.0
+4ase,boltz2,Boltz-2,sanitization,1.0
+4ase,boltz2,Boltz-2,inchi_convertible,1.0
+4ase,boltz2,Boltz-2,all_atoms_connected,1.0
+4ase,boltz2,Boltz-2,bond_lengths,1.0
+4ase,boltz2,Boltz-2,bond_angles,1.0
+4ase,boltz2,Boltz-2,internal_steric_clash,0.9952941176470588
+4ase,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+4ase,boltz2,Boltz-2,non-aromatic_ring_non-flatness,1.0
+4ase,boltz2,Boltz-2,double_bond_flatness,0.9988235294117647
+4ase,boltz2,Boltz-2,internal_energy,0.9870588235294118
+4ase,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+4ase,boltz2,Boltz-2,minimum_distance_to_protein,0.9141176470588235
+4ase,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+4ase,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+4ase,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+4ase,boltz2,Boltz-2,volume_overlap_with_protein,1.0
+4ase,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+4ase,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+4ase,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+4ase,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+4ase,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+4ase,dynamicbind,DynamicBind,sanitization,1.0
+4ase,dynamicbind,DynamicBind,inchi_convertible,1.0
+4ase,dynamicbind,DynamicBind,all_atoms_connected,0.9988571428571429
+4ase,dynamicbind,DynamicBind,bond_lengths,1.0
+4ase,dynamicbind,DynamicBind,bond_angles,1.0
+4ase,dynamicbind,DynamicBind,internal_steric_clash,0.9828571428571429
+4ase,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+4ase,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,1.0
+4ase,dynamicbind,DynamicBind,double_bond_flatness,1.0
+4ase,dynamicbind,DynamicBind,internal_energy,0.9691428571428572
+4ase,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+4ase,dynamicbind,DynamicBind,minimum_distance_to_protein,0.27885714285714286
+4ase,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+4ase,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+4ase,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+4ase,dynamicbind,DynamicBind,volume_overlap_with_protein,0.9085714285714286
+4ase,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+4ase,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+4ase,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+4ase,gnina,GNINA 1.3,mol_pred_loaded,1.0
+4ase,gnina,GNINA 1.3,mol_cond_loaded,1.0
+4ase,gnina,GNINA 1.3,sanitization,1.0
+4ase,gnina,GNINA 1.3,inchi_convertible,1.0
+4ase,gnina,GNINA 1.3,all_atoms_connected,1.0
+4ase,gnina,GNINA 1.3,bond_lengths,1.0
+4ase,gnina,GNINA 1.3,bond_angles,1.0
+4ase,gnina,GNINA 1.3,internal_steric_clash,0.9779326364692218
+4ase,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+4ase,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,1.0
+4ase,gnina,GNINA 1.3,double_bond_flatness,1.0
+4ase,gnina,GNINA 1.3,internal_energy,0.9256678281068524
+4ase,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+4ase,gnina,GNINA 1.3,minimum_distance_to_protein,0.9303135888501742
+4ase,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,1.0
+4ase,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+4ase,gnina,GNINA 1.3,minimum_distance_to_waters,1.0
+4ase,gnina,GNINA 1.3,volume_overlap_with_protein,1.0
+4ase,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+4ase,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+4ase,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+4ase,qvina,QVina2,mol_pred_loaded,1.0
+4ase,qvina,QVina2,mol_cond_loaded,1.0
+4ase,qvina,QVina2,sanitization,1.0
+4ase,qvina,QVina2,inchi_convertible,1.0
+4ase,qvina,QVina2,all_atoms_connected,1.0
+4ase,qvina,QVina2,bond_lengths,1.0
+4ase,qvina,QVina2,bond_angles,1.0
+4ase,qvina,QVina2,internal_steric_clash,0.9988385598141696
+4ase,qvina,QVina2,aromatic_ring_flatness,1.0
+4ase,qvina,QVina2,non-aromatic_ring_non-flatness,1.0
+4ase,qvina,QVina2,double_bond_flatness,1.0
+4ase,qvina,QVina2,internal_energy,0.9930313588850174
+4ase,qvina,QVina2,protein-ligand_maximum_distance,1.0
+4ase,qvina,QVina2,minimum_distance_to_protein,0.9976771196283392
+4ase,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+4ase,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+4ase,qvina,QVina2,minimum_distance_to_waters,1.0
+4ase,qvina,QVina2,volume_overlap_with_protein,1.0
+4ase,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+4ase,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+4ase,qvina,QVina2,volume_overlap_with_waters,1.0
+4f65,boltz2,Boltz-2,mol_pred_loaded,1.0
+4f65,boltz2,Boltz-2,mol_cond_loaded,1.0
+4f65,boltz2,Boltz-2,sanitization,1.0
+4f65,boltz2,Boltz-2,inchi_convertible,1.0
+4f65,boltz2,Boltz-2,all_atoms_connected,1.0
+4f65,boltz2,Boltz-2,bond_lengths,1.0
+4f65,boltz2,Boltz-2,bond_angles,1.0
+4f65,boltz2,Boltz-2,internal_steric_clash,0.9924812030075187
+4f65,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+4f65,boltz2,Boltz-2,non-aromatic_ring_non-flatness,0.9924812030075187
+4f65,boltz2,Boltz-2,double_bond_flatness,1.0
+4f65,boltz2,Boltz-2,internal_energy,1.0
+4f65,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+4f65,boltz2,Boltz-2,minimum_distance_to_protein,0.9699248120300752
+4f65,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+4f65,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+4f65,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+4f65,boltz2,Boltz-2,volume_overlap_with_protein,1.0
+4f65,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+4f65,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+4f65,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+4f65,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+4f65,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+4f65,dynamicbind,DynamicBind,sanitization,1.0
+4f65,dynamicbind,DynamicBind,inchi_convertible,1.0
+4f65,dynamicbind,DynamicBind,all_atoms_connected,1.0
+4f65,dynamicbind,DynamicBind,bond_lengths,1.0
+4f65,dynamicbind,DynamicBind,bond_angles,1.0
+4f65,dynamicbind,DynamicBind,internal_steric_clash,1.0
+4f65,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+4f65,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,1.0
+4f65,dynamicbind,DynamicBind,double_bond_flatness,1.0
+4f65,dynamicbind,DynamicBind,internal_energy,0.9253731343283582
+4f65,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+4f65,dynamicbind,DynamicBind,minimum_distance_to_protein,0.7313432835820896
+4f65,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+4f65,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+4f65,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+4f65,dynamicbind,DynamicBind,volume_overlap_with_protein,0.9552238805970149
+4f65,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+4f65,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+4f65,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+4f65,gnina,GNINA 1.3,mol_pred_loaded,1.0
+4f65,gnina,GNINA 1.3,mol_cond_loaded,1.0
+4f65,gnina,GNINA 1.3,sanitization,1.0
+4f65,gnina,GNINA 1.3,inchi_convertible,1.0
+4f65,gnina,GNINA 1.3,all_atoms_connected,1.0
+4f65,gnina,GNINA 1.3,bond_lengths,1.0
+4f65,gnina,GNINA 1.3,bond_angles,1.0
+4f65,gnina,GNINA 1.3,internal_steric_clash,1.0
+4f65,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+4f65,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,1.0
+4f65,gnina,GNINA 1.3,double_bond_flatness,1.0
+4f65,gnina,GNINA 1.3,internal_energy,0.9606299212598425
+4f65,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+4f65,gnina,GNINA 1.3,minimum_distance_to_protein,0.9921259842519685
+4f65,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,1.0
+4f65,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+4f65,gnina,GNINA 1.3,minimum_distance_to_waters,1.0
+4f65,gnina,GNINA 1.3,volume_overlap_with_protein,1.0
+4f65,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+4f65,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+4f65,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+4f65,qvina,QVina2,mol_pred_loaded,1.0
+4f65,qvina,QVina2,mol_cond_loaded,1.0
+4f65,qvina,QVina2,sanitization,1.0
+4f65,qvina,QVina2,inchi_convertible,1.0
+4f65,qvina,QVina2,all_atoms_connected,1.0
+4f65,qvina,QVina2,bond_lengths,1.0
+4f65,qvina,QVina2,bond_angles,1.0
+4f65,qvina,QVina2,internal_steric_clash,0.9921259842519685
+4f65,qvina,QVina2,aromatic_ring_flatness,1.0
+4f65,qvina,QVina2,non-aromatic_ring_non-flatness,1.0
+4f65,qvina,QVina2,double_bond_flatness,1.0
+4f65,qvina,QVina2,internal_energy,0.937007874015748
+4f65,qvina,QVina2,protein-ligand_maximum_distance,1.0
+4f65,qvina,QVina2,minimum_distance_to_protein,1.0
+4f65,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+4f65,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+4f65,qvina,QVina2,minimum_distance_to_waters,1.0
+4f65,qvina,QVina2,volume_overlap_with_protein,1.0
+4f65,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+4f65,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+4f65,qvina,QVina2,volume_overlap_with_waters,1.0
+4tz4,boltz2,Boltz-2,mol_pred_loaded,1.0
+4tz4,boltz2,Boltz-2,mol_cond_loaded,1.0
+4tz4,boltz2,Boltz-2,sanitization,1.0
+4tz4,boltz2,Boltz-2,inchi_convertible,1.0
+4tz4,boltz2,Boltz-2,all_atoms_connected,1.0
+4tz4,boltz2,Boltz-2,bond_lengths,1.0
+4tz4,boltz2,Boltz-2,bond_angles,1.0
+4tz4,boltz2,Boltz-2,internal_steric_clash,0.9911504424778761
+4tz4,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+4tz4,boltz2,Boltz-2,non-aromatic_ring_non-flatness,0.9911504424778761
+4tz4,boltz2,Boltz-2,double_bond_flatness,1.0
+4tz4,boltz2,Boltz-2,internal_energy,1.0
+4tz4,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+4tz4,boltz2,Boltz-2,minimum_distance_to_protein,0.9734513274336283
+4tz4,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+4tz4,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+4tz4,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+4tz4,boltz2,Boltz-2,volume_overlap_with_protein,1.0
+4tz4,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+4tz4,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+4tz4,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+4tz4,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+4tz4,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+4tz4,dynamicbind,DynamicBind,sanitization,1.0
+4tz4,dynamicbind,DynamicBind,inchi_convertible,1.0
+4tz4,dynamicbind,DynamicBind,all_atoms_connected,1.0
+4tz4,dynamicbind,DynamicBind,bond_lengths,1.0
+4tz4,dynamicbind,DynamicBind,bond_angles,1.0
+4tz4,dynamicbind,DynamicBind,internal_steric_clash,1.0
+4tz4,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+4tz4,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,1.0
+4tz4,dynamicbind,DynamicBind,double_bond_flatness,1.0
+4tz4,dynamicbind,DynamicBind,internal_energy,1.0
+4tz4,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+4tz4,dynamicbind,DynamicBind,minimum_distance_to_protein,0.047244094488188976
+4tz4,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+4tz4,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+4tz4,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+4tz4,dynamicbind,DynamicBind,volume_overlap_with_protein,0.2677165354330709
+4tz4,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+4tz4,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+4tz4,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+4tz4,gnina,GNINA 1.3,mol_pred_loaded,1.0
+4tz4,gnina,GNINA 1.3,mol_cond_loaded,1.0
+4tz4,gnina,GNINA 1.3,sanitization,1.0
+4tz4,gnina,GNINA 1.3,inchi_convertible,1.0
+4tz4,gnina,GNINA 1.3,all_atoms_connected,1.0
+4tz4,gnina,GNINA 1.3,bond_lengths,1.0
+4tz4,gnina,GNINA 1.3,bond_angles,1.0
+4tz4,gnina,GNINA 1.3,internal_steric_clash,0.9920634920634921
+4tz4,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+4tz4,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,1.0
+4tz4,gnina,GNINA 1.3,double_bond_flatness,1.0
+4tz4,gnina,GNINA 1.3,internal_energy,0.9761904761904762
+4tz4,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+4tz4,gnina,GNINA 1.3,minimum_distance_to_protein,1.0
+4tz4,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,1.0
+4tz4,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+4tz4,gnina,GNINA 1.3,minimum_distance_to_waters,1.0
+4tz4,gnina,GNINA 1.3,volume_overlap_with_protein,1.0
+4tz4,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+4tz4,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+4tz4,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+4tz4,qvina,QVina2,mol_pred_loaded,1.0
+4tz4,qvina,QVina2,mol_cond_loaded,1.0
+4tz4,qvina,QVina2,sanitization,1.0
+4tz4,qvina,QVina2,inchi_convertible,1.0
+4tz4,qvina,QVina2,all_atoms_connected,1.0
+4tz4,qvina,QVina2,bond_lengths,1.0
+4tz4,qvina,QVina2,bond_angles,1.0
+4tz4,qvina,QVina2,internal_steric_clash,1.0
+4tz4,qvina,QVina2,aromatic_ring_flatness,1.0
+4tz4,qvina,QVina2,non-aromatic_ring_non-flatness,1.0
+4tz4,qvina,QVina2,double_bond_flatness,1.0
+4tz4,qvina,QVina2,internal_energy,1.0
+4tz4,qvina,QVina2,protein-ligand_maximum_distance,1.0
+4tz4,qvina,QVina2,minimum_distance_to_protein,0.9841269841269841
+4tz4,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+4tz4,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+4tz4,qvina,QVina2,minimum_distance_to_waters,1.0
+4tz4,qvina,QVina2,volume_overlap_with_protein,1.0
+4tz4,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+4tz4,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+4tz4,qvina,QVina2,volume_overlap_with_waters,1.0
+4zau,boltz2,Boltz-2,mol_pred_loaded,1.0
+4zau,boltz2,Boltz-2,mol_cond_loaded,1.0
+4zau,boltz2,Boltz-2,sanitization,1.0
+4zau,boltz2,Boltz-2,inchi_convertible,1.0
+4zau,boltz2,Boltz-2,all_atoms_connected,1.0
+4zau,boltz2,Boltz-2,bond_lengths,1.0
+4zau,boltz2,Boltz-2,bond_angles,1.0
+4zau,boltz2,Boltz-2,internal_steric_clash,1.0
+4zau,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+4zau,boltz2,Boltz-2,non-aromatic_ring_non-flatness,1.0
+4zau,boltz2,Boltz-2,double_bond_flatness,1.0
+4zau,boltz2,Boltz-2,internal_energy,0.9914893617021276
+4zau,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+4zau,boltz2,Boltz-2,minimum_distance_to_protein,0.8808510638297873
+4zau,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+4zau,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+4zau,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+4zau,boltz2,Boltz-2,volume_overlap_with_protein,1.0
+4zau,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+4zau,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+4zau,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+4zau,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+4zau,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+4zau,dynamicbind,DynamicBind,sanitization,1.0
+4zau,dynamicbind,DynamicBind,inchi_convertible,1.0
+4zau,dynamicbind,DynamicBind,all_atoms_connected,1.0
+4zau,dynamicbind,DynamicBind,bond_lengths,1.0
+4zau,dynamicbind,DynamicBind,bond_angles,1.0
+4zau,dynamicbind,DynamicBind,internal_steric_clash,0.952191235059761
+4zau,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+4zau,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,1.0
+4zau,dynamicbind,DynamicBind,double_bond_flatness,1.0
+4zau,dynamicbind,DynamicBind,internal_energy,0.9123505976095617
+4zau,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+4zau,dynamicbind,DynamicBind,minimum_distance_to_protein,0.32669322709163345
+4zau,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+4zau,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+4zau,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+4zau,dynamicbind,DynamicBind,volume_overlap_with_protein,0.8565737051792829
+4zau,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+4zau,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+4zau,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+4zau,gnina,GNINA 1.3,mol_pred_loaded,1.0
+4zau,gnina,GNINA 1.3,mol_cond_loaded,1.0
+4zau,gnina,GNINA 1.3,sanitization,1.0
+4zau,gnina,GNINA 1.3,inchi_convertible,1.0
+4zau,gnina,GNINA 1.3,all_atoms_connected,1.0
+4zau,gnina,GNINA 1.3,bond_lengths,1.0
+4zau,gnina,GNINA 1.3,bond_angles,1.0
+4zau,gnina,GNINA 1.3,internal_steric_clash,1.0
+4zau,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+4zau,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,1.0
+4zau,gnina,GNINA 1.3,double_bond_flatness,1.0
+4zau,gnina,GNINA 1.3,internal_energy,0.9392712550607287
+4zau,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+4zau,gnina,GNINA 1.3,minimum_distance_to_protein,1.0
+4zau,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,1.0
+4zau,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+4zau,gnina,GNINA 1.3,minimum_distance_to_waters,1.0
+4zau,gnina,GNINA 1.3,volume_overlap_with_protein,1.0
+4zau,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+4zau,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+4zau,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+4zau,qvina,QVina2,mol_pred_loaded,1.0
+4zau,qvina,QVina2,mol_cond_loaded,1.0
+4zau,qvina,QVina2,sanitization,1.0
+4zau,qvina,QVina2,inchi_convertible,1.0
+4zau,qvina,QVina2,all_atoms_connected,1.0
+4zau,qvina,QVina2,bond_lengths,1.0
+4zau,qvina,QVina2,bond_angles,1.0
+4zau,qvina,QVina2,internal_steric_clash,1.0
+4zau,qvina,QVina2,aromatic_ring_flatness,1.0
+4zau,qvina,QVina2,non-aromatic_ring_non-flatness,1.0
+4zau,qvina,QVina2,double_bond_flatness,1.0
+4zau,qvina,QVina2,internal_energy,0.9838056680161943
+4zau,qvina,QVina2,protein-ligand_maximum_distance,1.0
+4zau,qvina,QVina2,minimum_distance_to_protein,1.0
+4zau,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+4zau,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+4zau,qvina,QVina2,minimum_distance_to_waters,1.0
+4zau,qvina,QVina2,volume_overlap_with_protein,1.0
+4zau,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+4zau,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+4zau,qvina,QVina2,volume_overlap_with_waters,1.0
+5jkv,boltz2,Boltz-2,mol_pred_loaded,1.0
+5jkv,boltz2,Boltz-2,mol_cond_loaded,1.0
+5jkv,boltz2,Boltz-2,sanitization,1.0
+5jkv,boltz2,Boltz-2,inchi_convertible,1.0
+5jkv,boltz2,Boltz-2,all_atoms_connected,1.0
+5jkv,boltz2,Boltz-2,bond_lengths,1.0
+5jkv,boltz2,Boltz-2,bond_angles,1.0
+5jkv,boltz2,Boltz-2,internal_steric_clash,1.0
+5jkv,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+5jkv,boltz2,Boltz-2,non-aromatic_ring_non-flatness,0.9979423868312757
+5jkv,boltz2,Boltz-2,double_bond_flatness,0.9835390946502057
+5jkv,boltz2,Boltz-2,internal_energy,0.9979423868312757
+5jkv,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+5jkv,boltz2,Boltz-2,minimum_distance_to_protein,0.8065843621399177
+5jkv,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+5jkv,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+5jkv,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+5jkv,boltz2,Boltz-2,volume_overlap_with_protein,1.0
+5jkv,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+5jkv,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+5jkv,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+5jkv,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+5jkv,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+5jkv,dynamicbind,DynamicBind,sanitization,1.0
+5jkv,dynamicbind,DynamicBind,inchi_convertible,1.0
+5jkv,dynamicbind,DynamicBind,all_atoms_connected,0.9981718464351006
+5jkv,dynamicbind,DynamicBind,bond_lengths,1.0
+5jkv,dynamicbind,DynamicBind,bond_angles,1.0
+5jkv,dynamicbind,DynamicBind,internal_steric_clash,0.9853747714808044
+5jkv,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+5jkv,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,0.9981718464351006
+5jkv,dynamicbind,DynamicBind,double_bond_flatness,1.0
+5jkv,dynamicbind,DynamicBind,internal_energy,0.9780621572212066
+5jkv,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+5jkv,dynamicbind,DynamicBind,minimum_distance_to_protein,0.009140767824497258
+5jkv,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+5jkv,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+5jkv,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+5jkv,dynamicbind,DynamicBind,volume_overlap_with_protein,0.1882998171846435
+5jkv,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+5jkv,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+5jkv,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+5jkv,gnina,GNINA 1.3,mol_pred_loaded,1.0
+5jkv,gnina,GNINA 1.3,mol_cond_loaded,1.0
+5jkv,gnina,GNINA 1.3,sanitization,1.0
+5jkv,gnina,GNINA 1.3,inchi_convertible,1.0
+5jkv,gnina,GNINA 1.3,all_atoms_connected,1.0
+5jkv,gnina,GNINA 1.3,bond_lengths,1.0
+5jkv,gnina,GNINA 1.3,bond_angles,1.0
+5jkv,gnina,GNINA 1.3,internal_steric_clash,0.989010989010989
+5jkv,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+5jkv,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,1.0
+5jkv,gnina,GNINA 1.3,double_bond_flatness,1.0
+5jkv,gnina,GNINA 1.3,internal_energy,0.9908424908424909
+5jkv,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+5jkv,gnina,GNINA 1.3,minimum_distance_to_protein,1.0
+5jkv,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,1.0
+5jkv,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+5jkv,gnina,GNINA 1.3,minimum_distance_to_waters,1.0
+5jkv,gnina,GNINA 1.3,volume_overlap_with_protein,1.0
+5jkv,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+5jkv,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+5jkv,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+5jkv,qvina,QVina2,mol_pred_loaded,1.0
+5jkv,qvina,QVina2,mol_cond_loaded,1.0
+5jkv,qvina,QVina2,sanitization,1.0
+5jkv,qvina,QVina2,inchi_convertible,1.0
+5jkv,qvina,QVina2,all_atoms_connected,1.0
+5jkv,qvina,QVina2,bond_lengths,1.0
+5jkv,qvina,QVina2,bond_angles,1.0
+5jkv,qvina,QVina2,internal_steric_clash,0.9908424908424909
+5jkv,qvina,QVina2,aromatic_ring_flatness,1.0
+5jkv,qvina,QVina2,non-aromatic_ring_non-flatness,1.0
+5jkv,qvina,QVina2,double_bond_flatness,1.0
+5jkv,qvina,QVina2,internal_energy,0.9853479853479854
+5jkv,qvina,QVina2,protein-ligand_maximum_distance,1.0
+5jkv,qvina,QVina2,minimum_distance_to_protein,0.9981684981684982
+5jkv,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+5jkv,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+5jkv,qvina,QVina2,minimum_distance_to_waters,1.0
+5jkv,qvina,QVina2,volume_overlap_with_protein,1.0
+5jkv,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+5jkv,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+5jkv,qvina,QVina2,volume_overlap_with_waters,1.0
+5mo4,boltz2,Boltz-2,mol_pred_loaded,1.0
+5mo4,boltz2,Boltz-2,mol_cond_loaded,1.0
+5mo4,boltz2,Boltz-2,sanitization,1.0
+5mo4,boltz2,Boltz-2,inchi_convertible,1.0
+5mo4,boltz2,Boltz-2,all_atoms_connected,1.0
+5mo4,boltz2,Boltz-2,bond_lengths,0.9985272459499264
+5mo4,boltz2,Boltz-2,bond_angles,1.0
+5mo4,boltz2,Boltz-2,internal_steric_clash,1.0
+5mo4,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+5mo4,boltz2,Boltz-2,non-aromatic_ring_non-flatness,1.0
+5mo4,boltz2,Boltz-2,double_bond_flatness,1.0
+5mo4,boltz2,Boltz-2,internal_energy,1.0
+5mo4,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+5mo4,boltz2,Boltz-2,minimum_distance_to_protein,0.9248895434462445
+5mo4,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+5mo4,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+5mo4,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+5mo4,boltz2,Boltz-2,volume_overlap_with_protein,1.0
+5mo4,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+5mo4,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+5mo4,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+5mo4,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+5mo4,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+5mo4,dynamicbind,DynamicBind,sanitization,1.0
+5mo4,dynamicbind,DynamicBind,inchi_convertible,1.0
+5mo4,dynamicbind,DynamicBind,all_atoms_connected,0.9956709956709957
+5mo4,dynamicbind,DynamicBind,bond_lengths,1.0
+5mo4,dynamicbind,DynamicBind,bond_angles,1.0
+5mo4,dynamicbind,DynamicBind,internal_steric_clash,0.98989898989899
+5mo4,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+5mo4,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,1.0
+5mo4,dynamicbind,DynamicBind,double_bond_flatness,1.0
+5mo4,dynamicbind,DynamicBind,internal_energy,0.98989898989899
+5mo4,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+5mo4,dynamicbind,DynamicBind,minimum_distance_to_protein,0.020202020202020204
+5mo4,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+5mo4,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+5mo4,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+5mo4,dynamicbind,DynamicBind,volume_overlap_with_protein,0.7272727272727273
+5mo4,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+5mo4,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+5mo4,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+5mo4,gnina,GNINA 1.3,mol_pred_loaded,1.0
+5mo4,gnina,GNINA 1.3,mol_cond_loaded,1.0
+5mo4,gnina,GNINA 1.3,sanitization,1.0
+5mo4,gnina,GNINA 1.3,inchi_convertible,1.0
+5mo4,gnina,GNINA 1.3,all_atoms_connected,1.0
+5mo4,gnina,GNINA 1.3,bond_lengths,1.0
+5mo4,gnina,GNINA 1.3,bond_angles,1.0
+5mo4,gnina,GNINA 1.3,internal_steric_clash,0.9942028985507246
+5mo4,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+5mo4,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,1.0
+5mo4,gnina,GNINA 1.3,double_bond_flatness,1.0
+5mo4,gnina,GNINA 1.3,internal_energy,0.9753623188405797
+5mo4,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+5mo4,gnina,GNINA 1.3,minimum_distance_to_protein,0.9797101449275363
+5mo4,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,1.0
+5mo4,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+5mo4,gnina,GNINA 1.3,minimum_distance_to_waters,1.0
+5mo4,gnina,GNINA 1.3,volume_overlap_with_protein,1.0
+5mo4,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+5mo4,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+5mo4,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+5mo4,qvina,QVina2,mol_pred_loaded,1.0
+5mo4,qvina,QVina2,mol_cond_loaded,1.0
+5mo4,qvina,QVina2,sanitization,1.0
+5mo4,qvina,QVina2,inchi_convertible,1.0
+5mo4,qvina,QVina2,all_atoms_connected,1.0
+5mo4,qvina,QVina2,bond_lengths,1.0
+5mo4,qvina,QVina2,bond_angles,1.0
+5mo4,qvina,QVina2,internal_steric_clash,1.0
+5mo4,qvina,QVina2,aromatic_ring_flatness,1.0
+5mo4,qvina,QVina2,non-aromatic_ring_non-flatness,1.0
+5mo4,qvina,QVina2,double_bond_flatness,1.0
+5mo4,qvina,QVina2,internal_energy,0.9884057971014493
+5mo4,qvina,QVina2,protein-ligand_maximum_distance,1.0
+5mo4,qvina,QVina2,minimum_distance_to_protein,0.9956521739130435
+5mo4,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+5mo4,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+5mo4,qvina,QVina2,minimum_distance_to_waters,1.0
+5mo4,qvina,QVina2,volume_overlap_with_protein,1.0
+5mo4,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+5mo4,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+5mo4,qvina,QVina2,volume_overlap_with_waters,1.0
+6gqj,boltz2,Boltz-2,mol_pred_loaded,1.0
+6gqj,boltz2,Boltz-2,mol_cond_loaded,1.0
+6gqj,boltz2,Boltz-2,sanitization,1.0
+6gqj,boltz2,Boltz-2,inchi_convertible,1.0
+6gqj,boltz2,Boltz-2,all_atoms_connected,1.0
+6gqj,boltz2,Boltz-2,bond_lengths,1.0
+6gqj,boltz2,Boltz-2,bond_angles,1.0
+6gqj,boltz2,Boltz-2,internal_steric_clash,0.9981617647058824
+6gqj,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+6gqj,boltz2,Boltz-2,non-aromatic_ring_non-flatness,0.9981617647058824
+6gqj,boltz2,Boltz-2,double_bond_flatness,1.0
+6gqj,boltz2,Boltz-2,internal_energy,0.9972426470588235
+6gqj,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+6gqj,boltz2,Boltz-2,minimum_distance_to_protein,0.8722426470588235
+6gqj,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+6gqj,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+6gqj,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+6gqj,boltz2,Boltz-2,volume_overlap_with_protein,1.0
+6gqj,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+6gqj,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+6gqj,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+6gqj,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+6gqj,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+6gqj,dynamicbind,DynamicBind,sanitization,1.0
+6gqj,dynamicbind,DynamicBind,inchi_convertible,1.0
+6gqj,dynamicbind,DynamicBind,all_atoms_connected,1.0
+6gqj,dynamicbind,DynamicBind,bond_lengths,1.0
+6gqj,dynamicbind,DynamicBind,bond_angles,1.0
+6gqj,dynamicbind,DynamicBind,internal_steric_clash,0.9984591679506933
+6gqj,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+6gqj,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,1.0
+6gqj,dynamicbind,DynamicBind,double_bond_flatness,1.0
+6gqj,dynamicbind,DynamicBind,internal_energy,0.9845916795069337
+6gqj,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+6gqj,dynamicbind,DynamicBind,minimum_distance_to_protein,0.1263482280431433
+6gqj,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+6gqj,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+6gqj,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+6gqj,dynamicbind,DynamicBind,volume_overlap_with_protein,0.8767334360554699
+6gqj,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+6gqj,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+6gqj,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+6gqj,gnina,GNINA 1.3,mol_pred_loaded,1.0
+6gqj,gnina,GNINA 1.3,mol_cond_loaded,1.0
+6gqj,gnina,GNINA 1.3,sanitization,1.0
+6gqj,gnina,GNINA 1.3,inchi_convertible,1.0
+6gqj,gnina,GNINA 1.3,all_atoms_connected,1.0
+6gqj,gnina,GNINA 1.3,bond_lengths,1.0
+6gqj,gnina,GNINA 1.3,bond_angles,1.0
+6gqj,gnina,GNINA 1.3,internal_steric_clash,0.9992266047950503
+6gqj,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+6gqj,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,1.0
+6gqj,gnina,GNINA 1.3,double_bond_flatness,1.0
+6gqj,gnina,GNINA 1.3,internal_energy,0.9528228924980665
+6gqj,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+6gqj,gnina,GNINA 1.3,minimum_distance_to_protein,0.9303944315545244
+6gqj,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,1.0
+6gqj,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+6gqj,gnina,GNINA 1.3,minimum_distance_to_waters,1.0
+6gqj,gnina,GNINA 1.3,volume_overlap_with_protein,0.9961330239752514
+6gqj,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+6gqj,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+6gqj,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+6gqj,qvina,QVina2,mol_pred_loaded,1.0
+6gqj,qvina,QVina2,mol_cond_loaded,1.0
+6gqj,qvina,QVina2,sanitization,1.0
+6gqj,qvina,QVina2,inchi_convertible,1.0
+6gqj,qvina,QVina2,all_atoms_connected,1.0
+6gqj,qvina,QVina2,bond_lengths,1.0
+6gqj,qvina,QVina2,bond_angles,1.0
+6gqj,qvina,QVina2,internal_steric_clash,0.9992266047950503
+6gqj,qvina,QVina2,aromatic_ring_flatness,1.0
+6gqj,qvina,QVina2,non-aromatic_ring_non-flatness,1.0
+6gqj,qvina,QVina2,double_bond_flatness,1.0
+6gqj,qvina,QVina2,internal_energy,0.9938128383604021
+6gqj,qvina,QVina2,protein-ligand_maximum_distance,1.0
+6gqj,qvina,QVina2,minimum_distance_to_protein,0.9837587006960556
+6gqj,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+6gqj,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+6gqj,qvina,QVina2,minimum_distance_to_waters,1.0
+6gqj,qvina,QVina2,volume_overlap_with_protein,1.0
+6gqj,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+6gqj,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+6gqj,qvina,QVina2,volume_overlap_with_waters,1.0
+6jok,boltz2,Boltz-2,mol_pred_loaded,1.0
+6jok,boltz2,Boltz-2,mol_cond_loaded,1.0
+6jok,boltz2,Boltz-2,sanitization,1.0
+6jok,boltz2,Boltz-2,inchi_convertible,1.0
+6jok,boltz2,Boltz-2,all_atoms_connected,1.0
+6jok,boltz2,Boltz-2,bond_lengths,1.0
+6jok,boltz2,Boltz-2,bond_angles,1.0
+6jok,boltz2,Boltz-2,internal_steric_clash,1.0
+6jok,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+6jok,boltz2,Boltz-2,non-aromatic_ring_non-flatness,1.0
+6jok,boltz2,Boltz-2,double_bond_flatness,0.9959677419354839
+6jok,boltz2,Boltz-2,internal_energy,0.9959677419354839
+6jok,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+6jok,boltz2,Boltz-2,minimum_distance_to_protein,0.9233870967741935
+6jok,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+6jok,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+6jok,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+6jok,boltz2,Boltz-2,volume_overlap_with_protein,0.9959677419354839
+6jok,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+6jok,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+6jok,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+6jok,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+6jok,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+6jok,dynamicbind,DynamicBind,sanitization,1.0
+6jok,dynamicbind,DynamicBind,inchi_convertible,1.0
+6jok,dynamicbind,DynamicBind,all_atoms_connected,0.996
+6jok,dynamicbind,DynamicBind,bond_lengths,1.0
+6jok,dynamicbind,DynamicBind,bond_angles,1.0
+6jok,dynamicbind,DynamicBind,internal_steric_clash,0.988
+6jok,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+6jok,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,1.0
+6jok,dynamicbind,DynamicBind,double_bond_flatness,1.0
+6jok,dynamicbind,DynamicBind,internal_energy,0.956
+6jok,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+6jok,dynamicbind,DynamicBind,minimum_distance_to_protein,0.364
+6jok,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+6jok,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+6jok,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+6jok,dynamicbind,DynamicBind,volume_overlap_with_protein,0.756
+6jok,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+6jok,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+6jok,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+6jok,gnina,GNINA 1.3,mol_pred_loaded,1.0
+6jok,gnina,GNINA 1.3,mol_cond_loaded,1.0
+6jok,gnina,GNINA 1.3,sanitization,1.0
+6jok,gnina,GNINA 1.3,inchi_convertible,1.0
+6jok,gnina,GNINA 1.3,all_atoms_connected,1.0
+6jok,gnina,GNINA 1.3,bond_lengths,1.0
+6jok,gnina,GNINA 1.3,bond_angles,1.0
+6jok,gnina,GNINA 1.3,internal_steric_clash,0.9875518672199171
+6jok,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+6jok,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,1.0
+6jok,gnina,GNINA 1.3,double_bond_flatness,1.0
+6jok,gnina,GNINA 1.3,internal_energy,0.946058091286307
+6jok,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+6jok,gnina,GNINA 1.3,minimum_distance_to_protein,1.0
+6jok,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,1.0
+6jok,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+6jok,gnina,GNINA 1.3,minimum_distance_to_waters,1.0
+6jok,gnina,GNINA 1.3,volume_overlap_with_protein,1.0
+6jok,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+6jok,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+6jok,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+6jok,qvina,QVina2,mol_pred_loaded,1.0
+6jok,qvina,QVina2,mol_cond_loaded,1.0
+6jok,qvina,QVina2,sanitization,1.0
+6jok,qvina,QVina2,inchi_convertible,1.0
+6jok,qvina,QVina2,all_atoms_connected,1.0
+6jok,qvina,QVina2,bond_lengths,1.0
+6jok,qvina,QVina2,bond_angles,1.0
+6jok,qvina,QVina2,internal_steric_clash,1.0
+6jok,qvina,QVina2,aromatic_ring_flatness,1.0
+6jok,qvina,QVina2,non-aromatic_ring_non-flatness,1.0
+6jok,qvina,QVina2,double_bond_flatness,1.0
+6jok,qvina,QVina2,internal_energy,0.966804979253112
+6jok,qvina,QVina2,protein-ligand_maximum_distance,1.0
+6jok,qvina,QVina2,minimum_distance_to_protein,1.0
+6jok,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+6jok,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+6jok,qvina,QVina2,minimum_distance_to_waters,1.0
+6jok,qvina,QVina2,volume_overlap_with_protein,1.0
+6jok,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+6jok,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+6jok,qvina,QVina2,volume_overlap_with_waters,1.0
+5lf3,boltz2,Boltz-2,mol_pred_loaded,1.0
+5lf3,boltz2,Boltz-2,mol_cond_loaded,1.0
+5lf3,boltz2,Boltz-2,sanitization,1.0
+5lf3,boltz2,Boltz-2,inchi_convertible,1.0
+5lf3,boltz2,Boltz-2,all_atoms_connected,1.0
+5lf3,boltz2,Boltz-2,bond_lengths,0.9879518072289156
+5lf3,boltz2,Boltz-2,bond_angles,0.9879518072289156
+5lf3,boltz2,Boltz-2,internal_steric_clash,0.9759036144578314
+5lf3,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+5lf3,boltz2,Boltz-2,non-aromatic_ring_non-flatness,1.0
+5lf3,boltz2,Boltz-2,double_bond_flatness,0.7228915662650602
+5lf3,boltz2,Boltz-2,internal_energy,0.9879518072289156
+5lf3,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+5lf3,boltz2,Boltz-2,minimum_distance_to_protein,0.3614457831325301
+5lf3,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+5lf3,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+5lf3,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+5lf3,boltz2,Boltz-2,volume_overlap_with_protein,1.0
+5lf3,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+5lf3,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+5lf3,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+5lf3,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+5lf3,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+5lf3,dynamicbind,DynamicBind,sanitization,1.0
+5lf3,dynamicbind,DynamicBind,inchi_convertible,1.0
+5lf3,dynamicbind,DynamicBind,all_atoms_connected,1.0
+5lf3,dynamicbind,DynamicBind,bond_lengths,1.0
+5lf3,dynamicbind,DynamicBind,bond_angles,1.0
+5lf3,dynamicbind,DynamicBind,internal_steric_clash,0.8522727272727273
+5lf3,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+5lf3,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,1.0
+5lf3,dynamicbind,DynamicBind,double_bond_flatness,1.0
+5lf3,dynamicbind,DynamicBind,internal_energy,0.9204545454545454
+5lf3,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+5lf3,dynamicbind,DynamicBind,minimum_distance_to_protein,0.022727272727272728
+5lf3,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+5lf3,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+5lf3,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+5lf3,dynamicbind,DynamicBind,volume_overlap_with_protein,0.9545454545454546
+5lf3,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+5lf3,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+5lf3,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+5lf3,gnina,GNINA 1.3,mol_pred_loaded,1.0
+5lf3,gnina,GNINA 1.3,mol_cond_loaded,1.0
+5lf3,gnina,GNINA 1.3,sanitization,1.0
+5lf3,gnina,GNINA 1.3,inchi_convertible,1.0
+5lf3,gnina,GNINA 1.3,all_atoms_connected,1.0
+5lf3,gnina,GNINA 1.3,bond_lengths,1.0
+5lf3,gnina,GNINA 1.3,bond_angles,1.0
+5lf3,gnina,GNINA 1.3,internal_steric_clash,1.0
+5lf3,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+5lf3,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,1.0
+5lf3,gnina,GNINA 1.3,double_bond_flatness,1.0
+5lf3,gnina,GNINA 1.3,internal_energy,0.9772727272727273
+5lf3,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+5lf3,gnina,GNINA 1.3,minimum_distance_to_protein,1.0
+5lf3,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,1.0
+5lf3,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+5lf3,gnina,GNINA 1.3,minimum_distance_to_waters,1.0
+5lf3,gnina,GNINA 1.3,volume_overlap_with_protein,1.0
+5lf3,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+5lf3,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+5lf3,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+5lf3,qvina,QVina2,mol_pred_loaded,1.0
+5lf3,qvina,QVina2,mol_cond_loaded,1.0
+5lf3,qvina,QVina2,sanitization,1.0
+5lf3,qvina,QVina2,inchi_convertible,1.0
+5lf3,qvina,QVina2,all_atoms_connected,1.0
+5lf3,qvina,QVina2,bond_lengths,1.0
+5lf3,qvina,QVina2,bond_angles,1.0
+5lf3,qvina,QVina2,internal_steric_clash,0.9682539682539683
+5lf3,qvina,QVina2,aromatic_ring_flatness,1.0
+5lf3,qvina,QVina2,non-aromatic_ring_non-flatness,1.0
+5lf3,qvina,QVina2,double_bond_flatness,1.0
+5lf3,qvina,QVina2,internal_energy,1.0
+5lf3,qvina,QVina2,protein-ligand_maximum_distance,1.0
+5lf3,qvina,QVina2,minimum_distance_to_protein,1.0
+5lf3,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+5lf3,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+5lf3,qvina,QVina2,minimum_distance_to_waters,1.0
+5lf3,qvina,QVina2,volume_overlap_with_protein,1.0
+5lf3,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+5lf3,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+5lf3,qvina,QVina2,volume_overlap_with_waters,1.0
+7kk3,boltz2,Boltz-2,mol_pred_loaded,1.0
+7kk3,boltz2,Boltz-2,mol_cond_loaded,1.0
+7kk3,boltz2,Boltz-2,sanitization,1.0
+7kk3,boltz2,Boltz-2,inchi_convertible,1.0
+7kk3,boltz2,Boltz-2,all_atoms_connected,1.0
+7kk3,boltz2,Boltz-2,bond_lengths,0.9990448901623686
+7kk3,boltz2,Boltz-2,bond_angles,1.0
+7kk3,boltz2,Boltz-2,internal_steric_clash,1.0
+7kk3,boltz2,Boltz-2,aromatic_ring_flatness,1.0
+7kk3,boltz2,Boltz-2,non-aromatic_ring_non-flatness,0.9980897803247374
+7kk3,boltz2,Boltz-2,double_bond_flatness,0.9990448901623686
+7kk3,boltz2,Boltz-2,internal_energy,0.9980897803247374
+7kk3,boltz2,Boltz-2,protein-ligand_maximum_distance,1.0
+7kk3,boltz2,Boltz-2,minimum_distance_to_protein,0.8987583572110793
+7kk3,boltz2,Boltz-2,minimum_distance_to_organic_cofactors,1.0
+7kk3,boltz2,Boltz-2,minimum_distance_to_inorganic_cofactors,1.0
+7kk3,boltz2,Boltz-2,minimum_distance_to_waters,1.0
+7kk3,boltz2,Boltz-2,volume_overlap_with_protein,1.0
+7kk3,boltz2,Boltz-2,volume_overlap_with_organic_cofactors,1.0
+7kk3,boltz2,Boltz-2,volume_overlap_with_inorganic_cofactors,1.0
+7kk3,boltz2,Boltz-2,volume_overlap_with_waters,1.0
+7kk3,dynamicbind,DynamicBind,mol_pred_loaded,1.0
+7kk3,dynamicbind,DynamicBind,mol_cond_loaded,1.0
+7kk3,dynamicbind,DynamicBind,sanitization,1.0
+7kk3,dynamicbind,DynamicBind,inchi_convertible,1.0
+7kk3,dynamicbind,DynamicBind,all_atoms_connected,1.0
+7kk3,dynamicbind,DynamicBind,bond_lengths,1.0
+7kk3,dynamicbind,DynamicBind,bond_angles,1.0
+7kk3,dynamicbind,DynamicBind,internal_steric_clash,0.9860205032618826
+7kk3,dynamicbind,DynamicBind,aromatic_ring_flatness,1.0
+7kk3,dynamicbind,DynamicBind,non-aromatic_ring_non-flatness,0.9990680335507922
+7kk3,dynamicbind,DynamicBind,double_bond_flatness,1.0
+7kk3,dynamicbind,DynamicBind,internal_energy,0.9757688723205965
+7kk3,dynamicbind,DynamicBind,protein-ligand_maximum_distance,1.0
+7kk3,dynamicbind,DynamicBind,minimum_distance_to_protein,0.47343895619757687
+7kk3,dynamicbind,DynamicBind,minimum_distance_to_organic_cofactors,1.0
+7kk3,dynamicbind,DynamicBind,minimum_distance_to_inorganic_cofactors,1.0
+7kk3,dynamicbind,DynamicBind,minimum_distance_to_waters,1.0
+7kk3,dynamicbind,DynamicBind,volume_overlap_with_protein,0.9105312208760484
+7kk3,dynamicbind,DynamicBind,volume_overlap_with_organic_cofactors,1.0
+7kk3,dynamicbind,DynamicBind,volume_overlap_with_inorganic_cofactors,1.0
+7kk3,dynamicbind,DynamicBind,volume_overlap_with_waters,1.0
+7kk3,gnina,GNINA 1.3,mol_pred_loaded,1.0
+7kk3,gnina,GNINA 1.3,mol_cond_loaded,1.0
+7kk3,gnina,GNINA 1.3,sanitization,1.0
+7kk3,gnina,GNINA 1.3,inchi_convertible,1.0
+7kk3,gnina,GNINA 1.3,all_atoms_connected,1.0
+7kk3,gnina,GNINA 1.3,bond_lengths,1.0
+7kk3,gnina,GNINA 1.3,bond_angles,1.0
+7kk3,gnina,GNINA 1.3,internal_steric_clash,0.9989506820566632
+7kk3,gnina,GNINA 1.3,aromatic_ring_flatness,1.0
+7kk3,gnina,GNINA 1.3,non-aromatic_ring_non-flatness,0.9989506820566632
+7kk3,gnina,GNINA 1.3,double_bond_flatness,1.0
+7kk3,gnina,GNINA 1.3,internal_energy,0.9496327387198321
+7kk3,gnina,GNINA 1.3,protein-ligand_maximum_distance,1.0
+7kk3,gnina,GNINA 1.3,minimum_distance_to_protein,1.0
+7kk3,gnina,GNINA 1.3,minimum_distance_to_organic_cofactors,1.0
+7kk3,gnina,GNINA 1.3,minimum_distance_to_inorganic_cofactors,1.0
+7kk3,gnina,GNINA 1.3,minimum_distance_to_waters,1.0
+7kk3,gnina,GNINA 1.3,volume_overlap_with_protein,1.0
+7kk3,gnina,GNINA 1.3,volume_overlap_with_organic_cofactors,1.0
+7kk3,gnina,GNINA 1.3,volume_overlap_with_inorganic_cofactors,1.0
+7kk3,gnina,GNINA 1.3,volume_overlap_with_waters,1.0
+7kk3,qvina,QVina2,mol_pred_loaded,1.0
+7kk3,qvina,QVina2,mol_cond_loaded,1.0
+7kk3,qvina,QVina2,sanitization,1.0
+7kk3,qvina,QVina2,inchi_convertible,1.0
+7kk3,qvina,QVina2,all_atoms_connected,1.0
+7kk3,qvina,QVina2,bond_lengths,1.0
+7kk3,qvina,QVina2,bond_angles,1.0
+7kk3,qvina,QVina2,internal_steric_clash,1.0
+7kk3,qvina,QVina2,aromatic_ring_flatness,1.0
+7kk3,qvina,QVina2,non-aromatic_ring_non-flatness,0.9989506820566632
+7kk3,qvina,QVina2,double_bond_flatness,1.0
+7kk3,qvina,QVina2,internal_energy,0.9905561385099685
+7kk3,qvina,QVina2,protein-ligand_maximum_distance,1.0
+7kk3,qvina,QVina2,minimum_distance_to_protein,1.0
+7kk3,qvina,QVina2,minimum_distance_to_organic_cofactors,1.0
+7kk3,qvina,QVina2,minimum_distance_to_inorganic_cofactors,1.0
+7kk3,qvina,QVina2,minimum_distance_to_waters,1.0
+7kk3,qvina,QVina2,volume_overlap_with_protein,1.0
+7kk3,qvina,QVina2,volume_overlap_with_organic_cofactors,1.0
+7kk3,qvina,QVina2,volume_overlap_with_inorganic_cofactors,1.0
+7kk3,qvina,QVina2,volume_overlap_with_waters,1.0

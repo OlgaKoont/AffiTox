@@ -7,7 +7,7 @@ import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .constants import METHOD_LABELS, PRIMARY_METRICS
+from .constants import METHOD_LABELS, PRIMARY_METRICS, TARGET_LABELS
 
 
 def _split_list(value: str) -> list[str]:
@@ -43,6 +43,8 @@ class AnalysisConfig:
     method_colors: dict[str, str] = field(default_factory=dict)
     figure_dpi: int = 700
     font_family: str = "DejaVu Sans"
+    target_label_mode: str = "pdb"
+    figure_variant: str = ""
     n_bootstrap: int = 10_000
     n_permutation: int = 10_000
     random_seed: int = 42
@@ -58,10 +60,17 @@ class AnalysisConfig:
 
     @property
     def figures_dir(self) -> Path:
-        return self.analysis_root / "figures"
+        base = self.analysis_root / "figures"
+        return base / self.figure_variant if self.figure_variant else base
 
     def method_label(self, method_id: str) -> str:
         return METHOD_LABELS.get(method_id, method_id)
+
+    def target_label(self, target: str) -> str:
+        target_id = target.lower()
+        if self.target_label_mode == "protein":
+            return TARGET_LABELS.get(target_id, target.upper())
+        return target.upper()
 
     def primary_metric(self, method_id: str) -> str:
         if method_id not in PRIMARY_METRICS:
@@ -87,7 +96,7 @@ class AnalysisConfig:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(description="ToxAffinity article analysis pipeline")
+    p = argparse.ArgumentParser(description="AffiTox article analysis pipeline")
     p.add_argument("--analysis-root", type=Path, required=True)
     p.add_argument("--merged-dir", type=Path, required=True)
     p.add_argument("--posebusters-dir", type=Path, required=True)
@@ -96,12 +105,18 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--targets", default=os.environ.get("TARGETS", ""))
     p.add_argument("--methods", default=os.environ.get("METHODS", ""))
     p.add_argument("--exp-col", default=os.environ.get("EXP_COL", "pValue"))
-    p.add_argument("--color-low", default=os.environ.get("COLOR_LOW", "#6584E1"))
-    p.add_argument("--color-mid", default=os.environ.get("COLOR_MID", "#DEDAD7"))
-    p.add_argument("--color-high", default=os.environ.get("COLOR_HIGH", "#E5885F"))
+    p.add_argument("--color-low", default=os.environ.get("COLOR_LOW", "#3558C5"))
+    p.add_argument("--color-mid", default=os.environ.get("COLOR_MID", "#FFF9EE"))
+    p.add_argument("--color-high", default=os.environ.get("COLOR_HIGH", "#EF4938"))
     p.add_argument("--method-colors", default=os.environ.get("METHOD_COLORS", ""))
-    p.add_argument("--figure-dpi", type=int, default=int(os.environ.get("FIGURE_DPI", "700")))
+    p.add_argument("--figure-dpi", type=int, default=int(os.environ.get("FIGURE_DPI", "300")))
     p.add_argument("--font-family", default=os.environ.get("FONT_FAMILY", "DejaVu Sans"))
+    p.add_argument(
+        "--target-label-mode",
+        choices=("pdb", "protein"),
+        default=os.environ.get("TARGET_LABEL_MODE", "pdb"),
+    )
+    p.add_argument("--figure-variant", default=os.environ.get("FIGURE_VARIANT", ""))
     p.add_argument("--n-bootstrap", type=int, default=int(os.environ.get("N_BOOTSTRAP", "10000")))
     p.add_argument("--n-permutation", type=int, default=int(os.environ.get("N_PERMUTATION", "10000")))
     p.add_argument("--random-seed", type=int, default=int(os.environ.get("RANDOM_SEED", "42")))
@@ -136,6 +151,8 @@ def config_from_args(args: argparse.Namespace) -> AnalysisConfig:
         method_colors=_parse_method_colors(args.method_colors),
         figure_dpi=args.figure_dpi,
         font_family=args.font_family,
+        target_label_mode=args.target_label_mode,
+        figure_variant=args.figure_variant.strip(),
         n_bootstrap=args.n_bootstrap,
         n_permutation=args.n_permutation,
         random_seed=args.random_seed,

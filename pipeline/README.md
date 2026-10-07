@@ -5,8 +5,10 @@ Executable stages from `run_pipeline.sh`. Scientific interpretation belongs in `
 ```text
 pipeline/
 ├── install/setup_environment.sh
+├── prepare/run_curate.sh      # layer 1 → 2, assigns ligand_id
 ├── prepare/run_prepare.sh
 ├── dock/run_docking.sh
+├── hpc/                       # optional SLURM examples, not the public interface
 └── postprocess/
     ├── run_merge.sh
     ├── run_posebusters.sh

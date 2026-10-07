@@ -4,6 +4,8 @@ import csv
 from pathlib import Path
 from typing import Dict, List
 
+from docking_benchmark2.ligand_ids import format_ligand_id, normalize_ligand_id
+
 
 def load_ligands_from_csv(csv_path: Path) -> List[Dict[str, str]]:
     """
@@ -90,7 +92,8 @@ def load_ligands_from_csv(csv_path: Path) -> List[Dict[str, str]]:
         if not smiles or (smiles and smiles.lower() == 'nan'):
             continue
         
-        ligand_id = row.get(id_col, "").strip() if id_col and id_col in row else f"ligand_{idx+1}"
+        raw_id = row.get(id_col, "").strip() if id_col and id_col in row else ""
+        ligand_id = normalize_ligand_id(raw_id) or format_ligand_id(idx + 1)
         ligands.append({
             'smiles': smiles,
             'ligand_id': ligand_id

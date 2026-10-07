@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Orchestrate ToxAffinity article analysis pipeline."""
+"""Orchestrate AffiTox article analysis pipeline."""
 
 from __future__ import annotations
 
@@ -49,11 +49,13 @@ def main() -> None:
     cfg.ensure_dirs()
 
     print("=" * 72)
-    print("ToxAffinity analysis pipeline")
+    print("AffiTox analysis pipeline")
     print(f"  analysis root : {cfg.analysis_root}")
     print(f"  merged data   : {cfg.merged_dir}")
     print(f"  targets       : {', '.join(cfg.targets)}")
     print(f"  methods       : {', '.join(cfg.method_label(m) for m in cfg.methods)}")
+    print(f"  figure labels : {cfg.target_label_mode}")
+    print(f"  figure output : {cfg.figures_dir}")
     print("=" * 72)
 
     corr = None
@@ -127,7 +129,7 @@ def main() -> None:
             print(f"      -> {out_pb}")
 
     if cfg.run_figures:
-        print("[5/5] Figures (PNG + SVG, dpi={})".format(cfg.figure_dpi))
+        print("[5/5] Figures (4000 px / 300 DPI PNG + vector PDF)")
         if corr is None:
             p = cfg.tables_dir / "correlations" / "summary_all_proteins.csv"
             if p.exists():

@@ -1,0 +1,8 @@
+{
+  "protein": "2v5z",
+  "ligand_id": "ligand_3",
+  "smiles": "C#CCN(C)CC(=C)c1ccccc1.Cl",
+  "affinity": 4.798274040222168,
+  "affinity_uM": 15.91204358774922,
+  "prediction_time": 0.2820255766069986
+}

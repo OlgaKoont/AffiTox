@@ -41,19 +41,26 @@ def plot_target_scatter(target: str, cfg: AnalysisConfig) -> None:
         xx = np.linspace(x.min(), x.max(), 100)
         ax.plot(xx, slope * xx + intercept, color="black", lw=1.2, alpha=0.8)
 
-        pr, pp = pearsonr(x, y)
-        sr, sp = spearmanr(x, y)
-        stats = f"Pearson r={pr:.3f} (p={pp:.2e})\nSpearman rho={sr:.3f} (p={sp:.2e})\nn={len(x)}"
+        pr, _ = pearsonr(x, y)
+        sr, _ = spearmanr(x, y)
+        stats = f"r={pr:.3f}\n$\\rho$={sr:.3f}\nn={len(x)}"
         ax.text(
-            0.03, 0.97, stats, transform=ax.transAxes, va="top", ha="left", fontsize=7,
-            bbox=dict(boxstyle="round", facecolor="white", alpha=0.85, edgecolor="#ccc"),
+            0.03, 0.97, stats, transform=ax.transAxes, va="top", ha="left", fontsize=6.5,
+            bbox=dict(boxstyle="round,pad=0.25", facecolor="white", alpha=0.92, edgecolor="#cccccc"),
         )
         ax.set_title(label)
         ax.set_xlabel("Experimental pKi")
-        ax.set_ylabel("Predicted score")
+        ax.set_ylabel("")
         ax.grid(True, alpha=0.25)
 
-    fig.suptitle(f"{target.upper()}: experimental pKi vs docking scores", y=1.02, fontsize=11)
+    ylabel_fs = 10
+    char_w_pt = ylabel_fs * 0.55
+    axes[0].set_ylabel("Predicted score", fontsize=ylabel_fs, labelpad=2 * char_w_pt)
+    fig.suptitle(
+        f"{cfg.target_label(target)}: experimental pKi vs docking scores",
+        y=1.02,
+        fontsize=11,
+    )
     out = cfg.figures_dir / "correlations" / "scatter" / f"scatter_{target.lower()}"
     save_figure(fig, out)
 

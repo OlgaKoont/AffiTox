@@ -35,8 +35,7 @@ def dock_gnina(
     # This prevents hanging on problematic ligands
     docking_timeout = config.get('docking_timeout', 600)
     random_seed = config.get('random_seed', 42)  # Fixed seed for reproducibility
-    # Don't use conda_env - environment is already activated in the script
-    docking_env = None
+    docking_env = config.get("conda_env") or None
     
     # Load interaction config
     if interaction_config is None:
@@ -126,15 +125,13 @@ def dock_gnina(
                     '--size_z', str(size[2]),
                 ])
             
-            # Use --cnn --no_gpu for fast CNN scoring on CPU (gnina 1.3 feature)
-            # This allows CNN to work quickly on CPU without GPU
-            # However, if CUDA libraries are incompatible, fall back to --no_gpu only
+            # AffiTox default (use_cnn=false): --no_gpu only. GNINA 1.3 still emits CNN
+            # pose/affinity columns in the log; merge uses gnina_cnn_affinity_bestpose.
+            # Optional use_cnn=true adds --cnn before --no_gpu (not used in published runs).
             use_cnn_actual = use_cnn
             if use_cnn:
                 cmd.append('--cnn')
-                cmd.append('--no_gpu')
-            else:
-                cmd.append('--no_gpu')
+            cmd.append('--no_gpu')
             
             try:
                 start_time = time.time()

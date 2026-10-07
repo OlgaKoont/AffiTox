@@ -5,6 +5,30 @@ manuscript/
 # Raw docking outputs (large; use Zenodo)
 results/
 
+# Zenodo payloads (zip the workspace; do not commit dumps)
+release/zenodo/03_docking/payload/
+release/zenodo/payloads/
+release/zenodo/02_prepared/weights/*.ckpt
+release/zenodo/02_prepared/weights/*.pt
+release/zenodo/02_prepared/weights/*.onnx
+release/zenodo/05_posebusters/sdf/
+release/zenodo/06_metrics_figures/figures/
+
+# GitHub example: 16×5 tables stay; GPU dumps are Zenodo record 03.
+example/03_docking/boltz2/
+example/03_docking/dynamicbind/
+example/results/
+example/processed/
+example/analysis/
+example/boltz/
+example/logs/
+
+# Full-panel analysis artifacts: Zenodo record 06. Git keeps the example slice.
+analysis/excluding_2z5x_3mjg/logs/
+analysis/excluding_2z5x_3mjg/figures/
+analysis/tables/
+analysis/figures/
+
 # Generated analysis artifacts — publish tables + figures for GitHub/Zenodo Tier C
 # (re-run: pipeline/postprocess/run_article_analysis.sh)
 analysis/logs/
@@ -44,7 +68,6 @@ logs/
 # processed/
 input/bindingdb/
 
-# Data snapshot (optional — publish via Zenodo)
-# data/merged/
-# data/posebusters/
-# data/posebusters_boltz2/
+# Large third-party training manifests (download, do not commit)
+analysis/tables/overlap/external/gnina/CrossDocked2020_v1.3_types.tgz
+analysis/tables/overlap/external/dynamicbind/d3_with_clash_info.csv

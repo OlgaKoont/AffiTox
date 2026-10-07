@@ -1,0 +1,165 @@
+{
+  "N_panel": 11180,
+  "by_target": [
+    {
+      "pdb_id": "1g5m",
+      "n": 252,
+      "has_ligand_id": true,
+      "qvina": 252,
+      "gnina": 250,
+      "plapt": 252,
+      "dynamicbind": 252,
+      "boltz2": 252
+    },
+    {
+      "pdb_id": "2v5z",
+      "n": 246,
+      "has_ligand_id": true,
+      "qvina": 245,
+      "gnina": 245,
+      "plapt": 246,
+      "dynamicbind": 245,
+      "boltz2": 241
+    },
+    {
+      "pdb_id": "3eyg",
+      "n": 2255,
+      "has_ligand_id": true,
+      "qvina": 2221,
+      "gnina": 2215,
+      "plapt": 2255,
+      "dynamicbind": 2254,
+      "boltz2": 2253
+    },
+    {
+      "pdb_id": "3jy9",
+      "n": 2027,
+      "has_ligand_id": true,
+      "qvina": 1998,
+      "gnina": 1999,
+      "plapt": 2027,
+      "dynamicbind": 2026,
+      "boltz2": 2022
+    },
+    {
+      "pdb_id": "3lxk",
+      "n": 786,
+      "has_ligand_id": true,
+      "qvina": 778,
+      "gnina": 778,
+      "plapt": 786,
+      "dynamicbind": 785,
+      "boltz2": 783
+    },
+    {
+      "pdb_id": "11ue",
+      "n": 275,
+      "has_ligand_id": true,
+      "qvina": 268,
+      "gnina": 268,
+      "plapt": 275,
+      "dynamicbind": 275,
+      "boltz2": 274
+    },
+    {
+      "pdb_id": "4ase",
+      "n": 875,
+      "has_ligand_id": true,
+      "qvina": 862,
+      "gnina": 862,
+      "plapt": 875,
+      "dynamicbind": 875,
+      "boltz2": 874
+    },
+    {
+      "pdb_id": "4f65",
+      "n": 134,
+      "has_ligand_id": true,
+      "qvina": 127,
+      "gnina": 127,
+      "plapt": 134,
+      "dynamicbind": 134,
+      "boltz2": 134
+    },
+    {
+      "pdb_id": "4tz4",
+      "n": 127,
+      "has_ligand_id": true,
+      "qvina": 126,
+      "gnina": 126,
+      "plapt": 127,
+      "dynamicbind": 127,
+      "boltz2": 127
+    },
+    {
+      "pdb_id": "4zau",
+      "n": 251,
+      "has_ligand_id": true,
+      "qvina": 247,
+      "gnina": 247,
+      "plapt": 251,
+      "dynamicbind": 251,
+      "boltz2": 235
+    },
+    {
+      "pdb_id": "5jkv",
+      "n": 548,
+      "has_ligand_id": true,
+      "qvina": 547,
+      "gnina": 547,
+      "plapt": 548,
+      "dynamicbind": 547,
+      "boltz2": 546
+    },
+    {
+      "pdb_id": "5mo4",
+      "n": 693,
+      "has_ligand_id": true,
+      "qvina": 693,
+      "gnina": 693,
+      "plapt": 693,
+      "dynamicbind": 693,
+      "boltz2": 690
+    },
+    {
+      "pdb_id": "6gqj",
+      "n": 1298,
+      "has_ligand_id": true,
+      "qvina": 1293,
+      "gnina": 1293,
+      "plapt": 1298,
+      "dynamicbind": 1298,
+      "boltz2": 1298
+    },
+    {
+      "pdb_id": "6jok",
+      "n": 250,
+      "has_ligand_id": true,
+      "qvina": 242,
+      "gnina": 242,
+      "plapt": 250,
+      "dynamicbind": 250,
+      "boltz2": 249
+    },
+    {
+      "pdb_id": "5lf3",
+      "n": 88,
+      "has_ligand_id": true,
+      "qvina": 88,
+      "gnina": 88,
+      "plapt": 88,
+      "dynamicbind": 88,
+      "boltz2": 88
+    },
+    {
+      "pdb_id": "7kk3",
+      "n": 1075,
+      "has_ligand_id": true,
+      "qvina": 953,
+      "gnina": 954,
+      "plapt": 1075,
+      "dynamicbind": 1073,
+      "boltz2": 1073
+    }
+  ]
+}

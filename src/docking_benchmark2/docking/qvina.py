@@ -37,8 +37,7 @@ def dock_qvina(
     random_seed = config.get('random_seed', 42)  # Fixed seed for reproducibility
     energy_range = config.get('energy_range', 3)  # Energy range for output
     verbose_energy = config.get('verbose_energy', False)  # Request detailed energy breakdown
-    # Don't use conda_env - environment is already activated in the script
-    docking_env = None
+    docking_env = config.get("conda_env") or None
     
     # Set random seed for reproducibility (QVina doesn't support seed directly,
     # but we set Python random and numpy random for any internal randomness)

@@ -1,0 +1,17 @@
+pdb_id,n_ligands,source,output,nodubl_stem
+1g5m,252,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/BCL2_Ki_WT_ChEMBL_252_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/1g5m_ligands.csv,BCL2_Ki_WT_ChEMBL_252
+2v5z,246,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/MAO-B_Ki_WT_ChEMBL_246_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/2v5z_ligands.csv,MAO-B_Ki_WT_ChEMBL_246
+3eyg,2255,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/JAK1_Ki_WT_ChEMBL_2255_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/3eyg_ligands.csv,JAK1_Ki_WT_ChEMBL_2255
+3jy9,2027,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/JAK2_Ki_WT_ChEMBL_2027_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/3jy9_ligands.csv,JAK2_Ki_WT_ChEMBL_2027
+3lxk,786,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/JAK3_Ki_WT_ChEMBL_786_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/3lxk_ligands.csv,JAK3_Ki_WT_ChEMBL_786
+11ue,275,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/PDGFRB_Ki_WT_ChEMBL_275_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/11ue_ligands.csv,PDGFRB_Ki_WT_ChEMBL_275
+4ase,875,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/VEGFR2_Ki_WT_ChEMBL_875_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/4ase_ligands.csv,VEGFR2_Ki_WT_ChEMBL_875
+4f65,134,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/FGFR1_Ki_WT_ChEMBL_134_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/4f65_ligands.csv,FGFR1_Ki_WT_ChEMBL_134
+4tz4,127,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/CRBN_Ki_WT_ChEMBL_127_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/4tz4_ligands.csv,CRBN_Ki_WT_ChEMBL_127
+4zau,251,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/EGFR_Ki_WT_curated_251_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/4zau_ligands.csv,EGFR_Ki_WT_curated_251
+5jkv,548,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/CYP19A1_Aromatase_Ki_WT_ChEMBL_548_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/5jkv_ligands.csv,CYP19A1_Aromatase_Ki_WT_ChEMBL_548
+5mo4,693,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/ABL1_BCR-ABL_Ki_WT_ChEMBL_693_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/5mo4_ligands.csv,ABL1_BCR-ABL_Ki_WT_ChEMBL_693
+6gqj,1298,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/KIT_Ki_WT_curated_1298_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/6gqj_ligands.csv,KIT_Ki_WT_curated_1298
+6jok,250,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/PDGFRA_Ki_WT_curated_250_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/6jok_ligands.csv,PDGFRA_Ki_WT_curated_250
+5lf3,88,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/PSMB5_Ki_WT_ChEMBL_88_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/5lf3_ligands.csv,PSMB5_Ki_WT_ChEMBL_88
+7kk3,1075,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/PARP1_Ki_WT_ChEMBL_1075_nodubl.csv,/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_curated/7kk3_ligands.csv,PARP1_Ki_WT_ChEMBL_1075

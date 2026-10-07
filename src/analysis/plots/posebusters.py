@@ -28,7 +28,9 @@ ALL_TESTS_HEATMAP_VMIN = 76.0  # 40–100 base; color at 75 → now at 90 (vmax=
 ALL_TESTS_HEATMAP_VMAX = 100.0
 
 
-def _style_heatmap_text_contrast(ax: plt.Axes, vmin: float, vmax: float) -> None:
+def _style_heatmap_text_contrast(
+    ax: plt.Axes, vmin: float, vmax: float, *, fontsize: float = 8
+) -> None:
     """White/dark annotation text tuned for the 76–100% pass-rate palette."""
     for text in ax.texts:
         raw = text.get_text().strip()
@@ -40,7 +42,24 @@ def _style_heatmap_text_contrast(ax: plt.Axes, vmin: float, vmax: float) -> None
             continue
         t = (val - vmin) / (vmax - vmin) if vmax > vmin else 0.5
         text.set_color("#ffffff" if t >= 0.50 else "#222222")
-        text.set_fontsize(8)
+        text.set_fontsize(fontsize)
+
+
+def _add_panel_letter(ax: plt.Axes, letter: str, fontsize: float) -> None:
+    """Place A/B the same number of points above the axes top (not axes-fraction)."""
+    ax.annotate(
+        letter,
+        xy=(0.0, 1.0),
+        xycoords=ax.transAxes,
+        xytext=(-2, 6),
+        textcoords="offset points",
+        fontsize=fontsize,
+        fontweight="bold",
+        ha="right",
+        va="bottom",
+        clip_on=False,
+        annotation_clip=False,
+    )
 
 
 def _draw_all_tests_heatmap_panel(
@@ -53,7 +72,13 @@ def _draw_all_tests_heatmap_panel(
     cmap,
     title: str,
     adaptive_text: bool,
-) -> None:
+    vmin: float = ALL_TESTS_HEATMAP_VMIN,
+    vmax: float = ALL_TESTS_HEATMAP_VMAX,
+    cbar_ticks: list[float] | None = None,
+    panel_letter: str | None = None,
+    title_fontsize: float | None = None,
+    annot_size: float = 8,
+) -> plt.Axes:
     inner = gs_slot.subgridspec(
         2,
         2,
@@ -66,13 +91,15 @@ def _draw_all_tests_heatmap_panel(
     ax_bot = fig.add_subplot(inner[1, 0], sharex=ax_top)
     cbar_ax = fig.add_subplot(inner[:, 1])
 
+    if cbar_ticks is None:
+        cbar_ticks = [76, 80, 85, 90, 95, 100]
     heatmap_kw = dict(
         cmap=cmap,
-        vmin=ALL_TESTS_HEATMAP_VMIN,
-        vmax=ALL_TESTS_HEATMAP_VMAX,
+        vmin=vmin,
+        vmax=vmax,
         linewidths=0.5,
         linecolor="white",
-        annot_kws={"size": 8, "color": "black"},
+        annot_kws={"size": annot_size, "color": "black"},
     )
     sns.heatmap(
         summary_df,
@@ -88,24 +115,32 @@ def _draw_all_tests_heatmap_panel(
         annot=_format_annot(body, ".1f"),
         fmt="",
         cbar_ax=cbar_ax,
-        cbar_kws={"label": "Pass rate (%)", "ticks": [76, 80, 85, 90, 95, 100]},
+        cbar_kws={"label": "Pass rate (%)", "ticks": cbar_ticks},
         **heatmap_kw,
     )
     if adaptive_text:
-        _style_heatmap_text_contrast(ax_top, ALL_TESTS_HEATMAP_VMIN, ALL_TESTS_HEATMAP_VMAX)
-        _style_heatmap_text_contrast(ax_bot, ALL_TESTS_HEATMAP_VMIN, ALL_TESTS_HEATMAP_VMAX)
+        _style_heatmap_text_contrast(ax_top, vmin, vmax, fontsize=annot_size)
+        _style_heatmap_text_contrast(ax_bot, vmin, vmax, fontsize=annot_size)
 
-    ax_top.set_title(title, fontsize=11, pad=8)
+    title_fs = (
+        plt.rcParams["axes.titlesize"] if title_fontsize is None else title_fontsize
+    )
+    if title:
+        ax_top.set_title(title, fontsize=title_fs, pad=6)
     ax_top.set_xlabel("")
     ax_top.set_ylabel("")
-    ax_top.tick_params(axis="x", labelbottom=False)
+    ax_top.tick_params(axis="x", bottom=False, labelbottom=False)
     ax_top.tick_params(axis="y", rotation=0)
 
-    ax_bot.set_xlabel("Docking method")
+    ax_bot.set_xlabel("")
     ax_bot.set_ylabel("Target")
     ax_bot.tick_params(axis="x", rotation=0)
-    ax_bot.tick_params(axis="y", rotation=0)
+    ax_bot.tick_params(axis="y", rotation=0, pad=4)
+    ax_top.tick_params(axis="y", pad=4)
     cbar_ax.tick_params(labelsize=8)
+    if panel_letter:
+        _add_panel_letter(ax_top, panel_letter, title_fs)
+    return ax_top
 
 
 def _prepare_at_least_all_tests_panels(
@@ -142,12 +177,15 @@ def _pretty_check(name: str) -> str:
 
 def _pass_rate_body(summary: pd.DataFrame, rate_col: str, cfg: AnalysisConfig, methods: list[str]) -> pd.DataFrame:
     labels = [cfg.method_label(m) for m in methods]
-    idx = [t.upper() for t in cfg.targets]
+    idx = [cfg.target_label(t) for t in cfg.targets]
     body = pd.DataFrame(index=idx, columns=labels, dtype=float)
     for _, row in summary.iterrows():
         if row["method_id"] not in methods:
             continue
-        body.loc[row["target"].upper(), cfg.method_label(row["method_id"])] = 100.0 * row[rate_col]
+        body.loc[
+            cfg.target_label(str(row["target"])),
+            cfg.method_label(row["method_id"]),
+        ] = 100.0 * row[rate_col]
     return body
 
 
@@ -168,7 +206,7 @@ def _weighted_summary_row(summary: pd.DataFrame, rate_col: str, cfg: AnalysisCon
 def _all_tests_body(checks: pd.DataFrame, cfg: AnalysisConfig, methods: list[str]) -> pd.DataFrame:
     """Mean per-check pass rate by target and method (All tests row from per-check heatmaps)."""
     labels = [cfg.method_label(m) for m in methods]
-    idx = [t.upper() for t in cfg.targets]
+    idx = [cfg.target_label(t) for t in cfg.targets]
     body = pd.DataFrame(index=idx, columns=labels, dtype=float)
     for method_id in methods:
         sub = checks[checks.method_id == method_id]
@@ -179,7 +217,7 @@ def _all_tests_body(checks: pd.DataFrame, cfg: AnalysisConfig, methods: list[str
             part = sub[sub.target == target.lower()]
             if part.empty:
                 continue
-            body.loc[target.upper(), label] = 100.0 * part["pass_rate"].mean()
+            body.loc[cfg.target_label(target), label] = 100.0 * part["pass_rate"].mean()
     return body
 
 
@@ -287,7 +325,7 @@ def plot_posebusters_per_check(checks: pd.DataFrame, cfg: AnalysisConfig) -> Non
         label = cfg.method_label(method_id)
         body = sub.pivot(index="check", columns="target", values="pass_rate")
         body.index = [_pretty_check(c) for c in body.index]
-        body.columns = [c.upper() for c in body.columns]
+        body.columns = [cfg.target_label(str(c)) for c in body.columns]
         body = 100.0 * body
 
         summary_col = body.mean(axis=1, skipna=True)
@@ -317,6 +355,8 @@ def _draw_pass_count_curve_on_ax(
     *,
     x_label: str,
     title: str,
+    panel_letter: str | None = None,
+    title_fontsize: float | None = None,
 ) -> None:
     methods = [m for m in cfg.methods if m not in POSEBUSTERS_EXCLUDE]
     for method_id in methods:
@@ -338,11 +378,17 @@ def _draw_pass_count_curve_on_ax(
     ax.set_ylim(0, 105)
     ax.set_xticks(range(1, n_tests + 1))
     ax.set_yticks(range(0, 101, 10))
+    title_fs = (
+        plt.rcParams["axes.titlesize"] if title_fontsize is None else title_fontsize
+    )
     ax.set_xlabel(x_label)
     ax.set_ylabel("% ligands")
-    ax.set_title(title)
+    if title:
+        ax.set_title(title, fontsize=title_fs, pad=6)
     ax.grid(True, alpha=0.25, linewidth=0.6)
     ax.legend(loc="upper left", frameon=True, framealpha=0.9, fontsize=9)
+    if panel_letter:
+        _add_panel_letter(ax, panel_letter, title_fs)
 
 
 def _plot_pass_count_curve(
@@ -364,7 +410,7 @@ def plot_posebusters_at_least_all_tests_combined(
     checks: pd.DataFrame,
     cfg: AnalysisConfig,
 ) -> None:
-    """Left: at-least-N pass-count curves; right: All-tests heatmap (color scale 76–100%)."""
+    """Left: at-least-N curves; right: pass-all heatmap (same data as heatmap_pass_rate_all)."""
     apply_style(cfg)
     cmap = sequential_cmap(cfg)
     out_dir = cfg.figures_dir / "posebusters"
@@ -372,19 +418,32 @@ def plot_posebusters_at_least_all_tests_combined(
     prepared = _prepare_at_least_all_tests_panels(summary, checks, cfg)
     if prepared is None:
         return
-    n_tests, at_least, summary_df, body, n_body = prepared
+    n_tests, at_least, _mean_summary, _mean_body, _n_mean = prepared
 
-    fig = plt.figure(figsize=(15.5, 6.8))
+    methods = [m for m in cfg.methods if m not in POSEBUSTERS_EXCLUDE]
+    body = _pass_rate_body(summary, "pass_rate_all", cfg, methods)
+    if body.isna().all().all():
+        return
+    summary_row = _weighted_summary_row(summary, "pass_rate_all", cfg, methods)
+    summary_df = summary_row.to_frame().T
+    summary_df.index = [ALL_TARGETS_LABEL]
+    n_body = len(body)
+
+    title_fs = float(plt.rcParams["axes.titlesize"]) * 1.4
+    annot_fs = 8 * 1.3
+
+    fig = plt.figure(figsize=(16.2, 6.8))
     outer = GridSpec(
         1,
         2,
         figure=fig,
-        width_ratios=[1.08, 1.0],
-        wspace=0.32,
-        left=0.07,
+        width_ratios=[1.0, 1.12],
+        # 0.28 → 0.16 ≈ half a right-panel heatmap cell closer.
+        wspace=0.16,
+        left=0.06,
         right=0.97,
-        top=0.92,
-        bottom=0.12,
+        top=0.86,
+        bottom=0.08,
     )
 
     ax_line = fig.add_subplot(outer[0, 0])
@@ -394,19 +453,58 @@ def plot_posebusters_at_least_all_tests_combined(
         cfg,
         n_tests,
         x_label=f"Minimum N tests passed (of {n_tests})",
-        title="All targets: ligands passing at least N tests",
+        title="",
+        title_fontsize=title_fs,
     )
 
-    _draw_all_tests_heatmap_panel(
+    ax_heat_top = _draw_all_tests_heatmap_panel(
         fig,
         outer[0, 1],
         summary_df=summary_df,
-        body=body,
+        body=body.astype(float),
         n_body=n_body,
         cmap=cmap,
-        title="All tests (mean check pass rate)",
+        title="",
         adaptive_text=False,
+        vmin=0.0,
+        vmax=100.0,
+        cbar_ticks=[0, 20, 40, 60, 80, 100],
+        title_fontsize=title_fs,
+        annot_size=annot_fs,
     )
+
+    # A, B and both titles on one figure y (axes-fraction offset made B sit lower).
+    fig.canvas.draw()
+    inv = fig.transFigure.inverted()
+    y_shared = max(
+        inv.transform(ax.transAxes.transform((0.0, 1.0)))[1]
+        for ax in (ax_line, ax_heat_top)
+    )
+    dy = 8.0 / 72.0 / fig.get_figheight()
+    y_label = y_shared + dy
+    for ax, letter, heading in (
+        (ax_line, "A", "All targets: ligands passing at least N tests"),
+        (ax_heat_top, "B", "Pass all checks"),
+    ):
+        x0, _ = inv.transform(ax.transAxes.transform((0.0, 1.0)))
+        x1, _ = inv.transform(ax.transAxes.transform((1.0, 1.0)))
+        fig.text(
+            x0,
+            y_label,
+            letter,
+            fontsize=title_fs,
+            fontweight="bold",
+            ha="right",
+            va="bottom",
+        )
+        fig.text(
+            0.5 * (x0 + x1),
+            y_label,
+            heading,
+            fontsize=title_fs,
+            ha="center",
+            va="bottom",
+        )
 
     save_figure(fig, out_dir / "pass_count_at_least_with_all_tests")
 

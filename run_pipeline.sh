@@ -10,12 +10,13 @@ Usage: bash run_pipeline.sh [stage ...]
 
 Stages (default: analysis):
   install      pip install -e .
+  curate       ChEMBL snapshot → ligand_id tables
   prepare      protein/ligand/box preparation
   dock         run docking methods
-  merge        merge tables + pValue
+  merge        merge tables on ligand_id + pKi
   posebusters  PoseBusters pass-rate tables
   analysis     article statistics + figures (src/analysis via pipeline/postprocess)
-  all          prepare -> dock -> merge -> posebusters -> analysis
+  all          curate -> prepare -> dock -> merge -> posebusters -> analysis
 
 Environment: see config/project.env.sh
 EOF
@@ -29,12 +30,14 @@ fi
 run_stage() {
   case "$1" in
     install)     bash "${ROOT}/pipeline/install/setup_environment.sh" ;;
+    curate)      bash "${ROOT}/pipeline/prepare/run_curate.sh" ;;
     prepare)     bash "${ROOT}/pipeline/prepare/run_prepare.sh" ;;
     dock)        bash "${ROOT}/pipeline/dock/run_docking.sh" ;;
     merge)       bash "${ROOT}/pipeline/postprocess/run_merge.sh" ;;
     posebusters) bash "${ROOT}/pipeline/postprocess/run_posebusters.sh" ;;
     analysis)    bash "${ROOT}/pipeline/postprocess/run_article_analysis.sh" ;;
     all)
+      bash "${ROOT}/pipeline/prepare/run_curate.sh"
       bash "${ROOT}/pipeline/prepare/run_prepare.sh"
       bash "${ROOT}/pipeline/dock/run_docking.sh"
       bash "${ROOT}/pipeline/postprocess/run_merge.sh"

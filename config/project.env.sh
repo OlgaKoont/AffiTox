@@ -14,7 +14,7 @@ export TOXAFFINITY_ROOT
 export INPUT_DIR="${INPUT_DIR:-${TOXAFFINITY_ROOT}/input}"
 export PROCESSED_DIR="${PROCESSED_DIR:-${TOXAFFINITY_ROOT}/processed}"
 export RESULTS_DIR="${RESULTS_DIR:-${TOXAFFINITY_ROOT}/results}"
-export ANALYSIS_ROOT="${ANALYSIS_ROOT:-${TOXAFFINITY_ROOT}/analysis}"
+export ANALYSIS_ROOT="${ANALYSIS_ROOT:-${TOXAFFINITY_ROOT}/analysis/excluding_2z5x_3mjg}"
 export DATA_DIR="${DATA_DIR:-${ANALYSIS_ROOT}/tables}"
 export MERGED_DATA_DIR="${MERGED_DATA_DIR:-${DATA_DIR}}"
 export POSEBUSTERS_DIR="${POSEBUSTERS_DIR:-${DATA_DIR}/posebuster}"
@@ -22,11 +22,11 @@ export POSEBUSTERS_BOLTZ2_DIR="${POSEBUSTERS_BOLTZ2_DIR:-${DATA_DIR}/posebuster}
 
 # --- external tools (override on HPC / local install) ---
 export PYTHON="${PYTHON:-python3}"
-export BOLTZ_RESULTS_DIR="${BOLTZ_RESULTS_DIR:-}"
+export BOLTZ_RESULTS_DIR="${BOLTZ_RESULTS_DIR:-${RESULTS_DIR}}"
 export DYNAMICBIND_POSEBUSTERS_LABEL="${DYNAMICBIND_POSEBUSTERS_LABEL:-dynamicbind_new}"
 
 # --- curated 16-target BindingDB panel ---
-export TARGETS="${TARGETS:-1g5m 2z5x 3eyg 3jy9 3lxk 3mjg 4ase 4f65 4tz4 4zau 5jkv 5mo4 6gqj 6jok 7awe 7kk3}"
+export TARGETS="${TARGETS:-1g5m 2v5z 3eyg 3jy9 3lxk 11ue 4ase 4f65 4tz4 4zau 5jkv 5mo4 6gqj 6jok 5lf3 7kk3}"
 export METHODS="${METHODS:-boltz2 dynamicbind gnina plapt qvina}"
 
 # --- pipeline config ---

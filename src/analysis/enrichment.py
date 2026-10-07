@@ -1,6 +1,6 @@
 """
 EF / nEF — canonical implementation aligned with
-ToxAffinity/docking-benchmark-2/scripts/compute_enrichment_from_merged.py
+AffiTox/docking-benchmark-2/scripts/compute_enrichment_from_merged.py
 
 Do not sign-flip docking scores here; ranking direction is handled only via
 detect_score_direction (asc/desc).
@@ -12,6 +12,7 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
+from scipy.stats import rankdata
 
 from .config import AnalysisConfig
 from .constants import TOP_FRACS
@@ -107,6 +108,52 @@ def compute_ef(
     )
 
 
+def _oriented_scores(scores: np.ndarray, direction: str) -> np.ndarray:
+    return scores if direction == "desc" else -scores
+
+
+def compute_auc_roc(is_active: np.ndarray, scores: np.ndarray, direction: str) -> float:
+    mask = np.isfinite(scores) & np.isfinite(is_active.astype(float))
+    y = is_active[mask].astype(bool)
+    s = _oriented_scores(scores[mask], direction)
+    n_pos = int(y.sum())
+    n_neg = int((~y).sum())
+    if n_pos == 0 or n_neg == 0:
+        return np.nan
+    ranks = rankdata(s, method="average")
+    sum_pos = float(ranks[y].sum())
+    auc = (sum_pos - n_pos * (n_pos + 1) / 2.0) / (n_pos * n_neg)
+    return float(auc)
+
+
+def compute_bedroc(
+    is_active: np.ndarray,
+    scores: np.ndarray,
+    direction: str,
+    alpha: float = 20.0,
+) -> float:
+    mask = np.isfinite(scores) & np.isfinite(is_active.astype(float))
+    y = is_active[mask].astype(bool)
+    s = _oriented_scores(scores[mask], direction)
+    n = int(len(s))
+    n_pos = int(y.sum())
+    if n <= 1 or n_pos == 0 or n_pos == n:
+        return np.nan
+
+    order = np.argsort(s)[::-1]
+    active_positions = np.flatnonzero(y[order])
+    weights = np.exp(-alpha * active_positions / max(n - 1, 1))
+    observed = float(weights.mean())
+
+    best_positions = np.arange(n_pos)
+    worst_positions = np.arange(n - n_pos, n)
+    best = float(np.exp(-alpha * best_positions / max(n - 1, 1)).mean())
+    worst = float(np.exp(-alpha * worst_positions / max(n - 1, 1)).mean())
+    if best <= worst:
+        return np.nan
+    return float((observed - worst) / (best - worst))
+
+
 def compute_ef_for_metric(df: pd.DataFrame, metric: str) -> Optional[dict[str, float]]:
     if metric != "pki_oracle" and metric not in df.columns:
         return None
@@ -162,8 +209,12 @@ def compute_ef_for_metric(df: pd.DataFrame, metric: str) -> Optional[dict[str, f
             direction = detect_score_direction(metric, set_name)
             is_active = is_act_mask.to_numpy()
             ef, n_ef, n, a, h_top = compute_ef(is_active, scores, frac, direction)
+            auc = compute_auc_roc(is_active, scores, direction)
+            bedroc20 = compute_bedroc(is_active, scores, direction, alpha=20.0)
             result[f"EF{frac_name}_{set_name}"] = ef
             result[f"nEF{frac_name}_{set_name}"] = n_ef
+            result[f"AUC_ROC_{frac_name}_{set_name}"] = auc
+            result[f"BEDROC20_{frac_name}_{set_name}"] = bedroc20
             result[f"N_{frac_name}_{set_name}"] = n
             result[f"A_{frac_name}_{set_name}"] = a
             result[f"H_top{frac_name}_{set_name}"] = h_top

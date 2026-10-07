@@ -1,0 +1,8 @@
+{
+  "protein": "4ase",
+  "ligand_id": "ligand_5",
+  "smiles": "C=C(C)Cn1c(C)c(C(=O)Nc2ccc(Oc3ccnc4cc(OC)ccc34)c(F)c2)c(=O)n1-c1ccccc1",
+  "affinity": 6.5887347658619815,
+  "affinity_uM": 0.25778950591700345,
+  "prediction_time": 0.004756628581455776
+}

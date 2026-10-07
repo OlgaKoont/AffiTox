@@ -1,0 +1,6 @@
+pdb_id,ligand_id,molecule_chembl_id,canonical_smiles,csv_row_1based,vina_legacy_id,dynamicbind_legacy_id,boltz_native_id,engine_native_id
+4ase,ligand_0001,CHEMBL1995172,Brc1ccc2c(c1)-c1[nH]ncc1C2,1,ligand_1,idx_0,CHEMBL1995172,ligand_0001
+4ase,ligand_0002,CHEMBL1992634,Brc1cnc2[nH]cc(-c3ccccc3)c2c1,2,ligand_2,idx_1,CHEMBL1992634,ligand_0002
+4ase,ligand_0003,CHEMBL553,C#Cc1cccc(Nc2ncnc3cc(OCCOC)c(OCCOC)cc23)c1,3,ligand_3,idx_2,CHEMBL553,ligand_0003
+4ase,ligand_0004,CHEMBL1993877,C#Cc1cn(C2CCCC2)c2ncnc(N)c12,4,ligand_4,idx_3,CHEMBL1993877,ligand_0004
+4ase,ligand_0005,CHEMBL2032023,C=C(C)Cn1c(C)c(C(=O)Nc2ccc(Oc3ccnc4cc(OC)ccc34)c(F)c2)c(=O)n1-c1ccccc1,5,ligand_5,idx_4,CHEMBL2032023,ligand_0005

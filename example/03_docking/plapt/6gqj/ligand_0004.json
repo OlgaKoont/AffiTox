@@ -1,0 +1,8 @@
+{
+  "protein": "6gqj",
+  "ligand_id": "ligand_4",
+  "smiles": "CC(=O)NCC(=O)N1C2CCC1c1cc(Nc3ncc(C(F)(F)F)c(NC4CCC4)n3)ccc12",
+  "affinity": 7.564923334126079,
+  "affinity_uM": 0.027231819881446524,
+  "prediction_time": 0.022051411711012454
+}

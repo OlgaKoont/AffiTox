@@ -1,7 +1,13 @@
 # Prepare stage
 
+Assign `ligand_id` first (`bash pipeline/prepare/run_curate.sh`; default keeps
+the frozen nodubl row order so existing poses stay attached). Prepare then
+writes ligand stems from that id (`ligand_0001`, …). Historical files named
+`ligand_1` / `idx_0` are aliases in `processed/id_maps/`.
+
 ```bash
 source config/project.env.sh
+bash pipeline/prepare/run_curate.sh
 bash pipeline/prepare/run_prepare.sh
 # or
 bash run_pipeline.sh prepare

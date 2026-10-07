@@ -1,0 +1,8 @@
+{
+  "protein": "4tz4",
+  "ligand_id": "ligand_5",
+  "smiles": "CC(=O)Nc1sccc1C(=O)NC1CCC(=O)NC1=O",
+  "affinity": 5.377827087725456,
+  "affinity_uM": 4.189603389743535,
+  "prediction_time": 0.06753762688223772
+}

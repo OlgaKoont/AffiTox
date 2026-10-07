@@ -60,6 +60,21 @@ def _family_matrix(
     return mat
 
 
+def _logp_matrix(pm: pd.DataFrame) -> pd.DataFrame:
+    return -np.log10(pm.clip(lower=1e-12))
+
+
+def _logp_vmax(logp_mats: dict[str, pd.DataFrame]) -> float:
+    vals = [
+        mat.values[np.isfinite(mat.values)]
+        for mat in logp_mats.values()
+        if mat is not None and mat.size
+    ]
+    if not vals or not any(v.size for v in vals):
+        return 3.0
+    return max(3.0, float(np.nanmax(np.concatenate(vals))))
+
+
 def _annot_with_sig(effect: pd.DataFrame, pvals: pd.DataFrame, alpha: float = 0.05) -> np.ndarray:
     annot = np.empty(effect.shape, dtype=object)
     for i in range(effect.shape[0]):
@@ -113,8 +128,8 @@ def plot_inferential_heatmaps(tests: pd.DataFrame, cfg: AnalysisConfig) -> None:
         nef_families = [f for f in families if "nEF" in f][:2]
 
     # (1) Correlation families in one horizontal row, single scale after third panel.
-    fig1 = plt.figure(figsize=(16.0, 4.8))
-    gs1 = fig1.add_gridspec(1, 4, width_ratios=[1.0, 1.0, 1.0, 0.06], wspace=0.25)
+    fig1 = plt.figure(figsize=(16.0, 5.4))
+    gs1 = fig1.add_gridspec(1, 4, width_ratios=[1.0, 1.0, 1.0, 0.06], wspace=0.18)
     cmap_eff = diverging_cmap(cfg, name="inferential_effect")
     for idx, family in enumerate(corr_families[:3]):
         ax = fig1.add_subplot(gs1[0, idx])
@@ -135,21 +150,40 @@ def plot_inferential_heatmaps(tests: pd.DataFrame, cfg: AnalysisConfig) -> None:
             cbar=(idx == 2),
             cbar_ax=cbar_ax,
             cbar_kws={"label": "Median paired difference (A - B)"},
+            yticklabels=(idx == 0),
+            xticklabels=True,
         )
         ax.set_title(family, fontsize=10)
-        ax.tick_params(axis="x", rotation=45)
-        ax.tick_params(axis="y", rotation=0)
+        ax.tick_params(axis="x", rotation=35)
+        plt.setp(ax.get_xticklabels(), ha="right")
+        if idx == 0:
+            ax.tick_params(axis="y", rotation=0)
+            plt.setp(ax.get_yticklabels(), ha="right")
+        else:
+            ax.set_yticklabels([])
+            ax.tick_params(axis="y", left=False, labelleft=False)
     fig1.suptitle("Pairwise Wilcoxon effects: Pearson / Spearman / Kendall", y=1.02)
     save_figure(fig1, out_dir / "heatmap_wilcoxon_effects")
 
-    # (2) nEF families in one horizontal row, scale after first panel.
-    fig_nef = plt.figure(figsize=(11.5, 4.8))
-    gs_nef = fig_nef.add_gridspec(1, 3, width_ratios=[1.0, 0.06, 1.0], wspace=0.30)
+    # (2) nEF families side-by-side; shared colorbar on the right of both panels.
+    n_methods = max(len(methods), 1)
+    cell_in = 1.15
+    panel_in = n_methods * cell_in
+    label_fs = 8
+    panel_title_fs = 10
+    suptitle_fs = 11
+    annot_size = 7.5
+    fig_nef = plt.figure(figsize=(2 * panel_in + 1.6, panel_in + 3.0))
+    gs_nef = fig_nef.add_gridspec(1, 3, width_ratios=[1.0, 1.0, 0.07], wspace=0.22)
+    nef_axes: list = []
+    cbar_ax = None
     for idx, family in enumerate(nef_families[:2]):
-        ax = fig_nef.add_subplot(gs_nef[0, 0 if idx == 0 else 2])
+        ax = fig_nef.add_subplot(gs_nef[0, idx])
+        nef_axes.append(ax)
         em = effect_mats[family].rename(index=labels, columns=labels)
         pm = pval_mats[family].rename(index=labels, columns=labels)
-        cbar_ax = fig_nef.add_subplot(gs_nef[0, 1]) if idx == 0 else None
+        if idx == 1:
+            cbar_ax = fig_nef.add_subplot(gs_nef[0, 2])
         sns.heatmap(
             em,
             ax=ax,
@@ -161,48 +195,160 @@ def plot_inferential_heatmaps(tests: pd.DataFrame, cfg: AnalysisConfig) -> None:
             fmt="",
             linewidths=0.5,
             linecolor="white",
-            cbar=(idx == 0),
+            square=True,
+            cbar=(idx == 1),
             cbar_ax=cbar_ax,
-            cbar_kws={"label": "Median paired difference (A - B)"},
+            cbar_kws={},
+            yticklabels=(idx == 0),
+            xticklabels=True,
+            annot_kws={"size": annot_size, "ha": "center", "va": "center"},
         )
-        ax.set_title(family, fontsize=10)
-        ax.tick_params(axis="x", rotation=45)
-        ax.tick_params(axis="y", rotation=0)
-    fig_nef.suptitle(r"Pairwise Wilcoxon effects: nEF$_{10,\mathrm{active}}$ / nEF$_{10,\mathrm{inactive}}$", y=1.02)
+        ax.set_title(family, fontsize=panel_title_fs)
+        ax.tick_params(axis="x", rotation=35, labelsize=label_fs)
+        plt.setp(ax.get_xticklabels(), ha="right")
+        if idx == 0:
+            ax.tick_params(axis="y", rotation=0, labelsize=label_fs)
+            plt.setp(ax.get_yticklabels(), ha="right")
+        else:
+            ax.set_yticklabels([])
+            ax.tick_params(axis="y", left=False, labelleft=False)
+        for text in ax.texts:
+            val_txt = text.get_text().rstrip("*")
+            try:
+                val = float(val_txt)
+            except ValueError:
+                continue
+            text.set_color("#ffffff" if abs(val) >= 0.35 else "#262626")
+
+    if nef_axes and cbar_ax is not None:
+        cbar_ax.tick_params(labelsize=label_fs)
+        fig_nef.canvas.draw()
+        renderer = fig_nef.canvas.get_renderer()
+        hm_pos = nef_axes[0].get_position()
+        cb_pos = cbar_ax.get_position()
+        cbar_ax.set_position([cb_pos.x0, hm_pos.y0, cb_pos.width, hm_pos.height])
+        title_bbox = nef_axes[0].title.get_window_extent(renderer).transformed(
+            fig_nef.transFigure.inverted()
+        )
+        font_h_fig = suptitle_fs / 72.0 / fig_nef.get_figheight()
+        fig_nef.suptitle(
+            r"Pairwise Wilcoxon effects: nEF$_{10,\mathrm{active}}$ / nEF$_{10,\mathrm{inactive}}$",
+            y=title_bbox.y1 + font_h_fig,
+            va="bottom",
+            fontsize=suptitle_fs,
+        )
     save_figure(fig_nef, out_dir / "heatmap_wilcoxon_effects_nef10")
 
-    n = len(families)
-    ncols = 2 if n > 1 else 1
-    nrows = int(np.ceil(n / ncols))
-    fig2, axes2 = plt.subplots(nrows, ncols, figsize=(6.0 * ncols, 4.8 * nrows), squeeze=False)
     cmap_p = sequential_cmap(cfg, name="inferential_logp")
-    for idx, family in enumerate(families):
-        r, c = divmod(idx, ncols)
-        ax = axes2[r][c]
-        pm = pval_mats[family]
-        logp = -np.log10(pm.clip(lower=1e-12)).rename(index=labels, columns=labels)
+    logp_label = r"$-\log_{10}(p_{\mathrm{Holm}})$"
+    corr_logp_mats = {f: _logp_matrix(pval_mats[f]) for f in corr_families[:3]}
+    nef_logp_mats = {f: _logp_matrix(pval_mats[f]) for f in nef_families[:2]}
+    vmax_logp_corr = _logp_vmax(corr_logp_mats)
+    vmax_logp_nef = _logp_vmax(nef_logp_mats)
+
+    # (3) Correlation families: Holm-adjusted significance, one horizontal row.
+    fig_logp_corr = plt.figure(figsize=(16.0, 5.4))
+    gs_logp_corr = fig_logp_corr.add_gridspec(1, 4, width_ratios=[1.0, 1.0, 1.0, 0.06], wspace=0.18)
+    for idx, family in enumerate(corr_families[:3]):
+        ax = fig_logp_corr.add_subplot(gs_logp_corr[0, idx])
+        logp = corr_logp_mats[family].rename(index=labels, columns=labels)
+        cbar_ax = fig_logp_corr.add_subplot(gs_logp_corr[0, 3]) if idx == 2 else None
         sns.heatmap(
             logp,
             ax=ax,
             cmap=cmap_p,
             vmin=0.0,
-            vmax=max(3.0, float(np.nanmax(logp.values[np.isfinite(logp.values)])) if np.isfinite(logp.values).any() else 3.0),
+            vmax=vmax_logp_corr,
             annot=True,
             fmt=".2f",
             linewidths=0.5,
             linecolor="white",
-            cbar=(idx == 0),
-            cbar_kws={"label": r"$-\log_{10}(p_{\mathrm{Holm}})$"},
+            cbar=(idx == 2),
+            cbar_ax=cbar_ax,
+            cbar_kws={"label": logp_label},
+            yticklabels=(idx == 0),
+            xticklabels=True,
         )
         ax.set_title(family, fontsize=10)
-        ax.tick_params(axis="x", rotation=45)
-        ax.tick_params(axis="y", rotation=0)
+        ax.tick_params(axis="x", rotation=35)
+        plt.setp(ax.get_xticklabels(), ha="right")
+        if idx == 0:
+            ax.tick_params(axis="y", rotation=0)
+            plt.setp(ax.get_yticklabels(), ha="right")
+        else:
+            ax.set_yticklabels([])
+            ax.tick_params(axis="y", left=False, labelleft=False)
+    fig_logp_corr.suptitle(
+        rf"Pairwise Wilcoxon significance ({logp_label}): Pearson / Spearman / Kendall",
+        y=1.02,
+    )
+    save_figure(fig_logp_corr, out_dir / "heatmap_wilcoxon_logp_holm")
 
-    for idx in range(len(families), nrows * ncols):
-        r, c = divmod(idx, ncols)
-        axes2[r][c].axis("off")
-    fig2.suptitle(r"Pairwise Wilcoxon significance maps ($-\log_{10}(p_{\mathrm{Holm}})$)", y=1.01)
-    save_figure(fig2, out_dir / "heatmap_wilcoxon_logp_holm")
+    # (4) nEF families: Holm-adjusted significance, side-by-side with shared colorbar.
+    fig_logp_nef = plt.figure(figsize=(2 * panel_in + 1.6, panel_in + 3.0))
+    gs_logp_nef = fig_logp_nef.add_gridspec(1, 3, width_ratios=[1.0, 1.0, 0.07], wspace=0.22)
+    nef_logp_axes: list = []
+    logp_cbar_ax = None
+    for idx, family in enumerate(nef_families[:2]):
+        ax = fig_logp_nef.add_subplot(gs_logp_nef[0, idx])
+        nef_logp_axes.append(ax)
+        logp = nef_logp_mats[family].rename(index=labels, columns=labels)
+        if idx == 1:
+            logp_cbar_ax = fig_logp_nef.add_subplot(gs_logp_nef[0, 2])
+        sns.heatmap(
+            logp,
+            ax=ax,
+            cmap=cmap_p,
+            vmin=0.0,
+            vmax=vmax_logp_nef,
+            annot=True,
+            fmt=".2f",
+            linewidths=0.5,
+            linecolor="white",
+            square=True,
+            cbar=(idx == 1),
+            cbar_ax=logp_cbar_ax,
+            cbar_kws={"label": logp_label},
+            yticklabels=(idx == 0),
+            xticklabels=True,
+            annot_kws={"size": annot_size, "ha": "center", "va": "center"},
+        )
+        ax.set_title(family, fontsize=panel_title_fs)
+        ax.tick_params(axis="x", rotation=35, labelsize=label_fs)
+        plt.setp(ax.get_xticklabels(), ha="right")
+        if idx == 0:
+            ax.tick_params(axis="y", rotation=0, labelsize=label_fs)
+            plt.setp(ax.get_yticklabels(), ha="right")
+        else:
+            ax.set_yticklabels([])
+            ax.tick_params(axis="y", left=False, labelleft=False)
+        for text in ax.texts:
+            val_txt = text.get_text()
+            try:
+                val = float(val_txt)
+            except ValueError:
+                continue
+            text.set_color("#ffffff" if val >= 0.6 * vmax_logp_nef else "#262626")
+
+    if nef_logp_axes and logp_cbar_ax is not None:
+        logp_cbar_ax.tick_params(labelsize=label_fs)
+        fig_logp_nef.canvas.draw()
+        renderer = fig_logp_nef.canvas.get_renderer()
+        hm_pos = nef_logp_axes[0].get_position()
+        cb_pos = logp_cbar_ax.get_position()
+        logp_cbar_ax.set_position([cb_pos.x0, hm_pos.y0, cb_pos.width, hm_pos.height])
+        title_bbox = nef_logp_axes[0].title.get_window_extent(renderer).transformed(
+            fig_logp_nef.transFigure.inverted()
+        )
+        font_h_fig = suptitle_fs / 72.0 / fig_logp_nef.get_figheight()
+        fig_logp_nef.suptitle(
+            rf"Pairwise Wilcoxon significance ({logp_label}): "
+            r"nEF$_{10,\mathrm{active}}$ / nEF$_{10,\mathrm{inactive}}$",
+            y=title_bbox.y1 + font_h_fig,
+            va="bottom",
+            fontsize=suptitle_fs,
+        )
+    save_figure(fig_logp_nef, out_dir / "heatmap_wilcoxon_logp_holm_nef10")
 
 
 def plot_per_target_inferential_heatmaps(per_target_tests: pd.DataFrame, cfg: AnalysisConfig) -> None:
@@ -261,7 +407,10 @@ def plot_per_target_inferential_heatmaps(per_target_tests: pd.DataFrame, cfg: An
             cbar=True,
             cbar_kws={"label": "Effect size (A - B)"},
         )
-        ax_e.set_title(f"{target.upper()}: per-target pairwise effects", fontsize=10)
+        ax_e.set_title(
+            f"{cfg.target_label(target)}: per-target pairwise effects",
+            fontsize=10,
+        )
         ax_e.set_xlabel("Method pair")
         ax_e.set_ylabel("Family")
         ax_e.tick_params(axis="x", rotation=45)
@@ -282,7 +431,10 @@ def plot_per_target_inferential_heatmaps(per_target_tests: pd.DataFrame, cfg: An
             cbar=True,
             cbar_kws={"label": r"$-\log_{10}(p_{\mathrm{BH,target}})$"},
         )
-        ax_p.set_title(f"{target.upper()}: per-target pairwise significance", fontsize=10)
+        ax_p.set_title(
+            f"{cfg.target_label(target)}: per-target pairwise significance",
+            fontsize=10,
+        )
         ax_p.set_xlabel("Method pair")
         ax_p.set_ylabel("Family")
         ax_p.tick_params(axis="x", rotation=45)

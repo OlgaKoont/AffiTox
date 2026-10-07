@@ -1,0 +1,8 @@
+{
+  "protein": "4ase",
+  "ligand_id": "ligand_2",
+  "smiles": "Brc1cnc2[nH]cc(-c3ccccc3)c2c1",
+  "affinity": 5.222538786909652,
+  "affinity_uM": 5.990474351999239,
+  "prediction_time": 0.004756628581455776
+}

@@ -435,6 +435,14 @@ def _generate_clean_pdb(
             print(f"    Warning: No ligand atoms found in {source.name} ({ligand_info}, {chain_info})")
 
 
+def _parse_meeko_padding_pairs(message: str) -> List[Tuple[str, str]]:
+    """Residue pairs from Meeko 'Expected N paddings for (A:1, A:2)' errors."""
+    return [
+        (a.strip(), b.strip())
+        for a, b in re.findall(r"paddings for \(([^,]+), ([^)]+)\)", message)
+    ]
+
+
 def _prepare_receptor_meeko(cleaned_pdb: Path, pdbqt_path: Path, pdb_path_out: Path, ligand_pdb_path: Optional[Path] = None) -> None:
     """
     Prepare receptor using Meeko Python API.
@@ -448,14 +456,41 @@ def _prepare_receptor_meeko(cleaned_pdb: Path, pdbqt_path: Path, pdb_path_out: P
         # Read PDB file and create Polymer
         with open(cleaned_pdb, 'r') as f:
             pdb_string = f.read()
-        
-        polymer = Polymer.from_pdb_string(
-            pdb_string,
-            templates,
-            mk_prep,
-            allow_bad_res=True,  # Automatically remove residues that don't match templates
-            default_altloc='A'   # Use first alternative location by default
-        )
+
+        # pdb2pqr can place hydrogens in steric clash; Meeko then treats the
+        # contact as a covalent bond and raises "Expected 2 paddings". Drop
+        # those non-template bonds and retry.
+        bonds_to_delete: List[Tuple[str, str]] = []
+        polymer = None
+        last_error: Optional[Exception] = None
+        for _ in range(12):
+            try:
+                polymer = Polymer.from_pdb_string(
+                    pdb_string,
+                    templates,
+                    mk_prep,
+                    allow_bad_res=True,  # Automatically remove residues that don't match templates
+                    default_altloc='A',   # Use first alternative location by default
+                    bonds_to_delete=bonds_to_delete or None,
+                )
+                break
+            except Exception as exc:
+                last_error = exc
+                pairs = _parse_meeko_padding_pairs(str(exc))
+                new_pairs = [
+                    pair for pair in pairs
+                    if pair not in bonds_to_delete and (pair[1], pair[0]) not in bonds_to_delete
+                ]
+                if not new_pairs:
+                    raise
+                for pair in new_pairs:
+                    print(
+                        f"    [PREPARATION] Dropping spurious Meeko bond {pair[0]}-{pair[1]} "
+                        "(pdb2pqr hydrogen clash, not a real covalent link)"
+                    )
+                    bonds_to_delete.append(pair)
+        if polymer is None:
+            raise last_error if last_error is not None else RuntimeError("Meeko Polymer.from_pdb_string failed")
         
         # Get PDBQT through PDBQTWriterLegacy
         pdbqt_tuple = PDBQTWriterLegacy.write_from_polymer(polymer)
@@ -548,8 +583,8 @@ def prepare_proteins(
             pdb_files = [p for p in pdb_files if p.stem.lower() in wanted]
             if not pdb_files:
                 print(f"  Warning: interaction_config provided proteins={sorted(wanted)} but no matching PDBs found in {protein_dir}")
-        return results
-    
+                return results
+
     print(f"  Preparing {len(pdb_files)} proteins...")
     
     for pdb_path in pdb_files:

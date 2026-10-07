@@ -1,0 +1,8 @@
+{
+  "protein": "4ase",
+  "ligand_id": "ligand_4",
+  "smiles": "C#Cc1cn(C2CCCC2)c2ncnc(N)c12",
+  "affinity": 5.910484591588331,
+  "affinity_uM": 1.22889678605413,
+  "prediction_time": 0.004756628581455776
+}

@@ -1,0 +1,8 @@
+{
+  "protein": "4zau",
+  "ligand_id": "ligand_4",
+  "smiles": "C=CC(=O)Nc1cc(Nc2nccc(-c3cn(C)c4ccccc34)n2)c(OC)cc1N(C)CCN(C)C",
+  "affinity": 6.595673534740399,
+  "affinity_uM": 0.2537035038730152,
+  "prediction_time": 0.004615281207627984
+}

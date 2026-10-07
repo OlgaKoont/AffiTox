@@ -1,0 +1,18 @@
+{
+  "center": [
+    54.29,
+    -31.461,
+    19.738
+  ],
+  "size": [
+    20.0,
+    21.862,
+    32.846
+  ],
+  "method": "labox",
+  "scale": 2.0,
+  "min_size": 20.0,
+  "source": "11ue_ligand.pdb",
+  "ligand": "A1DA1",
+  "volume": 14361.6
+}

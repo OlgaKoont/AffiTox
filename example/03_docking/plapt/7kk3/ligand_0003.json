@@ -1,0 +1,8 @@
+{
+  "protein": "7kk3",
+  "ligand_id": "ligand_3",
+  "smiles": "C/C(=N\\O)c1cn2c3c(cccc13)C(=O)NCC2",
+  "affinity": 4.680693776593167,
+  "affinity_uM": 20.85961187281809,
+  "prediction_time": 0.009031634885211323
+}

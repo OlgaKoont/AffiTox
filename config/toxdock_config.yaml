@@ -1,4 +1,4 @@
-# ToxDock-Bench pipeline configuration (ToxAffinity root layout).
+# ToxDock-Bench pipeline configuration (AffiTox root layout).
 # Paths are relative to TOXAFFINITY_ROOT unless absolute.
 
 base_dir: "."

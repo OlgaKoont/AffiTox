@@ -51,8 +51,11 @@ Reproducibility release accompanying the AffiTox JCIM manuscript.
 
 ### Raw docking outputs
 
-Raw method outputs are deposited as six open Zenodo datasets:
-10.5281/zenodo.20825057 to 10.5281/zenodo.20825067.
+Do **not** cite `10.5281/zenodo.20825057`–`067` as the current data. Those are
+historical per-protein zips (including 7awe/2z5x/3mjg). The v1.0.0 data are the
+information-block records in `release/zenodo/` (01 raw, 02 prepared+weights,
+03 docking shards, 04 merged, 05 PoseBusters, 06 metrics/PNG). Record 03 is
+split across sibling Zenodo depositions because of the 50 GiB/record limit.
 
 ### Scope
 

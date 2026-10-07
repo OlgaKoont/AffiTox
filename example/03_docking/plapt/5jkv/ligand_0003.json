@@ -1,0 +1,8 @@
+{
+  "protein": "5jkv",
+  "ligand_id": "ligand_3",
+  "smiles": "Brc1ccc(-c2nc(-c3cccnc3)cs2)cc1",
+  "affinity": 5.517055888965474,
+  "affinity_uM": 3.0404937221016763,
+  "prediction_time": 0.00943499063923411
+}

@@ -1,0 +1,18 @@
+{
+  "center": [
+    51.684,
+    156.171,
+    28.035
+  ],
+  "size": [
+    20.0,
+    21.858,
+    20.0
+  ],
+  "method": "labox",
+  "scale": 2.0,
+  "min_size": 20.0,
+  "source": "2v5z_ligand.pdb",
+  "ligand": "SAG",
+  "volume": 8743.2
+}

@@ -21,10 +21,18 @@ import csv
 import os
 import re
 import shutil
-import subprocess
 from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+
+try:
+    from .posebusters_runner import run_posebusters_chunked
+    from .prepare_and_run_posebusters import PDB_TO_LIGAND_CSV
+    from .pose_chemistry import pdb_to_template_mol, write_pose_molecule
+except ImportError:
+    from posebusters_runner import run_posebusters_chunked
+    from prepare_and_run_posebusters import PDB_TO_LIGAND_CSV
+    from pose_chemistry import pdb_to_template_mol, write_pose_molecule
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -39,12 +47,22 @@ def _short_chain_name(idx: int) -> str:
     return alphabet[idx % len(alphabet)]
 
 
-def _extract_protein_from_path(cif_path: Path) -> Optional[str]:
+def _extract_protein_from_path(
+    cif_path: Path, boltz_root: Optional[Path] = None
+) -> Optional[str]:
     """Extract protein/pdb id from path segment .../results/<protein>/docking/..."""
     m = re.search(r"/results/([^/]+)/docking/", str(cif_path))
-    if not m:
-        return None
-    return m.group(1).lower()
+    if m:
+        return m.group(1).lower()
+    if boltz_root is not None:
+        try:
+            relative = cif_path.relative_to(boltz_root)
+        except ValueError:
+            return None
+        parts = relative.parts
+        if len(parts) >= 2 and parts[1] == "docking":
+            return parts[0].lower()
+    return None
 
 
 def _extract_ligand_from_name(cif_path: Path) -> str:
@@ -54,6 +72,16 @@ def _extract_ligand_from_name(cif_path: Path) -> str:
 
 def _is_valid_file(path: Path) -> bool:
     return path.exists() and path.stat().st_size > 0
+
+
+def _discover_model_cifs(boltz_root: Path) -> List[Path]:
+    """Discover CIFs, including method directories linked into results/."""
+    candidates = set(boltz_root.rglob("*_model_0.cif"))
+    for docking_dir in boltz_root.glob("*/docking"):
+        for method_dir in docking_dir.glob("boltz2*"):
+            if method_dir.is_dir():
+                candidates.update(method_dir.rglob("*_model_0.cif"))
+    return sorted(candidates)
 
 
 def _split_cif_to_protein_ligand_pdb(
@@ -109,11 +137,33 @@ def _split_cif_to_protein_ligand_pdb(
     return _is_valid_file(protein_pdb_path) and _is_valid_file(ligand_pdb_path)
 
 
-def _convert_pdb_to_sdf(pdb_path: Path, sdf_path: Path, obabel_bin: str) -> bool:
+def _load_smiles_by_molecule_id(protein: str) -> Dict[str, str]:
+    csv_name = PDB_TO_LIGAND_CSV.get(protein.lower())
+    if not csv_name:
+        return {}
+    csv_path = PROJECT_ROOT / "input" / "ligands_nodubl" / csv_name
+    if not csv_path.is_file():
+        return {}
+    with csv_path.open(newline="", encoding="utf-8") as handle:
+        rows = csv.DictReader(handle, delimiter=";")
+        return {
+            row["molecule_chembl_id"]: row["canonical_smiles"]
+            for row in rows
+            if row.get("molecule_chembl_id") and row.get("canonical_smiles")
+        }
+
+
+def _convert_pdb_to_sdf(
+    pdb_path: Path, sdf_path: Path, canonical_smiles: str
+) -> bool:
     sdf_path.parent.mkdir(parents=True, exist_ok=True)
-    cmd = [obabel_bin, "-ipdb", str(pdb_path), "-osdf", "-O", str(sdf_path)]
-    proc = subprocess.run(cmd, capture_output=True, text=True)
-    if proc.returncode != 0:
+    sdf_path.unlink(missing_ok=True)
+    try:
+        fixed = pdb_to_template_mol(pdb_path, canonical_smiles)
+        write_pose_molecule(fixed, sdf_path)
+    except Exception as exc:
+        print(f"Template chemistry conversion failed [{pdb_path}]: {exc}")
+        sdf_path.unlink(missing_ok=True)
         return False
     return _is_valid_file(sdf_path)
 
@@ -124,22 +174,16 @@ def _run_posebusters(
     bust_bin: str,
     max_workers: int,
     posebusters_config: Optional[str],
+    chunk_size: int,
 ) -> None:
-    output_csv.parent.mkdir(parents=True, exist_ok=True)
-    cmd = [
-        bust_bin,
-        "-t",
-        str(table_csv),
-        "--outfmt",
-        "csv",
-        "--output",
-        str(output_csv),
-        "--max-workers",
-        str(max_workers),
-    ]
-    if posebusters_config:
-        cmd.extend(["--config", posebusters_config])
-    subprocess.run(cmd, check=True)
+    run_posebusters_chunked(
+        table_csv=table_csv,
+        output_csv=output_csv,
+        bust_bin=bust_bin,
+        max_workers=max_workers,
+        posebusters_config=posebusters_config,
+        chunk_size=chunk_size,
+    )
 
 
 def _write_table(rows: List[Dict[str, str]], table_path: Path) -> None:
@@ -199,6 +243,12 @@ def main() -> None:
         help="PoseBusters max workers.",
     )
     parser.add_argument(
+        "--chunk-size",
+        type=int,
+        default=100,
+        help="Rows per resumable PoseBusters chunk; use 0 to disable chunking.",
+    )
+    parser.add_argument(
         "--prepare-only",
         action="store_true",
         help="Only prepare split files/tables; skip PoseBusters run.",
@@ -221,22 +271,32 @@ def main() -> None:
     if args.proteins.strip():
         proteins_filter = {p.strip().lower() for p in args.proteins.split(",") if p.strip()}
 
-    cif_paths = list(boltz_root.rglob("*_model_0.cif"))
+    cif_paths = _discover_model_cifs(boltz_root)
     rows_by_protein: Dict[str, List[Dict[str, str]]] = defaultdict(list)
     failures = 0
 
     print(f"Scanning CIF files under: {boltz_root}")
     print(f"Found model_0 CIF files: {len(cif_paths)}")
 
+    # Keep one prediction per protein+ligand if copied/nested result trees overlap.
+    cif_candidates: Dict[Tuple[str, str], Path] = {}
     for cif_path in cif_paths:
-        protein = _extract_protein_from_path(cif_path)
+        protein = _extract_protein_from_path(cif_path, boltz_root)
         if protein is None:
             failures += 1
             continue
         if proteins_filter and protein not in proteins_filter:
             continue
         ligand = _extract_ligand_from_name(cif_path)
+        key = (protein, ligand)
+        previous = cif_candidates.get(key)
+        if previous is None or len(cif_path.relative_to(boltz_root).parts) < len(
+            previous.relative_to(boltz_root).parts
+        ):
+            cif_candidates[key] = cif_path
 
+    smiles_cache: Dict[str, Dict[str, str]] = {}
+    for (protein, ligand), cif_path in sorted(cif_candidates.items()):
         protein_pdb = split_dir / protein / method / "protein_pdb" / f"{ligand}.pdb"
         ligand_pdb = split_dir / protein / method / "ligand_pdb" / f"{ligand}.pdb"
         ligand_sdf = split_dir / protein / method / "ligand_sdf" / f"{ligand}.sdf"
@@ -247,8 +307,16 @@ def main() -> None:
                 failures += 1
                 continue
 
+        if protein not in smiles_cache:
+            smiles_cache[protein] = _load_smiles_by_molecule_id(protein)
+        canonical_smiles = smiles_cache[protein].get(ligand)
+        if not canonical_smiles:
+            failures += 1
+            continue
         if args.force or not _is_valid_file(ligand_sdf):
-            ok_sdf = _convert_pdb_to_sdf(ligand_pdb, ligand_sdf, args.obabel_bin)
+            ok_sdf = _convert_pdb_to_sdf(
+                ligand_pdb, ligand_sdf, canonical_smiles
+            )
             if not ok_sdf:
                 failures += 1
                 continue
@@ -288,6 +356,7 @@ def main() -> None:
             bust_bin=args.bust_bin,
             max_workers=args.max_workers,
             posebusters_config=(args.posebusters_config.strip() or None),
+            chunk_size=args.chunk_size,
         )
         print(f"PoseBusters [{protein.upper()} {method.upper()}]: {result_path}")
 
