@@ -100,22 +100,33 @@ def run_posebusters(cfg: AnalysisConfig) -> tuple[pd.DataFrame, pd.DataFrame]:
 
 
 def canonical_posebusters_checks(reference_csv: Path | None = None) -> list[str]:
-    """Return the full 20 PoseBusters boolean check names."""
+    """Boolean PoseBusters check names from a results CSV (21 in the current deposit)."""
     if reference_csv is None:
-        reference_csv = Path(__file__).resolve().parents[2] / "analysis/tables/posebuster/posebusters_results_1g5m_boltz2.csv"
-    if not reference_csv.exists():
-        raise FileNotFoundError(f"Missing PoseBusters reference CSV: {reference_csv}")
+        root = Path(__file__).resolve().parents[2]
+        for candidate in (
+            root / "analysis/excluding_2z5x_3mjg/tables/posebuster/posebusters_results_1g5m_boltz2.csv",
+            root / "release/zenodo/05_posebusters/tables/posebusters_results_1g5m_boltz2.csv",
+            root / "example/05_posebusters/tables/posebusters_results_1g5m_boltz2.csv",
+        ):
+            if candidate.exists():
+                reference_csv = candidate
+                break
+    if reference_csv is None or not reference_csv.exists():
+        raise FileNotFoundError("Missing PoseBusters reference CSV")
     df = pd.read_csv(reference_csv, nrows=1)
     return _boolean_check_columns(df)
 
 
 def collect_pooled_pass_counts(cfg: AnalysisConfig) -> tuple[int, dict[str, list[int]]]:
-    """Pool pass counts per pose across all targets (All targets)."""
-    checks = canonical_posebusters_checks()
-    n_checks = len(checks)
+    """Pool pass counts per pose across all targets (All targets).
+
+    Each pose is scored on the boolean columns present in its own CSV, matching
+    ``run_posebusters`` / ``n_pass_all``. Current panel CSVs have 21 checks.
+    """
     pooled: dict[str, list[int]] = {
         m: [] for m in cfg.methods if m not in POSEBUSTERS_EXCLUDE
     }
+    n_checks_seen: list[int] = []
 
     for target in cfg.targets:
         for method_id in pooled:
@@ -129,19 +140,21 @@ def collect_pooled_pass_counts(cfg: AnalysisConfig) -> tuple[int, dict[str, list
             if csv_path is None:
                 continue
             df = pd.read_csv(csv_path)
-            for _, row in df.iterrows():
-                passed = 0
-                for check in checks:
-                    if check not in df.columns:
-                        continue
-                    val = row[check]
-                    if pd.isna(val):
-                        continue
-                    if _to_bool(pd.Series([val])).iloc[0]:
-                        passed += 1
-                pooled[method_id].append(passed)
+            bool_cols = _boolean_check_columns(df)
+            if not bool_cols:
+                continue
+            n_checks_seen.append(len(bool_cols))
+            bool_df = pd.DataFrame({c: _to_bool(df[c]) for c in bool_cols})
+            pooled[method_id].extend(bool_df.sum(axis=1).astype(int).tolist())
 
-    return n_checks, pooled
+    unique_n = sorted(set(n_checks_seen))
+    if not unique_n:
+        return 0, pooled
+    if len(unique_n) > 1:
+        raise ValueError(
+            f"PoseBusters CSVs mix n_checks={unique_n}; refuse to pool pass-count curves"
+        )
+    return unique_n[0], pooled
 
 
 def pass_count_distribution(counts: list[int], n_tests: int, *, mode: str) -> pd.DataFrame:

@@ -14,8 +14,9 @@ n_tests_passed,pct_ligands,method_id,method_label
 13,0.0,dynamicbind,DynamicBind
 14,0.0,dynamicbind,DynamicBind
 15,0.0,dynamicbind,DynamicBind
-16,0.026850443032310035,dynamicbind,DynamicBind
-17,0.4027566454846505,dynamicbind,DynamicBind
-18,19.806676810167367,dynamicbind,DynamicBind
-19,61.33536203347355,dynamicbind,DynamicBind
-20,18.42835406784212,dynamicbind,DynamicBind
+16,0.0,dynamicbind,DynamicBind
+17,0.2864047256779737,dynamicbind,DynamicBind
+18,1.5215251051642351,dynamicbind,DynamicBind
+19,20.952295712879263,dynamicbind,DynamicBind
+20,59.25892777230824,dynamicbind,DynamicBind
+21,17.980846683970285,dynamicbind,DynamicBind

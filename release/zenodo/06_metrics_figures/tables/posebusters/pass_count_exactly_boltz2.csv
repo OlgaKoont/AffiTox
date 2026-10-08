@@ -16,6 +16,7 @@ n_tests_passed,pct_ligands,method_id,method_label
 15,0.0,boltz2,Boltz-2
 16,0.0,boltz2,Boltz-2
 17,0.009361542782250515,boltz2,Boltz-2
-18,0.20595394120951133,boltz2,Boltz-2
-19,11.11215128253136,boltz2,Boltz-2
-20,88.67253323347688,boltz2,Boltz-2
+18,0.009361542782250515,boltz2,Boltz-2
+19,0.308930911814267,boltz2,Boltz-2
+20,11.243212881482869,boltz2,Boltz-2
+21,88.42913312113836,boltz2,Boltz-2
