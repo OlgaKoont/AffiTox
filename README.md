@@ -48,7 +48,7 @@ Read the folders in the order you actually run the work.
    Sets the repository root (`TOXAFFINITY_ROOT`), the 16 PDB codes, and default YAML files. Source this before any stage. Method flags live in [`config/methods_config.yaml`](config/methods_config.yaml); protein preparation in [`config/protein_settings_keep_cofactors_v2.yaml`](config/protein_settings_keep_cofactors_v2.yaml). Details: [`docs/PIPELINE.md`](docs/PIPELINE.md).
 
 2. **[`input/`](input/README.md)**  
-   Starting data. Structures in `input/proteins/`. Curated $K_i$ tables in `input/ligands_nodubl/`. The pipeline reads these; it does not recurate BindingDB. Column meanings: [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md).
+   Starting data. Structures in `input/proteins/`. Curated $K_i$ tables in `input/ligands_nodubl/`. The pipeline reads these; it does not recurate ChEMBL. Column meanings: [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md).
 
 3. **`processed/`**  
    Output of **prepare**. Shared PDBQT receptors, ligand files, search boxes, and protein sequences for PLAPT. Every docking method is supposed to see this same prepared input. How it is built: [`pipeline/prepare/README.md`](pipeline/prepare/README.md).
