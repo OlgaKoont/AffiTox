@@ -10,5 +10,7 @@
 
 set -euo pipefail
 ROOT="/mnt/tank/scratch/okonovalova/AffiTox"
+PYTHON="${PYTHON:-/mnt/tank/scratch/okonovalova/miniconda3/envs/docking/bin/python}"
 mkdir -p "${ROOT}/release/zenodo/payloads/logs"
-bash "${ROOT}/pipeline/postprocess/pack_zenodo_blocks.sh"
+export TOXAFFINITY_ROOT="${ROOT}"
+"${PYTHON}" "${ROOT}/pipeline/postprocess/pack_zenodo_blocks.py"

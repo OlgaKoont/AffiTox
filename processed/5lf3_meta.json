@@ -1,0 +1,37 @@
+{
+  "protein": "5lf3",
+  "pdb": "5LF3",
+  "chain": "K",
+  "ligand": "BO2",
+  "uniprot": "P28074",
+  "chembl": "CHEMBL4662",
+  "sequence_length": 200,
+  "sequence_prefix": "TTTLAFKFRHGV",
+  "n_ligand_atoms": 28,
+  "n_protein_atoms": 1550,
+  "pdbqt_atoms": 1928,
+  "pdbqt_hydrogens": 372,
+  "box": {
+    "center": [
+      9.104,
+      194.95,
+      38.956
+    ],
+    "size": [
+      20.0,
+      20.0,
+      20.0
+    ],
+    "method": "labox",
+    "scale": 2.0,
+    "min_size": 20.0,
+    "source": "5lf3_ligand.pdb",
+    "ligand": "BO2",
+    "chain": "K",
+    "uniprot": "P28074",
+    "volume": 8000.0
+  },
+  "dynamicbind_ligands": 88,
+  "ligand_csv": "/mnt/tank/scratch/okonovalova/AffiTox/input/ligands_nodubl/PSMB5_Ki_WT_ChEMBL_88_nodubl.csv",
+  "ligand_pdbqt_dir": "/mnt/tank/scratch/okonovalova/AffiTox/processed/ligands/7awe/PSMB5_Ki_WT_ChEMBL_88_nodubl"
+}

@@ -11,6 +11,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -115,29 +116,68 @@ def create_deposition(client: Client, metadata: dict) -> dict:
     return json.loads(raw)
 
 
+def _curl_upload(url: str, path: Path, header_file: str) -> int:
+    """PUT a file with retries. Token lives in header_file, not argv."""
+    cmd = [
+        "curl",
+        "-fS",
+        "--retry",
+        "40",
+        "--retry-delay",
+        "30",
+        "--retry-all-errors",
+        "--retry-max-time",
+        "86400",
+        "--connect-timeout",
+        "60",
+        "--max-time",
+        "0",
+        "--upload-file",
+        str(path),
+        "-H",
+        f"@{header_file}",
+        url,
+    ]
+    proc = subprocess.run(cmd, check=False)
+    return proc.returncode
+
+
 def upload_file(client: Client, bucket_url: str, path: Path) -> None:
     url = f"{bucket_url}/{path.name}"
     size = path.stat().st_size
     print(f"    uploading {path.name} ({size / 1024**3:.2f} GiB) ...", flush=True)
-    t0 = time.time()
-    subprocess.run(
-        [
-            "curl",
-            "-fS",
-            "--upload-file",
-            str(path),
-            "-H",
-            f"Authorization: Bearer {client.token}",
-            url,
-        ],
-        check=True,
-    )
-    elapsed = time.time() - t0 or 1.0
-    print(
-        f"    done {path.name} in {elapsed / 60:.1f} min "
-        f"({size / elapsed / 1024**2:.1f} MiB/s)",
-        flush=True,
-    )
+    fd, header_file = tempfile.mkstemp(prefix="zenodo_hdr_", text=True)
+    try:
+        os.chmod(header_file, 0o600)
+        with os.fdopen(fd, "w") as fh:
+            fh.write(f"Authorization: Bearer {client.token}\n")
+        last_rc = 1
+        t0 = time.time()
+        for attempt in range(1, 9):
+            last_rc = _curl_upload(url, path, header_file)
+            if last_rc == 0:
+                elapsed = time.time() - t0 or 1.0
+                print(
+                    f"    done {path.name} in {elapsed / 60:.1f} min "
+                    f"({size / elapsed / 1024**2:.1f} MiB/s)",
+                    flush=True,
+                )
+                return
+            wait = min(60 * attempt, 300)
+            print(
+                f"    curl rc={last_rc} for {path.name} "
+                f"(attempt {attempt}/8); sleep {wait}s",
+                flush=True,
+            )
+            time.sleep(wait)
+        raise RuntimeError(
+            f"upload failed for {path.name} after 8 attempts (last curl rc={last_rc})"
+        )
+    finally:
+        try:
+            os.unlink(header_file)
+        except OSError:
+            pass
 
 
 def upload_record(
@@ -150,6 +190,7 @@ def upload_record(
     *,
     dry_run: bool,
     create_only: bool,
+    manifest_path: Path,
 ) -> None:
     missing = [p for p in files if not p.is_file()]
     if missing:
@@ -189,6 +230,7 @@ def upload_record(
         }
         manifest["records"] = [r for r in manifest["records"] if r.get("id") != record_id]
         manifest["records"].append(entry)
+        save_manifest(manifest_path, manifest)
         print(f"  created {dep_id} DOI {doi}")
     if create_only:
         return
@@ -203,9 +245,11 @@ def upload_record(
             if rec.get("id") == record_id:
                 rec["uploaded_files"] = sorted(uploaded)
                 rec["upload_complete"] = len(uploaded) == len(files)
+        save_manifest(manifest_path, manifest)
     for rec in manifest["records"]:
         if rec.get("id") == record_id:
             rec["upload_complete"] = len(uploaded) == len(files)
+    save_manifest(manifest_path, manifest)
 
 
 def main() -> None:
@@ -240,6 +284,7 @@ def main() -> None:
             [zip_path],
             dry_run=args.dry_run,
             create_only=args.create_only,
+            manifest_path=manifest_path,
         )
         save_manifest(manifest_path, manifest)
 
@@ -264,6 +309,7 @@ def main() -> None:
                 files,
                 dry_run=args.dry_run,
                 create_only=args.create_only,
+                manifest_path=manifest_path,
             )
             save_manifest(manifest_path, manifest)
 

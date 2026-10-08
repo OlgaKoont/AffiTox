@@ -8,8 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from matplotlib.cm import ScalarMappable
-from matplotlib.colors import LinearSegmentedColormap, Normalize
+from matplotlib.colors import LinearSegmentedColormap, to_hex
 from matplotlib.gridspec import GridSpec
 
 from ..config import AnalysisConfig
@@ -29,6 +28,10 @@ NEF_POINT_CMAP = LinearSegmentedColormap.from_list(
 )
 
 
+PANEL_TITLE_FS = 12
+POINT_COLOR_AT_ZERO = to_hex(NEF_POINT_CMAP(0.0))
+
+
 def _panel_plot(
     ax: plt.Axes,
     df: pd.DataFrame,
@@ -37,9 +40,8 @@ def _panel_plot(
     title: str,
     panel_letter: str,
     order: list[str],
-    cmap,
     seed: int,
-    frac: int,
+    ylabel: str,
 ) -> None:
     rng = np.random.default_rng(seed)
     x_positions = np.arange(len(order))
@@ -86,7 +88,7 @@ def _panel_plot(
             jitter_x,
             jitter_y,
             s=34,
-            c=[cmap(float(np.clip(v, 0.0, 1.0))) for v in vals],
+            c=POINT_COLOR_AT_ZERO,
             alpha=0.82,
             edgecolors="white",
             linewidths=0.55,
@@ -114,7 +116,7 @@ def _panel_plot(
                 xytext=(x_text, y_text),
                 ha=ha,
                 va="center",
-                fontsize=6,
+                fontsize=9,
                 alpha=0.9,
                 zorder=5,
                 arrowprops=dict(arrowstyle="-", color="#666666", lw=0.4, shrinkA=0, shrinkB=2),
@@ -133,15 +135,53 @@ def _panel_plot(
     ax.set_xticks(x_positions)
     ax.set_xticklabels(order, fontsize=9)
     ax.set_ylim(-0.03, 1.03)
-    ax.set_ylabel(f"nEF{frac}", fontsize=11)
+    ax.set_ylabel(ylabel, fontsize=11)
     ax.grid(axis="y", linestyle="--", alpha=0.35, linewidth=0.7)
     ax.axhline(0.5, color="#666666", linestyle=":", linewidth=1.0, alpha=0.7)
-    ax.set_title(title, fontsize=12, pad=10)
-    ax.text(
-        0.03, 0.98, panel_letter,
-        transform=ax.transAxes,
-        fontsize=18, fontweight="bold", va="top", ha="left",
+    ax.set_title(
+        rf"$\mathbf{{{panel_letter}}}$  {title}",
+        fontsize=PANEL_TITLE_FS,
+        fontweight="normal",
+        pad=10,
     )
+
+
+def _method_gap_fig(fig: plt.Figure, ax: plt.Axes) -> float:
+    """Figure-fraction distance from Boltz-2 (x=0) to DynamicBind (x=1)."""
+    fig.canvas.draw()
+    inv = fig.transFigure.inverted()
+    x_left = inv.transform(ax.transData.transform((0.0, 0.0)))[0]
+    x_next = inv.transform(ax.transData.transform((1.0, 0.0)))[0]
+    return x_next - x_left
+
+
+def _shift_right_panel_toward_left(
+    fig: plt.Figure,
+    ax0: plt.Axes,
+    ax1: plt.Axes,
+    n_gaps: float = 2.0,
+    min_pad_pt: float = 8.0,
+) -> None:
+    """Move the right axes + ylabel left by n_gaps method spacings, without overlap."""
+    delta = _method_gap_fig(fig, ax0)
+    pos = ax1.get_position()
+    # Current on-disk figure was GridSpec plus one extra method gap to the right.
+    current_x = pos.x0 + delta
+    ax1.set_position([current_x - n_gaps * delta, pos.y0, pos.width, pos.height])
+    min_pad_px = min_pad_pt * fig.dpi / 72.0
+    fig_w_px = fig.get_figwidth() * fig.dpi
+    for _ in range(40):
+        fig.canvas.draw()
+        renderer = fig.canvas.get_renderer()
+        b0 = ax0.get_tightbbox(renderer)
+        b1 = ax1.get_tightbbox(renderer)
+        gap = float(b1.x0 - b0.x1)
+        if gap >= min_pad_px:
+            return
+        pos = ax1.get_position()
+        ax1.set_position(
+            [pos.x0 + (min_pad_px - gap) / fig_w_px, pos.y0, pos.width, pos.height]
+        )
 
 
 def plot_nef_violins(ef: pd.DataFrame, cfg: AnalysisConfig) -> None:
@@ -162,31 +202,22 @@ def plot_nef_violins(ef: pd.DataFrame, cfg: AnalysisConfig) -> None:
 
         fig = plt.figure(figsize=(13.4, 5.6))
         gs = GridSpec(
-            1, 3, figure=fig,
-            width_ratios=[1.0, 1.0, 0.045],
-            wspace=0.22,
-            left=0.07, right=0.94, top=0.88, bottom=0.12,
+            1, 2, figure=fig,
+            width_ratios=[1.0, 1.0],
+            wspace=0.28,
+            left=0.07, right=0.98, top=0.88, bottom=0.12,
         )
         ax0 = fig.add_subplot(gs[0, 0])
         ax1 = fig.add_subplot(gs[0, 1], sharey=ax0)
-        cax = fig.add_subplot(gs[0, 2])
         _panel_plot(
             ax0, ef, cfg, active_col,
-            f"nEF{frac} (actives: Ki < 1000 nM)", "A", order, NEF_POINT_CMAP,
-            seed=cfg.random_seed, frac=int(frac),
+            f"nEF{frac} (actives: Ki < 1000 nM)", "A", order,
+            seed=cfg.random_seed, ylabel=f"nEF{frac}",
         )
         _panel_plot(
             ax1, ef, cfg, low_col,
-            f"nEF{frac},low (inactives: Ki ≥ 1000 nM)", "B", order, NEF_POINT_CMAP,
-            seed=cfg.random_seed + 1, frac=int(frac),
+            f"nEF{frac},low (inactives: Ki ≥ 1000 nM)", "B", order,
+            seed=cfg.random_seed + 1, ylabel=f"nEF{frac},low",
         )
-        sm = ScalarMappable(norm=Normalize(0.0, 1.0), cmap=NEF_POINT_CMAP)
-        sm.set_array([])
-        cbar = fig.colorbar(sm, cax=cax)
-        cbar.set_ticks([0.0, 0.5, 1.0])
-        cbar.set_label("nEF")
-        fig.canvas.draw()
-        pos = ax0.get_position()
-        cpos = cax.get_position()
-        cax.set_position([cpos.x0, pos.y0, cpos.width, pos.height])
+        _shift_right_panel_toward_left(fig, ax0, ax1)
         save_figure(fig, out_dir / f"summary_nEF{frac}_combined")

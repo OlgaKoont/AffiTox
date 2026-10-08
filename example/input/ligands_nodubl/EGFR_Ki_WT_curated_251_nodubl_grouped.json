@@ -1,0 +1,28 @@
+{
+  "total_groups": 2,
+  "total_ligands": 2,
+  "groups": [
+    {
+      "activity_value": "7.35",
+      "group_size": 1,
+      "ligands": [
+        {
+          "molecule_chembl_id": "CHEMBL553",
+          "row_number": 2,
+          "smiles": "C#Cc1cccc(Nc2ncnc3cc(OCCOC)c(OCCOC)cc23)c1"
+        }
+      ]
+    },
+    {
+      "activity_value": "8.57",
+      "group_size": 1,
+      "ligands": [
+        {
+          "molecule_chembl_id": "CHEMBL553",
+          "row_number": 3,
+          "smiles": "C#Cc1cccc(Nc2ncnc3cc(OCCOC)c(OCCOC)cc23)c1"
+        }
+      ]
+    }
+  ]
+}

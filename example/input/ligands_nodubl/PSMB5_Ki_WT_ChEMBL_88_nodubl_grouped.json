@@ -1,0 +1,17 @@
+{
+  "total_groups": 1,
+  "total_ligands": 2,
+  "groups": [
+    {
+      "activity_value": "8.64",
+      "group_size": 1,
+      "ligands": [
+        {
+          "molecule_chembl_id": "CHEMBL2337848",
+          "row_number": 2,
+          "smiles": "C/C=C\\NC(=O)[C@H]1NC(=O)[C@H](CC(N)=O)CC(=O)[C@@H](NC(=O)C(=O)[C@@H](C)CC)Cc2ccc(O)c(c2)-c2cccc3c2NC(=O)[C@@]3(O)[C@@H]1O"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "ligands_per_target": 2,
+  "targets": {
+    "1g5m": {
+      "csv": "BCL2_Ki_WT_ChEMBL_252_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL3895790",
+        "CHEMBL3933269"
+      ]
+    },
+    "2z5x": {
+      "csv": "MAO-B_Ki_WT_ChEMBL_246_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL5840646",
+        "CHEMBL3402197"
+      ]
+    },
+    "3eyg": {
+      "csv": "JAK1_Ki_WT_ChEMBL_2255_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL5889049",
+        "CHEMBL5782866"
+      ]
+    },
+    "3jy9": {
+      "csv": "JAK2_Ki_WT_ChEMBL_2027_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL5795488",
+        "CHEMBL5956612"
+      ]
+    },
+    "3lxk": {
+      "csv": "JAK3_Ki_WT_ChEMBL_786_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL5948890",
+        "CHEMBL5890851"
+      ]
+    },
+    "3mjg": {
+      "csv": "PDGFRB_Ki_WT_ChEMBL_275_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL1983573",
+        "CHEMBL1983111"
+      ]
+    },
+    "4ase": {
+      "csv": "VEGFR2_Ki_WT_ChEMBL_875_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL1995172",
+        "CHEMBL1992634"
+      ]
+    },
+    "4f65": {
+      "csv": "FGFR1_Ki_WT_ChEMBL_134_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL4068509",
+        "CHEMBL4446835"
+      ]
+    },
+    "4tz4": {
+      "csv": "CRBN_Ki_WT_ChEMBL_127_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL5399028",
+        "CHEMBL5419709"
+      ]
+    },
+    "4zau": {
+      "csv": "EGFR_Ki_WT_curated_251_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL553",
+        "CHEMBL553"
+      ]
+    },
+    "5jkv": {
+      "csv": "CYP19A1_Aromatase_Ki_WT_ChEMBL_548_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL1957220",
+        "CHEMBL1957219"
+      ]
+    },
+    "5mo4": {
+      "csv": "ABL1_BCR-ABL_Ki_WT_ChEMBL_693_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL5555423",
+        "CHEMBL5561816"
+      ]
+    },
+    "6gqj": {
+      "csv": "KIT_Ki_WT_curated_1298_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL5886106",
+        "CHEMBL6047470"
+      ]
+    },
+    "6jok": {
+      "csv": "PDGFRA_Ki_WT_curated_250_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL1983111",
+        "CHEMBL2000568"
+      ]
+    },
+    "7awe": {
+      "csv": "PSMB5_Ki_WT_ChEMBL_88_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL3099624",
+        "CHEMBL2337848"
+      ]
+    },
+    "7kk3": {
+      "csv": "PARP1_Ki_WT_ChEMBL_1075_nodubl.csv",
+      "n_ligands": 2,
+      "chembl_ids": [
+        "CHEMBL362322",
+        "CHEMBL2204335"
+      ]
+    }
+  }
+}
