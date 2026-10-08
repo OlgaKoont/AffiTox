@@ -20,6 +20,11 @@ _EXAMPLE_LIGAND_FILE_RE = re.compile(
     r"(?:^|/)(?:ligand_000[1-5]|ligand_[1-5]|idx_[0-4])(?!\d)"
 )
 
+
+def is_legacy_dynamicbind_posebusters(path: Path) -> bool:
+    """Pre-rerun DynamicBind CSVs (20 checks). Current files are *_dynamicbind_new.csv."""
+    return path.name.lower().endswith("_dynamicbind.csv")
+
 _SRC = Path(__file__).resolve().parent.parent
 if str(_SRC) not in sys.path:
     sys.path.insert(0, str(_SRC))
@@ -282,6 +287,8 @@ def stage_zenodo_05(base: Path, out: Path) -> None:
         dest = rec / "tables"
         dest.mkdir(exist_ok=True)
         for csv_path in sorted(src_dir.glob("*.csv")):
+            if is_legacy_dynamicbind_posebusters(csv_path):
+                continue
             copy_file(csv_path, dest / csv_path.name)
     (rec / "README.md").write_text(_readme_05(), encoding="utf-8")
     copy_notice(rec, base)
@@ -441,6 +448,8 @@ def stage_example(
         pb = base / "analysis" / "excluding_2z5x_3mjg" / "tables" / "posebuster"
         if pb.is_dir():
             for csv_path in pb.glob(f"*{pdb}*"):
+                if is_legacy_dynamicbind_posebusters(csv_path):
+                    continue
                 _slice_posebusters_csv(
                     csv_path, ex / "05_posebusters" / "tables" / csv_path.name, n=n
                 )
@@ -463,12 +472,15 @@ def _slice_posebusters_csv(src: Path, dest: Path, n: int) -> None:
 
 
 def prune_legacy_example(ex: Path) -> None:
-    """Drop 2z5x/3mjg/7awe leftovers from the GitHub example tree."""
+    """Drop 2z5x/3mjg/7awe leftovers and old DynamicBind PoseBusters CSVs."""
     if not ex.is_dir():
         return
     for path in sorted(ex.rglob("*"), reverse=True):
         name = path.name.lower()
-        if not any(old in name for old in LEGACY_EXAMPLE_PDBS):
+        drop = any(old in name for old in LEGACY_EXAMPLE_PDBS) or (
+            path.is_file() and is_legacy_dynamicbind_posebusters(path)
+        )
+        if not drop:
             continue
         if path.is_dir():
             shutil.rmtree(path, ignore_errors=True)
@@ -593,6 +605,8 @@ def reslice_example_posebusters(base: Path, n: int = EXAMPLE_LIGAND_COUNT) -> No
         return
     for pdb in CANONICAL_TARGETS:
         for csv_path in src_dir.glob(f"*{pdb}*"):
+            if is_legacy_dynamicbind_posebusters(csv_path):
+                continue
             _slice_posebusters_csv(csv_path, dest_dir / csv_path.name, n=n)
 
 
