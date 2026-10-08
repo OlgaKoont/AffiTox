@@ -2,10 +2,10 @@
 
 *Journal of Cheminformatics* (in review)
 
-**Abstract.** Benchmarks are needed not only to compare computational binding methods, but also to identify which outputs remain informative for a defined decision context. We introduce AffiTox, a retrospective, target-resolved benchmark comprising 10,497 experimental $K_i$ records for 16 mechanism-linked safety-relevant proteins, and evaluate five methods across within-target scoring, ranking, screening, and pose-validity axes. Boltz-2 has the largest panel-wide median Pearson correlation with experimental $pK_i$ ($r = 0.552$) and the strongest confirmatory scoring distribution, but performance varies markedly by target; active $nEF_{10}$ is frequently limited by class balance, weak-binding-end enrichment reveals additional screening failures, and pose validity is only partly aligned with affinity association. These results support AffiTox as a target-specific, multi-axis framework for evaluating and developing computational binding methods for safety-related screening, while prospective transfer and direct toxicity prediction remain outside the scope of the present study.
+**Abstract.** Benchmarks are needed not only to compare computational binding methods, but also to identify which outputs remain informative for a defined decision context. We introduce \benchname{}, a retrospective, target-resolved benchmark comprising experimental $K_i$ records for 16 mechanism-linked safety-relevant proteins, and evaluate five methods across within-target scoring, ranking, screening, and pose-validity axes. Boltz-2 has the largest panel-wide median Pearson correlation with experimental $\mathrm{p}K_i$ ($r=0.55$) and the strongest confirmatory scoring distribution, but performance varies markedly by target; active $\mathrm{nEF}_{10}$ is frequently limited by class balance, weak-binding-end enrichment reveals additional screening failures, and pose validity is only partly aligned with affinity association. These results support \benchname{} as a target-specific, multi-axis framework for evaluating and developing computational binding methods for safety-related screening, while prospective transfer and direct toxicity prediction remain outside the scope of the present study.
 
 <p align="center">
-  <img src="docs/assets/affitox_overview.svg"
+  <img src="docs/assets/affitox.png"
        alt="Overview of the AffiTox benchmark dataset, evaluated methods, and analysis axes"
        width="100%">
 </p>
@@ -48,7 +48,7 @@ Read the folders in the order you actually run the work.
    Sets the repository root (`TOXAFFINITY_ROOT`), the 16 PDB codes, and default YAML files. Source this before any stage. Method flags live in [`config/methods_config.yaml`](config/methods_config.yaml); protein preparation in [`config/protein_settings_keep_cofactors_v2.yaml`](config/protein_settings_keep_cofactors_v2.yaml). Details: [`docs/PIPELINE.md`](docs/PIPELINE.md).
 
 2. **[`input/`](input/README.md)**  
-   Starting data. Structures in `input/proteins/`. Curated $K_i$ tables in `input/ligands_nodubl/`. The pipeline reads these; it does not recurate BindingDB. Column meanings: [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md).
+   Starting data. Structures in `input/proteins/`. Curated $K_i$ tables in `input/ligands_nodubl/`. The pipeline reads these; it does not recurate ChEMBL. Column meanings: [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md).
 
 3. **`processed/`**  
    Output of **prepare**. Shared PDBQT receptors, ligand files, search boxes, and protein sequences for PLAPT. Every docking method is supposed to see this same prepared input. How it is built: [`pipeline/prepare/README.md`](pipeline/prepare/README.md).
