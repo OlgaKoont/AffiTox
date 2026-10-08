@@ -71,5 +71,5 @@ In-text example: “Data are archived on Zenodo [n].”
 | 03d docking | https://doi.org/10.5281/zenodo.23226603 |
 | 03e docking | https://doi.org/10.5281/zenodo.23227176 |
 | 04 merged tables | https://doi.org/10.5281/zenodo.23214418 |
-| 05 PoseBusters | https://doi.org/10.5281/zenodo.23214420 |
+| 05 PoseBusters | https://doi.org/10.5281/zenodo.23242334 |
 | 06 metrics + PNG | https://doi.org/10.5281/zenodo.23214430 |

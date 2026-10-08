@@ -283,11 +283,16 @@ def stage_zenodo_05(base: Path, out: Path) -> None:
     rec = out / "05_posebusters"
     rec.mkdir(parents=True, exist_ok=True)
     src_dir = base / "analysis" / "excluding_2z5x_3mjg" / "tables" / "posebuster"
+    dest = rec / "tables"
+    if dest.exists():
+        shutil.rmtree(dest)
+    dest.mkdir(parents=True, exist_ok=True)
     if src_dir.is_dir():
-        dest = rec / "tables"
-        dest.mkdir(exist_ok=True)
         for csv_path in sorted(src_dir.glob("*.csv")):
+            name = csv_path.name.lower()
             if is_legacy_dynamicbind_posebusters(csv_path):
+                continue
+            if any(old in name for old in LEGACY_EXAMPLE_PDBS):
                 continue
             copy_file(csv_path, dest / csv_path.name)
     (rec / "README.md").write_text(_readme_05(), encoding="utf-8")
@@ -556,10 +561,15 @@ Seed: 42 (documented for docking; QVina2 logs may print a different engine seed 
 def _readme_05() -> str:
     return """# AffiTox Zenodo record 05 — PoseBusters and pose conversion
 
-Full-panel PoseBusters CSVs and converted SDFs belong here, not on GitHub.
+Full-panel PoseBusters CSVs belong here, not on GitHub.
 
 GitHub `example/05_posebusters/` holds only the 16 × 5 ligand slice.
 PLAPT has no poses and is excluded.
+
+DynamicBind tables are `posebusters_results_<pdb>_dynamicbind_new.csv` (21 boolean
+checks, including `internal_energy`). Superseded 20-check
+`posebusters_results_<pdb>_dynamicbind.csv` files are not included. 2z5x, 3mjg,
+and 7awe are not in this panel.
 """
 
 

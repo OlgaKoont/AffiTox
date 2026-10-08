@@ -76,7 +76,7 @@ NEW_RECORDS = [
     },
     {
         "id": "05_posebusters",
-        "deposition_id": 23214420,
+        "deposition_id": 23242334,
         "title": "AffiTox: PoseBusters tables (record 05)",
         "pdbs": PANEL,
     },

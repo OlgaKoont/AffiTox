@@ -139,14 +139,17 @@ cp 04_merged/N_panel.txt analysis/excluding_2z5x_3mjg/tables/
 
 ### 05 — PoseBusters tables (~13 MiB)
 
-- DOI: [10.5281/zenodo.23214420](https://doi.org/10.5281/zenodo.23214420)
+- DOI: [10.5281/zenodo.23242334](https://doi.org/10.5281/zenodo.23242334)
+  (replaces [10.5281/zenodo.23214420](https://doi.org/10.5281/zenodo.23214420))
 - File: `05_posebusters.zip` → folder `05_posebusters/`
 - Inside: `tables/posebusters_results_<pdb>_<method>.csv` for Boltz-2,
-  DynamicBind, GNINA, QVina2 (no PLAPT).
+  DynamicBind (`*_dynamicbind_new.csv`, 21 checks including `internal_energy`),
+  GNINA, QVina2 (no PLAPT). The superseded 20-check `*_dynamicbind.csv` files
+  are not included.
 - Copy:
 
 ```bash
-curl -L -o 05_posebusters.zip 'https://zenodo.org/records/23214420/files/05_posebusters.zip?download=1'
+curl -L -o 05_posebusters.zip 'https://zenodo.org/records/23242334/files/05_posebusters.zip?download=1'
 unzip 05_posebusters.zip
 mkdir -p analysis/excluding_2z5x_3mjg/tables/posebuster
 cp 05_posebusters/tables/*.csv analysis/excluding_2z5x_3mjg/tables/posebuster/

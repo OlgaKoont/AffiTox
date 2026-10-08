@@ -18,5 +18,5 @@ record	zenodo_record	doi	record_title	filename	size_bytes
 03_docking_03e	23227176	10.5281/zenodo.23227176	AffiTox: docking outputs (03e of record 03: 4ase, 6jok, 11ue, 1g5m)	results_11ue.zip	4697484441
 03_docking_03e	23227176	10.5281/zenodo.23227176	AffiTox: docking outputs (03e of record 03: 4ase, 6jok, 11ue, 1g5m)	results_6jok.zip	9369715196
 04_merged	23214418	10.5281/zenodo.23214418	AffiTox: merged ligand_id tables (record 04)	04_merged.zip	5544690
-05_posebusters	23214420	10.5281/zenodo.23214420	AffiTox: PoseBusters tables (record 05)	05_posebusters.zip	12652009
+05_posebusters	23242334	10.5281/zenodo.23242334	AffiTox: PoseBusters tables (record 05)	05_posebusters.zip	10239424
 06_metrics_figures	23214430	10.5281/zenodo.23214430	AffiTox: metrics tables and PNG figures (record 06)	06_metrics_figures.zip	145062513
