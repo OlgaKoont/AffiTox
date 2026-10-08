@@ -157,15 +157,17 @@ cp 05_posebusters/tables/*.csv analysis/excluding_2z5x_3mjg/tables/posebuster/
 
 ### 06 — metrics tables and PNG figures (~138 MiB)
 
-- DOI: [10.5281/zenodo.23214430](https://doi.org/10.5281/zenodo.23214430)
+- DOI: [10.5281/zenodo.23244623](https://doi.org/10.5281/zenodo.23244623)
+  (replaces [10.5281/zenodo.23214430](https://doi.org/10.5281/zenodo.23214430))
 - File: `06_metrics_figures.zip` → folder `06_metrics_figures/`
 - Inside: `tables/` (merged CSVs plus `correlations/`, `enrichment/`,
-  `inferential/`); `figures/by_protein/` (publication axis) and `figures/by_pdb/`.
+  `inferential/`, PoseBusters pass-count curves on **21** checks);
+  `figures/by_protein/` (publication axis) and `figures/by_pdb/`.
 - Copy:
 
 ```bash
 curl -L -o 06_metrics_figures.zip \
-  'https://zenodo.org/records/23214430/files/06_metrics_figures.zip?download=1'
+  'https://zenodo.org/records/23244623/files/06_metrics_figures.zip?download=1'
 unzip 06_metrics_figures.zip
 mkdir -p analysis/excluding_2z5x_3mjg/tables analysis/excluding_2z5x_3mjg/figures
 cp -a 06_metrics_figures/tables/. analysis/excluding_2z5x_3mjg/tables/

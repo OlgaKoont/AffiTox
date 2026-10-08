@@ -304,6 +304,9 @@ def _copy_png_tree(src: Path, dest: Path) -> int:
     if not src.is_dir():
         return 0
     for png in src.rglob("*.png"):
+        rel = png.relative_to(src).as_posix().lower()
+        if any(old in rel for old in LEGACY_EXAMPLE_PDBS):
+            continue
         copy_file(png, dest / png.relative_to(src))
         n += 1
     return n
@@ -312,11 +315,18 @@ def _copy_png_tree(src: Path, dest: Path) -> int:
 def stage_zenodo_06(base: Path, out: Path, n_panel: int) -> None:
     rec = out / "06_metrics_figures"
     rec.mkdir(parents=True, exist_ok=True)
+    for sub in ("tables", "figures"):
+        old = rec / sub
+        if old.exists():
+            shutil.rmtree(old)
     tables = base / "analysis" / "excluding_2z5x_3mjg" / "tables"
     figures = base / "analysis" / "excluding_2z5x_3mjg" / "figures"
     if tables.is_dir():
         for csv_path in tables.rglob("*.csv"):
+            name = csv_path.name.lower()
             if csv_path.parent.name == "posebuster" or "posebuster" in csv_path.parts:
+                continue
+            if any(old in name for old in LEGACY_EXAMPLE_PDBS):
                 continue
             copy_file(csv_path, rec / "tables" / csv_path.relative_to(tables))
     n_png = 0
@@ -582,6 +592,9 @@ Correlation, nEF, inferential tables, and PNG figures for the canonical panel
 Heatmap style: ultramarine / ivory / vermilion, square cells
 (`pearson_heatmap_ultramarine_ivory_vermilion_square_cells.png` and the same style
 for Spearman-only, Kendall-only, combined, and intermediate heatmaps). PNG only.
+
+PoseBusters pass-count curves use 21 boolean checks (including
+``internal_energy``); the at-least-21 endpoint matches ``pass_rate_all``.
 
 Panel N: **{n}**. PNG files packaged in this pass: {n_png}.
 """
