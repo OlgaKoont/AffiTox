@@ -31,14 +31,14 @@ Keep `CITATION.cff`; do not add `.zenodo.json`.
 
 ## 3. Draft then publish GitHub release
 
-Tag: `v1.0.0` on `main`. Title: `AffiTox v1.0.0 JCIM reproducibility release`.
+Tag: `v1.0.0` on `main`. Title: `AffiTox v1.0.0 J Cheminform reproducibility release`.
 
 Suggested notes:
 
 ```markdown
 ## AffiTox v1.0.0
 
-Reproducibility release accompanying the AffiTox JCIM manuscript.
+Reproducibility release accompanying the AffiTox *Journal of Cheminformatics* manuscript.
 
 ### Included
 
@@ -72,4 +72,8 @@ Use the **version-specific software DOI** in the paper, not a raw-data part DOI.
 
 ## 5. Umbrella data record
 
-Upload `docs/zenodo/` as “AffiTox v1.0.0: data release manifest” and Has-part the six records. See `docs/zenodo/README.md`.
+Published: [10.5281/zenodo.22007993](https://doi.org/10.5281/zenodo.22007993)
+(`AffiTox v1.0.0: data release manifest`), Has-part 01 / 02 / 03a–e / 04 / 05 / 06.
+See `docs/zenodo/README.md`. The two small files on that record are the August 2026
+stub (old TSV); the landing-page description and related identifiers are the
+authoritative index.

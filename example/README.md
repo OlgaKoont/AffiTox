@@ -13,6 +13,7 @@ bash pipeline/postprocess/run_merge.sh   # full panel → analysis/excluding_2z5
 EXAMPLE_N=5 bash pipeline/postprocess/run_merge.sh --output-dir example/04_merged
 ```
 
-Full-panel PoseBusters conversion and docking dumps are on Zenodo records 03 and 05
-(not the historical DOIs 10.5281/zenodo.20825057–067). Boltz-2 / DynamicBind folders
-for this 16×5 slice stay on disk locally; they are gitignored (too large for GitHub).
+Full-panel dumps: Zenodo index [10.5281/zenodo.22007993](https://doi.org/10.5281/zenodo.22007993);
+unpack map in [`docs/zenodo/README.md`](../docs/zenodo/README.md) (records 03 and 05).
+Do not use `10.5281/zenodo.20825057`–`067`. Boltz-2 / DynamicBind folders for this
+16×5 slice stay on disk locally; they are gitignored (too large for GitHub).

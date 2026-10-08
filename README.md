@@ -1,6 +1,6 @@
 # Target-Resolved Multi-Axis Benchmarking of Docking and Affinity Methods on Safety-Relevant Proteins
 
-*Journal of Chemical Information and Modeling* (in review)
+*Journal of Cheminformatics* (in review)
 
 **Abstract.** Benchmarks are needed not only to compare computational binding methods, but also to identify which outputs remain informative for a defined decision context. We introduce AffiTox, a retrospective, target-resolved benchmark comprising 10,497 experimental $K_i$ records for 16 mechanism-linked safety-relevant proteins, and evaluate five methods across within-target scoring, ranking, screening, and pose-validity axes. Boltz-2 has the largest panel-wide median Pearson correlation with experimental $pK_i$ ($r = 0.552$) and the strongest confirmatory scoring distribution, but performance varies markedly by target; active $nEF_{10}$ is frequently limited by class balance, weak-binding-end enrichment reveals additional screening failures, and pose validity is only partly aligned with affinity association. These results support AffiTox as a target-specific, multi-axis framework for evaluating and developing computational binding methods for safety-related screening, while prospective transfer and direct toxicity prediction remain outside the scope of the present study.
 
@@ -9,6 +9,20 @@
        alt="Overview of the AffiTox benchmark dataset, evaluated methods, and analysis axes"
        width="100%">
 </p>
+
+## Dataset
+
+Full-panel data: **[10.5281/zenodo.22007993](https://doi.org/10.5281/zenodo.22007993)**
+(`AffiTox v1.0.0: data release manifest`). That is the DOI to put in the paper.
+Community page (no DOI): [zenodo.org/communities/affitox](https://zenodo.org/communities/affitox/).
+
+What to download, what is inside each zip, and which folder in this clone to
+copy into: **[`docs/zenodo/README.md`](docs/zenodo/README.md)**.
+
+This repository is code, 16-target inputs, `processed/` receptors, and a
+16×5 `example/` slice. It does **not** contain `results/` (~187 GiB docking
+dumps) or full-panel `analysis/tables` and `analysis/figures` (gitignored).
+Those are Zenodo records 03 and 04–06.
 
 ## Repository layout
 
@@ -42,11 +56,11 @@ Read the folders in the order you actually run the work.
 4. **`results/`**  
    Output of **dock**. One tree per target and method (`results/<pdb>/docking/<method>/`). Git ignores this directory because it is large. Download the Zenodo zips listed under **What to download** if you want to re-run merge or PoseBusters without docking. What each engine writes: [`pipeline/dock/README.md`](pipeline/dock/README.md).
 
-5. **[`analysis/tables/`](analysis/README.md)**  
-   Output of **merge** and **posebusters**, then of **analysis**. Merged ligand tables (`merged_ligands_docking_<pdb>.csv`) plus correlation, nEF, inferential, and PoseBusters summaries. These tables are tracked in git, so you can rebuild figures without docking.
+5. **`analysis/excluding_2z5x_3mjg/tables/`**  
+   Output of **merge** and **posebusters**, then of **analysis**. Full-panel CSVs are gitignored; unpack Zenodo **04** / **05** / **06** ([`docs/zenodo/README.md`](docs/zenodo/README.md)). The 16×5 slice is in [`example/`](example/README.md).
 
-6. **[`analysis/figures/`](docs/FIGURES.md)**  
-   PNG and SVG written by the analysis stage. Which script makes which figure: [`docs/FIGURES.md`](docs/FIGURES.md).
+6. **`analysis/excluding_2z5x_3mjg/figures/`**  
+   PNG from record **06**. Which script makes which figure: [`docs/FIGURES.md`](docs/FIGURES.md).
 
 7. **Code that moves data along this path**  
    [`run_pipeline.sh`](run_pipeline.sh) is the public switch. Wrappers: [`pipeline/README.md`](pipeline/README.md). Prepare/dock Python package: `src/docking_benchmark2/` (CLI names `affitox-pipeline` and `toxdock-pipeline`). Manuscript statistics: `src/analysis/`. Tests: [`tests/`](tests/test_scientific_invariants.py).
@@ -123,39 +137,27 @@ PYTHONPATH=src pytest tests -q                       # Ki to pKi and nEF invaria
 
 ## What to download
 
-`git clone` already has the files for tests and for **analysis**: curated $K_i$ tables (`input/ligands_nodubl/`), protein structures (`input/proteins/`), prepared receptors and ligand PDBQT (`processed/`), merged score tables, PoseBusters CSVs, and manuscript figures. It does **not** contain `results/` (raw docking poses and logs). That tree is gitignored because it is about 202 GB.
+Index DOI (cite this): [10.5281/zenodo.22007993](https://doi.org/10.5281/zenodo.22007993).
+Unpack paths, zip contents, and `curl` examples: [`docs/zenodo/README.md`](docs/zenodo/README.md).
 
-Download extra archives only for the stage you will run.
-
-| Stage | Already in the clone | Download |
-|-------|----------------------|----------|
-| tests, `run_pipeline.sh analysis` | `analysis/tables/`, `analysis/figures/` | nothing |
-| `prepare` | `input/proteins/`, `input/ligands_nodubl/`, `config/interaction_protein_ligand_16target.json` | nothing |
-| `dock` | `processed/` | nothing from Zenodo. Install the engine binaries in the table above. Docking stops with a list of missing tools if they are not on PATH. |
-| `merge` | ligand CSVs under `input/` | unpack `results_<pdb>.zip` into the repo root so `results/<pdb>/` exists |
-| `posebusters` | `processed/proteins/`, deposited CSVs in `analysis/tables/posebuster/` | `results_<pdb>.zip` and `bust` only if you recompute pass rates. Without `bust` or `results/`, the wrapper keeps the deposited CSVs. |
-| BindingDB provenance only | not in git (`input/bindingdb/` is ignored) | `toxdock-input-raw.zip` from part 1 |
-
-Raw docking records (open, CC BY 4.0 on AffiTox organization; third-party records keep their own terms):
-
-| Part | DOI | Files |
-|------|-----|--------|
-| 1/6 | [10.5281/zenodo.20825057](https://doi.org/10.5281/zenodo.20825057) | `results_{1g5m,2z5x,3mjg,4f65,4tz4,4zau,7awe}.zip`, `toxdock-input-raw.zip` |
-| 2/6 | [10.5281/zenodo.20825059](https://doi.org/10.5281/zenodo.20825059) | `results_{3lxk,5jkv,6jok}.zip` |
-| 3/6 | [10.5281/zenodo.20825061](https://doi.org/10.5281/zenodo.20825061) | `results_{4ase,6gqj}.zip` |
-| 4/6 | [10.5281/zenodo.20825063](https://doi.org/10.5281/zenodo.20825063) | `results_{5mo4,7kk3}.zip` |
-| 5/6 | [10.5281/zenodo.20825065](https://doi.org/10.5281/zenodo.20825065) | `results_3jy9.zip` |
-| 6/6 | [10.5281/zenodo.20825067](https://doi.org/10.5281/zenodo.20825067) | `results_3eyg.zip` |
-
-MD5 checksums and byte sizes: [`docs/zenodo/affitox_data_manifest.tsv`](docs/zenodo/affitox_data_manifest.tsv). Each `results_<pdb>.zip` unpacks as `results/<pdb>/` (the zip already contains that prefix). Unpack from the repository root:
+| Stage | Already in the clone | Download from Zenodo |
+|-------|----------------------|----------------------|
+| tests, 16×5 example | `example/` | nothing |
+| `run_pipeline.sh analysis` on the **full panel** | not in git | **04** + **06** → `analysis/excluding_2z5x_3mjg/{tables,figures}/` |
+| `prepare` | `input/proteins/`, `input/ligands_nodubl/` | **01** only if you want the deposited ChEMBL/PDB snapshot |
+| `dock` | `processed/` | **02** for pinned weights; no docking zips. Install engines (table above) |
+| `merge` / re-PoseBusters | ligand CSVs, `processed/` | **03a–e** `results_<pdb>.zip` unzipped at the repo root → `results/<pdb>/` |
+| PoseBusters CSVs without re-running `bust` | `example/05_posebusters/` (16×5) | **05** → `analysis/excluding_2z5x_3mjg/tables/posebuster/` |
 
 ```bash
-# example: 1g5m only (~2.8 GB). File is on part 1.
-unzip results_1g5m.zip
-ls results/1g5m/docking
+# full-panel merged tables (record 04, ~5 MiB)
+curl -L -o 04_merged.zip 'https://zenodo.org/records/23214418/files/04_merged.zip?download=1'
+unzip 04_merged.zip
+mkdir -p analysis/excluding_2z5x_3mjg/tables
+cp 04_merged/merged_ligands_docking_*.csv analysis/excluding_2z5x_3mjg/tables/
 ```
 
-You do not need all six parts unless you re-merge or re-run PoseBusters on every target. Boltz-2 poses, if present, live inside those zips under `results/<pdb>/docking/`; set `BOLTZ_RESULTS_DIR` only if you keep Boltz output in a separate tree.
+Do not cite `10.5281/zenodo.20825057`–`067`.
 
 ## Pipeline
 
@@ -236,7 +238,7 @@ Details: [`pipeline/postprocess/README.md`](pipeline/postprocess/README.md), [`d
 
 ### analysis
 
-Computes scoring, ranking, screening, pose-validity summaries, and figures from the merged tables. **You can run this stage on the tables already in git.** Needs: `analysis/tables/` from the clone. No Zenodo download. Docking is not required.
+Computes scoring, ranking, screening, pose-validity summaries, and figures from the merged tables. For the **full panel**, unpack Zenodo records **04** and **06** into `analysis/excluding_2z5x_3mjg/` first ([`docs/zenodo/README.md`](docs/zenodo/README.md)). The 16×5 slice is already in `example/`. Docking is not required.
 
 ```bash
 bash run_pipeline.sh analysis    # default if you call run_pipeline.sh with no arguments
@@ -268,3 +270,21 @@ bash run_pipeline.sh all         # prepare, dock, merge, posebusters, analysis
 This skips `install` and still skips Boltz-2 inference. Needs: engine binaries for dock. Prepare uses the tracked 16-target JSON. PoseBusters without `bust` keeps deposited CSVs. `all` will still stop at dock if QVina2, GNINA, PLAPT, or DynamicBind are not installed; use `bash run_pipeline.sh analysis` for manuscript tables.
 
 Licence: [MIT](LICENSE) for this repository’s source. BindingDB, ChEMBL, PDB records and third-party weights follow their own terms ([NOTICE](NOTICE)).
+
+## How to cite
+
+*Journal of Cheminformatics* (BMC, Vancouver). Cite the **umbrella data DOI**
+once; do not list all ten part records in the article reference list.
+
+**Availability of data and materials.** See the paste-ready paragraph in
+[`docs/DATA_AVAILABILITY.md`](docs/DATA_AVAILABILITY.md).
+
+Dataset:
+
+Konovalova OA, Orlova A, Telepov A, Khrabrov K, Karpushkina I, Shestun P, Kadurin A, Vinogradov V, Tsypin A, Dmitrenko A. AffiTox v1.0.0: data release manifest [dataset]. Zenodo; 2026. https://doi.org/10.5281/zenodo.22007993.
+
+Code:
+
+Konovalova OA, Orlova A, Telepov A, Khrabrov K, Karpushkina I, Shestun P, Kadurin A, Vinogradov V, Tsypin A, Dmitrenko A. AffiTox. GitHub; 2026. https://github.com/OlgaKoont/AffiTox.
+
+Machine-readable: [`CITATION.cff`](CITATION.cff).

@@ -57,7 +57,10 @@ GitHub Actions uses that fast check with `ANALYSIS_ROOT` pointed at a scratch di
 
 ## Data
 
-Raw docking (not required for this folder): [10.5281/zenodo.20825057](https://doi.org/10.5281/zenodo.20825057) through [10.5281/zenodo.20825067](https://doi.org/10.5281/zenodo.20825067). Community: [zenodo.org/communities/affitox](https://zenodo.org/communities/affitox/).
+Full-panel tables and figures are not in git. Unpack Zenodo **04** and **06** into
+`analysis/excluding_2z5x_3mjg/` as described in [`docs/zenodo/README.md`](../docs/zenodo/README.md).
+Index: [10.5281/zenodo.22007993](https://doi.org/10.5281/zenodo.22007993).
+Do not use the restricted historical DOIs `10.5281/zenodo.20825057`–`067`.
 
 ## Citation
 

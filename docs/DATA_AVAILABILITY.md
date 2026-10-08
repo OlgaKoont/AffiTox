@@ -1,26 +1,75 @@
-# Data availability (manuscript template)
+# Data availability (*Journal of Cheminformatics* / BMC)
 
-Fill the two placeholders after (1) the GitHub `v1.0.0` software archive exists on
-Zenodo and (2) the umbrella data-manifest record exists. Do **not** create the
-GitHub release until CI is green, including the analysis smoke test.
+Paste the Declarations paragraph into **Availability of data and materials**.
+Cite the umbrella dataset as one numbered Vancouver reference. Do not cite
+`10.5281/zenodo.20825057`–`067`. The software Zenodo DOI is filled after GitHub
+tag `v1.0.0` (CI green). Unpack map: [`zenodo/README.md`](zenodo/README.md).
 
-The source code, curated benchmark inputs, and figure-generation workflows are
-publicly available at https://github.com/OlgaKoont/AffiTox and archived as
-version 1.0.0 at Zenodo (software DOI: [DOI]). Data are six **related** Zenodo
-records (raw ChEMBL+PDB, prepared inputs and weights, docking dumps, merged
-tables, PoseBusters/conversion, metrics and PNG figures), indexed from one
-community/project (data DOI: [DOI]). Layout: [`docs/zenodo/README.md`](zenodo/README.md)
-and `release/zenodo/`.
+## Declarations paragraph
 
-The analysis workflow can be reproduced from record 04–06 without rerunning
-docking. GPU re-runs of Boltz-2 / DynamicBind are not bit-identical; record 03
-is the frozen scientific snapshot. Full docking requires third-party methods and
-checkpoints (NOTICE; [`SOFTWARE_REGISTRY.md`](SOFTWARE_REGISTRY.md)). ChEMBL and
-PDB redistributions remain under their original terms.
+The AffiTox v1.0.0 dataset is available from Zenodo
+(https://doi.org/10.5281/zenodo.22007993). That index record links six related
+deposits: raw ChEMBL and PDB snapshots; prepared inputs, ligand identifiers and
+method weights; frozen docking outputs (split across five records because Zenodo
+limits a dataset to 50 GiB); merged ligand tables; PoseBusters tables; and
+metrics with PNG figures. Source code is available at
+https://github.com/OlgaKoont/AffiTox under the MIT license. ChEMBL and PDB
+redistributions remain under their original terms. GPU re-runs of Boltz-2 and
+DynamicBind are not bit-identical; the docking deposit is the frozen snapshot
+used in this study.
 
-The previous per-protein zips `10.5281/zenodo.20825057`–`10.5281/zenodo.20825067`
-are **historical only** (old panel including 7awe/2z5x/3mjg). Do not announce
-them as the current AffiTox datasets.
+## Vancouver references
 
-Do not add `.zenodo.json` alongside `CITATION.cff`: if both exist, Zenodo ignores
-`CITATION.cff`.
+Dataset:
+
+Konovalova OA, Orlova A, Telepov A, Khrabrov K, Karpushkina I, Shestun P, Kadurin A, Vinogradov V, Tsypin A, Dmitrenko A. AffiTox v1.0.0: data release manifest [dataset]. Zenodo; 2026. https://doi.org/10.5281/zenodo.22007993.
+
+Code (replace with the Zenodo Software DOI when `v1.0.0` exists):
+
+Konovalova OA, Orlova A, Telepov A, Khrabrov K, Karpushkina I, Shestun P, Kadurin A, Vinogradov V, Tsypin A, Dmitrenko A. AffiTox. GitHub; 2026. https://github.com/OlgaKoont/AffiTox.
+
+In-text example: “Data are archived on Zenodo [n].”
+
+## BibTeX
+
+```bibtex
+@misc{affitox_data_v1,
+  author       = {Konovalova, Olga A. and Orlova, Anastasia and Telepov, Alexander
+                  and Khrabrov, Kuzma and Karpushkina, Irina and Shestun, Pavel
+                  and Kadurin, Artur and Vinogradov, Vladimir and Tsypin, Artem
+                  and Dmitrenko, Andrei},
+  title        = {{AffiTox} v1.0.0: data release manifest},
+  year         = {2026},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.22007993},
+  url          = {https://doi.org/10.5281/zenodo.22007993},
+  note         = {Dataset. Concept DOI: 10.5281/zenodo.22007992}
+}
+
+@misc{affitox_code,
+  author       = {Konovalova, Olga A. and Orlova, Anastasia and Telepov, Alexander
+                  and Khrabrov, Kuzma and Karpushkina, Irina and Shestun, Pavel
+                  and Kadurin, Artur and Vinogradov, Vladimir and Tsypin, Artem
+                  and Dmitrenko, Andrei},
+  title        = {{AffiTox}},
+  year         = {2026},
+  publisher    = {GitHub},
+  url          = {https://github.com/OlgaKoont/AffiTox},
+  note         = {Version 1.0.0 source. Software Zenodo DOI to be added after the GitHub release.}
+}
+```
+
+## Part DOIs (supplement only, not the paper citation)
+
+| Record | DOI |
+|--------|-----|
+| 01 raw ChEMBL+PDB | https://doi.org/10.5281/zenodo.23213812 |
+| 02 prepared + weights | https://doi.org/10.5281/zenodo.23213816 |
+| 03a docking | https://doi.org/10.5281/zenodo.23224051 |
+| 03b docking | https://doi.org/10.5281/zenodo.23225395 |
+| 03c docking | https://doi.org/10.5281/zenodo.23225788 |
+| 03d docking | https://doi.org/10.5281/zenodo.23226603 |
+| 03e docking | https://doi.org/10.5281/zenodo.23227176 |
+| 04 merged tables | https://doi.org/10.5281/zenodo.23214418 |
+| 05 PoseBusters | https://doi.org/10.5281/zenodo.23214420 |
+| 06 metrics + PNG | https://doi.org/10.5281/zenodo.23214430 |
